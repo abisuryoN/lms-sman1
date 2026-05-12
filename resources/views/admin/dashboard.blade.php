@@ -6,12 +6,16 @@
 {{-- Premium Mobile Dashboard (MySIKA Aesthetic) --}}
 <div class="mobile-only-ui">
     <div class="welcome-card-mobile">
-        <div class="privacy-icon-box">
-            <i class="fas fa-eye-slash"></i>
+        <div class="privacy-icon-box" style="overflow: hidden; background: #F1F5F9;">
+            @if(auth()->user()->photo_url)
+                <img src="{{ auth()->user()->photo_url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+            @else
+                <i class="fas fa-user" style="font-size: 32px; color: #94A3B8;"></i>
+            @endif
         </div>
         <div class="welcome-text-mobile">
             <h2 style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px;">Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
-            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">Mode Privasi Aktif : Data disembunyikan</p>
+            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">Role: {{ auth()->user()->role }} | LMS SMAN 1</p>
         </div>
     </div>
 

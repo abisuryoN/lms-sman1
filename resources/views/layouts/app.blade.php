@@ -1875,15 +1875,22 @@
 
             /* Responsive Essentials */
             .navbar {
+                display: flex;
+            }
+            .mobile-header, .bottom-nav {
                 display: none !important;
             }
 
         @media (max-width: 1024px) {
-            /* Existing mobile sidebar rules ... */
-            
-            /* ── Premium Mobile Header (MySIKA) ────── */
+            .navbar {
+                display: none !important;
+            }
             .mobile-header {
-                display: flex;
+                display: flex !important;
+            }
+            .bottom-nav {
+                display: flex !important;
+            }
                 position: fixed;
                 top: 0;
                 left: 0;
