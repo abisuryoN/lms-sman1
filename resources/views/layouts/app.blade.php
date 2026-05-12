@@ -87,7 +87,7 @@
             padding: 24px 20px 16px 20px;
             overflow: hidden; white-space: nowrap;
         }
-        .sidebar-brand img { width: 34px; height: 34px; object-fit: contain; flex-shrink: 0; }
+        .sidebar-brand img { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; }
         .sidebar-brand-title { font-size: 16px; font-weight: 700; color: #0F172A; letter-spacing: -0.3px; }
         .sidebar-brand-badge {
             border: 1px solid #FDE68A; background: #FEF3C7;
@@ -111,13 +111,13 @@
         }
 
         .sidebar-link {
-            display: flex; align-items: center; gap: 14px;
-            padding: 12px 14px; border-radius: 14px;
-            color: #64748B; text-decoration: none; font-size: 13.5px;
+            display: flex; align-items: center; gap: 16px;
+            padding: 13px 16px; border-radius: 14px;
+            color: #64748B; text-decoration: none; font-size: 14px;
             font-weight: 500; transition: all 0.2s ease;
-            margin-bottom: 4px; white-space: nowrap; overflow: hidden;
+            margin-bottom: 8px; white-space: nowrap; overflow: hidden;
         }
-        .sidebar-link i { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+        .sidebar-link i { font-size: 20px; width: 26px; text-align: center; flex-shrink: 0; }
 
         .sidebar-link:hover {
             color: #0F172A; background: #F8FAFC;
@@ -216,8 +216,8 @@
             display: none;
         }
         body.sidebar-collapsed .sidebar-brand { justify-content: center; padding-left: 0; padding-right: 0; }
-        body.sidebar-collapsed .sidebar-link { justify-content: center; padding: 12px; }
-        body.sidebar-collapsed .sidebar-link i { font-size: 18px; width: auto; }
+        body.sidebar-collapsed .sidebar-link { justify-content: center; padding: 12px; margin-bottom: 22px; }
+        body.sidebar-collapsed .sidebar-link i { font-size: 22px; width: auto; }
         body.sidebar-collapsed .sidebar-user-section { justify-content: center; padding: 10px; margin: 4px 8px 12px 8px; }
         body.sidebar-collapsed .sidebar-collapse-btn i { transform: rotate(180deg); }
 
