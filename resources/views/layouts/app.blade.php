@@ -1698,95 +1698,79 @@
             .sidebar-mobile-header {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                padding: 16px 24px;
+                gap: 12px;
+                padding: 24px 20px;
+                background: #FFFFFF;
                 border-bottom: 1px solid #F1F5F9;
-                margin-bottom: 0;
             }
 
-            .m-user-info {
-                display: flex;
-                align-items: center;
-                gap: 14px;
-            }
-
-            .m-avatar-square {
-                width: 56px;
-                height: 56px;
+            .m-user-avatar {
+                width: 48px;
+                height: 48px;
                 border-radius: 50%;
                 background: #F1F5F9;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 overflow: hidden;
+                flex-shrink: 0;
                 border: 2px solid #FFFFFF;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             }
 
-            .m-avatar-square img {
+            .m-user-avatar img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }
 
+            .m-user-avatar span {
+                font-weight: 700;
+                color: #3B82F6;
+                font-size: 18px;
+            }
+
             .m-user-details {
                 display: flex;
                 flex-direction: column;
+                flex: 1;
             }
 
             .m-user-name {
                 font-weight: 700;
-                font-size: 16px;
                 color: #0F172A;
+                font-size: 15px;
                 line-height: 1.2;
-                letter-spacing: -0.3px;
             }
 
             .m-user-id {
                 font-size: 12px;
-                color: #94A3B8;
-                font-weight: 500;
-                margin-top: 2px;
-            }
-
-            .m-close-btn {
-                width: 40px;
-                height: 40px;
-                border-radius: 14px;
-                background: #F8FAFC;
-                border: none;
                 color: #64748B;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.2s;
+                margin-top: 2px;
             }
 
             .m-header-actions {
                 display: flex;
+                gap: 8px;
                 align-items: center;
-                gap: 12px;
             }
 
-            .m-logout-icon-btn {
+            .m-close-btn, .m-logout-icon-btn {
                 width: 36px;
                 height: 36px;
                 border-radius: 10px;
-                background: #FFF1F2;
-                border: none;
-                color: #E11D48;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
                 transition: all 0.2s;
+                border: none;
             }
 
-            .m-logout-icon-btn:active {
-                transform: scale(0.92);
-                background: #FFE4E6;
-            }
+            .m-close-btn { background: #F8FAFC; color: #64748B; }
+            .m-logout-icon-btn { background: #FFF1F2; color: #E11D48; }
+
+            .m-logout-icon-btn:active { transform: scale(0.92); }
 
             .sidebar-menu {
                 padding: 0 20px 30px;
@@ -2228,6 +2212,13 @@
 
             {{-- New Mobile Header --}}
             <div class="sidebar-mobile-header">
+                <div class="m-user-avatar">
+                    @if(auth()->user()->photo_url)
+                        <img src="{{ auth()->user()->photo_url }}" alt="Avatar">
+                    @else
+                        <span>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    @endif
+                </div>
                 <div class="m-user-details">
                     <span class="m-user-name">{{ auth()->user()->name }}</span>
                     <span class="m-user-id">{{ auth()->user()->identifier }}</span>
