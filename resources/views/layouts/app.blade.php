@@ -2412,9 +2412,6 @@
             </div>
         </div>
         <div class="mobile-header-right">
-            <button class="mobile-header-btn"><i class="fas fa-search"></i></button>
-            <button class="mobile-header-btn" onclick="location.reload()"><i class="fas fa-sync"></i></button>
-            <button class="mobile-header-btn"><i class="fas fa-moon"></i></button>
             <button class="mobile-header-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         </div>
     </header>
