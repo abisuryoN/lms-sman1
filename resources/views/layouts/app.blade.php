@@ -1878,28 +1878,225 @@
                 display: none !important;
             }
 
+        @media (max-width: 1024px) {
+            /* Existing mobile sidebar rules ... */
+            
+            /* ── Premium Mobile Header (MySIKA) ────── */
             .mobile-header {
                 display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 70px;
+                background: rgba(255, 255, 255, 0.85);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                z-index: 1000;
+                padding: 0 20px;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
             }
 
-            .main-content {
-                margin-left: 0 !important;
-                margin-top: 65px !important;
-                padding: 0 !important;
-                padding-bottom: 100px !important;
+            .mobile-header-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
             }
 
+            .mobile-header-logo {
+                width: 38px;
+                height: 38px;
+                object-fit: contain;
+            }
+
+            .mobile-header-title {
+                font-size: 18px;
+                font-weight: 800;
+                color: #0F172A;
+                letter-spacing: -0.5px;
+            }
+
+            .mobile-header-right {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .mobile-header-btn {
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+                background: transparent;
+                border: none;
+                color: #64748B;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                transition: all 0.2s;
+            }
+
+            .mobile-header-btn:active {
+                background: #F1F5F9;
+                transform: scale(0.9);
+            }
+
+            /* ── Premium Glassmorphism Bottom Nav ────── */
             .bottom-nav {
                 display: flex;
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                height: 75px;
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                border-radius: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                justify-content: space-around;
+                align-items: center;
+                padding: 0 10px;
             }
 
-            .sidebar-collapse-btn {
-                display: none;
+            .bottom-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+                color: #94A3B8;
+                text-decoration: none;
+                font-size: 10px;
+                font-weight: 600;
+                padding: 8px 12px;
+                border-radius: 16px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .bottom-nav-item i {
+                font-size: 20px;
             }
+
+            .bottom-nav-item.active {
+                color: var(--primary);
+                background: rgba(59, 130, 246, 0.08);
+            }
+
+            .bottom-nav-item.active i {
+                transform: translateY(-2px);
+            }
+
+            /* ── Quick Access Grid (Mobile) ────── */
+            .quick-access-section {
+                padding: 24px 20px;
+            }
+
+            .section-label {
+                font-size: 12px;
+                font-weight: 800;
+                color: #94A3B8;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 20px;
+            }
+
+            .quick-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px 10px;
+            }
+
+            .quick-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+                transition: all 0.2s;
+            }
+
+            .quick-item:active {
+                transform: scale(0.9);
+            }
+
+            .quick-icon-box {
+                width: 54px;
+                height: 54px;
+                border-radius: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+            }
+
+            .quick-label {
+                font-size: 11px;
+                font-weight: 700;
+                color: #64748B;
+                text-align: center;
+            }
+
+            /* Icon Colors */
+            .bg-blue-soft { background: #EFF6FF; color: #3B82F6; }
+            .bg-purple-soft { background: #F5F3FF; color: #8B5CF6; }
+            .bg-green-soft { background: #ECFDF5; color: #10B981; }
+            .bg-orange-soft { background: #FFF7ED; color: #F97316; }
+            .bg-red-soft { background: #FEF2F2; color: #EF4444; }
+            .bg-cyan-soft { background: #ECFEFF; color: #06B6D4; }
+            .bg-pink-soft { background: #FDF2F7; color: #DB2777; }
+            .bg-indigo-soft { background: #EEF2FF; color: #6366F1; }
+
+            /* ── Mobile UI Helpers ────── */
+            .mobile-only-ui { display: block; }
+            .desktop-only-ui { display: none; }
+            
+            .main-content {
+                margin-left: 0 !important;
+                margin-top: 70px !important;
+                padding-top: 20px !important;
+                background: #F8FAFC;
+                min-height: 100vh;
+            }
+            
+            .welcome-card-mobile {
+                padding: 40px 20px;
+                text-align: center;
+                background: radial-gradient(circle at top right, #F8FAFC, #FFFFFF);
+            }
+
+            .privacy-icon-box {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: #E2E8F0;
+                margin: 0 auto 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 32px;
+                color: #94A3B8;
+                position: relative;
+            }
+
+            .privacy-icon-box::after {
+                content: '';
+                position: absolute;
+                inset: -10px;
+                border-radius: 50%;
+                border: 1px solid #E2E8F0;
+                opacity: 0.5;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-only-ui { display: none; }
+            .desktop-only-ui { display: block; }
         }
 
         @media (max-width: 480px) {

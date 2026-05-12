@@ -3,99 +3,154 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
-<div class="welcome-header">
-    <div class="welcome-avatar">
-        @if(auth()->user()->photo_url)
-            <img src="{{ auth()->user()->photo_url }}" alt="Avatar">
-        @else
-            <i class="fas fa-user-circle"></i>
-        @endif
+{{-- Premium Mobile Dashboard (MySIKA Aesthetic) --}}
+<div class="mobile-only-ui">
+    <div class="welcome-card-mobile">
+        <div class="privacy-icon-box">
+            <i class="fas fa-eye-slash"></i>
+        </div>
+        <div class="welcome-text-mobile">
+            <h2 style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px;">Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
+            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">Mode Privasi Aktif : Data disembunyikan</p>
+        </div>
     </div>
-    <div class="welcome-text">
-        <h2>Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
-        <p>Selamat datang di dashboard LMS SMAN 1 Tajurhalang. Silakan kelola data akademik Anda.</p>
+
+    <div class="quick-access-section">
+        <div class="section-label">Akses Cepat</div>
+        <div class="quick-grid">
+            <a href="{{ route('admin.guru.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-blue-soft"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="quick-label">Guru</div>
+            </a>
+            <a href="{{ route('admin.siswa.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-purple-soft"><i class="fas fa-user-graduate"></i></div>
+                <div class="quick-label">Siswa</div>
+            </a>
+            <a href="{{ route('admin.kelas.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-green-soft"><i class="fas fa-school"></i></div>
+                <div class="quick-label">Kelas</div>
+            </a>
+            <a href="{{ route('admin.mapel.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-orange-soft"><i class="fas fa-book"></i></div>
+                <div class="quick-label">Mapel</div>
+            </a>
+            <a href="{{ route('admin.import.siswa') }}" class="quick-item">
+                <div class="quick-icon-box bg-red-soft"><i class="fas fa-file-excel"></i></div>
+                <div class="quick-label">Import</div>
+            </a>
+            <a href="{{ route('admin.tahun-ajaran.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-cyan-soft"><i class="fas fa-calendar-alt"></i></div>
+                <div class="quick-label">Tahun</div>
+            </a>
+            <a href="{{ route('admin.guru-kelas.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-pink-soft"><i class="fas fa-tasks"></i></div>
+                <div class="quick-label">Assign</div>
+            </a>
+            <a href="{{ route('admin.profil.edit') }}" class="quick-item">
+                <div class="quick-icon-box bg-indigo-soft"><i class="fas fa-user-cog"></i></div>
+                <div class="quick-label">Profil</div>
+            </a>
+        </div>
     </div>
 </div>
 
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon blue"><i class="fas fa-user-graduate"></i></div>
-        <div class="stat-info"><h4>Siswa Aktif</h4><div class="stat-value">{{ $stats['total_siswa'] }}</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon green"><i class="fas fa-chalkboard-teacher"></i></div>
-        <div class="stat-info"><h4>Total Guru</h4><div class="stat-value">{{ $stats['total_guru'] }}</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon yellow"><i class="fas fa-school"></i></div>
-        <div class="stat-info"><h4>Total Kelas</h4><div class="stat-value">{{ $stats['total_kelas'] }}</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon purple"><i class="fas fa-book"></i></div>
-        <div class="stat-info"><h4>Mata Pelajaran</h4><div class="stat-value">{{ $stats['total_mapel'] }}</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon cyan"><i class="fas fa-clipboard-list"></i></div>
-        <div class="stat-info"><h4>Total Tugas</h4><div class="stat-value">{{ $stats['total_tugas'] }}</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon red"><i class="fas fa-user-times"></i></div>
-        <div class="stat-info"><h4>Alumni</h4><div class="stat-value">{{ $stats['total_alumni'] }}</div></div>
-    </div>
-</div>
-
-<div class="grid-2">
-    {{-- Tahun Ajaran Card --}}
-    <div class="card">
-        <div class="card-header"><h3><i class="fas fa-calendar-alt"></i> Tahun Ajaran Aktif</h3></div>
-        <div class="card-body">
-            @if($tahunAjaranAktif)
-                <div style="text-align:center;padding:12px 0">
-                    <div style="font-size:28px;font-weight:700;color:var(--primary)">{{ $tahunAjaranAktif->nama_tahun }}</div>
-                    <div style="margin-top:4px"><span class="badge badge-blue">{{ $tahunAjaranAktif->semester }}</span></div>
-                    <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
-                        <a href="{{ route('admin.tahun-ajaran.create') }}" class="btn btn-outline btn-sm"><i class="fas fa-plus"></i> Tahun Baru</a>
-                        <button onclick="document.getElementById('modalAkhiri').classList.add('show')" class="btn btn-danger btn-sm"><i class="fas fa-stop-circle"></i> Akhiri</button>
-                    </div>
-                </div>
+{{-- Original Desktop Dashboard (Untouched) --}}
+<div class="desktop-only-ui">
+    <div class="welcome-header">
+        <div class="welcome-avatar">
+            @if(auth()->user()->photo_url)
+                <img src="{{ auth()->user()->photo_url }}" alt="Avatar">
             @else
-                <p style="text-align:center;color:var(--text-muted);padding:20px">Belum ada tahun ajaran aktif.</p>
-                <div style="text-align:center"><a href="{{ route('admin.tahun-ajaran.create') }}" class="btn btn-primary btn-sm">Buat Tahun Ajaran</a></div>
+                <i class="fas fa-user-circle"></i>
             @endif
         </div>
+        <div class="welcome-text">
+            <h2>Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
+            <p>Selamat datang di dashboard LMS SMAN 1 Tajurhalang. Silakan kelola data akademik Anda.</p>
+        </div>
     </div>
 
-    {{-- Chart --}}
-    <div class="card">
-        <div class="card-header"><h3><i class="fas fa-chart-bar"></i> Distribusi Siswa per Kelas</h3></div>
-        <div class="card-body">
-            <canvas id="kelasChart" height="200"></canvas>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-user-graduate"></i></div>
+            <div class="stat-info"><h4>Siswa Aktif</h4><div class="stat-value">{{ $stats['total_siswa'] }}</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div class="stat-info"><h4>Total Guru</h4><div class="stat-value">{{ $stats['total_guru'] }}</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon yellow"><i class="fas fa-school"></i></div>
+            <div class="stat-info"><h4>Total Kelas</h4><div class="stat-value">{{ $stats['total_kelas'] }}</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-book"></i></div>
+            <div class="stat-info"><h4>Mata Pelajaran</h4><div class="stat-value">{{ $stats['total_mapel'] }}</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon cyan"><i class="fas fa-clipboard-list"></i></div>
+            <div class="stat-info"><h4>Total Tugas</h4><div class="stat-value">{{ $stats['total_tugas'] }}</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-user-times"></i></div>
+            <div class="stat-info"><h4>Alumni</h4><div class="stat-value">{{ $stats['total_alumni'] }}</div></div>
         </div>
     </div>
 </div>
 
-{{-- Recent Plagiarism Alerts --}}
-@if($recentAlerts->count())
-<div class="card mt-4">
-    <div class="card-header"><h3><i class="fas fa-exclamation-triangle" style="color:var(--danger)"></i> Alert Plagiarisme Terbaru</h3></div>
-    <div class="card-body table-wrapper">
-        <table>
-            <thead><tr><th>Tugas</th><th>Siswa 1</th><th>Siswa 2</th><th>Similarity</th><th>Status</th></tr></thead>
-            <tbody>
-            @foreach($recentAlerts as $alert)
-                <tr>
-                    <td>{{ $alert->tugas->judul ?? '-' }}</td>
-                    <td>{{ $alert->jawaban1->siswa->nama ?? '-' }}</td>
-                    <td>{{ $alert->jawaban2->siswa->nama ?? '-' }}</td>
-                    <td><strong>{{ $alert->similarity_percentage }}%</strong></td>
-                    <td><span class="badge badge-red">Plagiat</span></td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+    <div class="grid-2">
+        {{-- Tahun Ajaran Card --}}
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-calendar-alt"></i> Tahun Ajaran Aktif</h3></div>
+            <div class="card-body">
+                @if($tahunAjaranAktif)
+                    <div style="text-align:center;padding:12px 0">
+                        <div style="font-size:28px;font-weight:700;color:var(--primary)">{{ $tahunAjaranAktif->nama_tahun }}</div>
+                        <div style="margin-top:4px"><span class="badge badge-blue">{{ $tahunAjaranAktif->semester }}</span></div>
+                        <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
+                            <a href="{{ route('admin.tahun-ajaran.create') }}" class="btn btn-outline btn-sm"><i class="fas fa-plus"></i> Tahun Baru</a>
+                            <button onclick="document.getElementById('modalAkhiri').classList.add('show')" class="btn btn-danger btn-sm"><i class="fas fa-stop-circle"></i> Akhiri</button>
+                        </div>
+                    </div>
+                @else
+                    <p style="text-align:center;color:var(--text-muted);padding:20px">Belum ada tahun ajaran aktif.</p>
+                    <div style="text-align:center"><a href="{{ route('admin.tahun-ajaran.create') }}" class="btn btn-primary btn-sm">Buat Tahun Ajaran</a></div>
+                @endif
+            </div>
+        </div>
+
+        {{-- Chart --}}
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-chart-bar"></i> Distribusi Siswa per Kelas</h3></div>
+            <div class="card-body">
+                <canvas id="kelasChart" height="200"></canvas>
+            </div>
+        </div>
     </div>
+
+    {{-- Recent Plagiarism Alerts --}}
+    @if($recentAlerts->count())
+    <div class="card mt-4">
+        <div class="card-header"><h3><i class="fas fa-exclamation-triangle" style="color:var(--danger)"></i> Alert Plagiarisme Terbaru</h3></div>
+        <div class="card-body table-wrapper">
+            <table>
+                <thead><tr><th>Tugas</th><th>Siswa 1</th><th>Siswa 2</th><th>Similarity</th><th>Status</th></tr></thead>
+                <tbody>
+                @foreach($recentAlerts as $alert)
+                    <tr>
+                        <td>{{ $alert->tugas->judul ?? '-' }}</td>
+                        <td>{{ $alert->jawaban1->siswa->nama ?? '-' }}</td>
+                        <td>{{ $alert->jawaban2->siswa->nama ?? '-' }}</td>
+                        <td><strong>{{ $alert->similarity_percentage }}%</strong></td>
+                        <td><span class="badge badge-red">Plagiat</span></td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
 </div>
-@endif
 
 {{-- Modal Akhiri Tahun Ajaran --}}
 <div class="modal-overlay" id="modalAkhiri">
