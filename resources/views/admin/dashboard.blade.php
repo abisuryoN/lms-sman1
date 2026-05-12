@@ -3,6 +3,20 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
+<div class="welcome-header">
+    <div class="welcome-avatar">
+        @if(auth()->user()->photo_url)
+            <img src="{{ auth()->user()->photo_url }}" alt="Avatar">
+        @else
+            <i class="fas fa-user-circle"></i>
+        @endif
+    </div>
+    <div class="welcome-text">
+        <h2>Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
+        <p>Selamat datang di dashboard LMS SMAN 1 Tajurhalang. Silakan kelola data akademik Anda.</p>
+    </div>
+</div>
+
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-icon blue"><i class="fas fa-user-graduate"></i></div>
