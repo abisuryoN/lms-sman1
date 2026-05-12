@@ -1633,8 +1633,17 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 99;
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 2000;
+            opacity: 0;
+            backdrop-filter: blur(0px);
+            transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+            opacity: 1;
+            backdrop-filter: blur(8px);
         }
 
         /* ── Responsive Mobile ──────────────────────────── */
