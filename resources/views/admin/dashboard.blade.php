@@ -15,7 +15,7 @@
         </div>
         <div class="welcome-text-mobile">
             <h2 style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px;">Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
-            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">Role: {{ auth()->user()->role }} | LMS SMAN 1</p>
+            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">ID: {{ auth()->user()->identifier }} | LMS SMAN 1</p>
         </div>
     </div>
 
