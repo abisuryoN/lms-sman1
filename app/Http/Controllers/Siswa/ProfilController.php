@@ -21,8 +21,6 @@ class ProfilController extends Controller
 
         $request->validate([
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'telepon' => 'nullable|string|max:20',
-            'alamat' => 'nullable|string',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -33,10 +31,6 @@ class ProfilController extends Controller
             $user->update(['photo_profile' => $path]);
         }
 
-        if ($user->siswa) {
-            $user->siswa->update($request->only('telepon', 'alamat'));
-        }
-
-        return back()->with('success', 'Profil berhasil diperbarui.');
+        return back()->with('success', 'Foto profil berhasil diperbarui.');
     }
 }

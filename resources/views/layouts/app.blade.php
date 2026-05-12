@@ -7,8 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'LMS SMAN 1 Tajurhalang')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         *,
@@ -20,23 +20,21 @@
         }
 
         :root {
-            --primary: #2563EB;
-            --primary-dark: #1D4ED8;
-            --primary-light: #DBEAFE;
-            --primary-50: #EFF6FF;
-            --accent: #0EA5E9;
-            --bg: #F8FAFC;
-            --bg-card: #FFFFFF;
-            --text: #1E293B;
+            --primary: #3B82F6;
+            --primary-dark: #2563EB;
+            --primary-light: #EFF6FF;
+            --secondary: #64748B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --background: #F8FAFC;
+            --sidebar-bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
             --text-secondary: #64748B;
             --text-muted: #94A3B8;
             --border: #E2E8F0;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --sidebar-w: 280px;
             --navbar-h: 56px;
-            --radius: 14px;
             --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
@@ -44,9 +42,10 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            --sidebar-w: 280px;
+            font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+            background: var(--background);
+            color: var(--text-main);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
@@ -55,14 +54,13 @@
         /* ── Custom Premium Sidebar (MySIKA Aesthetic - Light Mode) ────────────────────────────── */
         .sidebar-wrapper {
             position: fixed;
-            top: var(--navbar-h);
+            top: 0;
             left: 0;
             bottom: 0;
             width: var(--sidebar-w);
-            background: #F1F5F9;
-            z-index: 90;
-            padding: 16px 0 16px 16px;
-            /* Floating inset card look */
+            background: var(--background);
+            z-index: 100;
+            padding: 20px 0 16px 16px;
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
         }
 
@@ -111,7 +109,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 24px 20px 16px 20px;
+            padding: 20px 20px 4px 20px;
             overflow: hidden;
             white-space: nowrap;
         }
@@ -143,7 +141,7 @@
 
         /* Menu Container */
         .sidebar-menu {
-            padding: 10px 12px;
+            padding: 0 12px 10px 12px;
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
@@ -166,8 +164,8 @@
             color: #94A3B8;
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            padding: 16px 12px 8px 12px;
-            margin-top: 4px;
+            padding: 12px 12px 12px 12px;
+            margin-top: 0;
             white-space: nowrap;
             overflow: hidden;
         }
@@ -309,6 +307,107 @@
             transform: rotate(180deg);
         }
 
+        /* Mobile Drawer */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 360px;
+            height: 100%;
+            background: #FFFFFF;
+            z-index: 2000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-drawer.active {
+            right: 0;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1900;
+            display: none;
+        }
+
+        .drawer-overlay.active {
+            display: block;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .drawer-user-card {
+            background: #F8FAFC;
+            padding: 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .drawer-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .drawer-btn-primary {
+            background: var(--primary);
+            color: #FFFFFF;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .drawer-btn-outline {
+            background: #FFFFFF;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+        }
+
+        .drawer-btn-danger {
+            background: #FFF1F2;
+            color: #E11D48;
+            border: 1px solid #FECDD3;
+        }
+
+        .nav-icon-btn {
+            background: none;
+            border: 1px solid #E2E8F0;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #64748B;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-icon-btn:hover {
+            background: #F8FAFC;
+        }
+
         /* Bottom User Dropdown */
         .bottom-user-dropdown {
             position: absolute;
@@ -416,7 +515,7 @@
             position: fixed;
             top: 0;
             right: 0;
-            left: 0;
+            left: var(--sidebar-w);
             height: var(--navbar-h);
             background: #FFFFFF;
             backdrop-filter: blur(12px);
@@ -424,8 +523,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
-            z-index: 105;
+            padding: 0 24px;
+            z-index: 90;
             transition: all 0.3s ease;
         }
 
@@ -433,6 +532,227 @@
             font-size: 17px;
             font-weight: 600;
             color: var(--text);
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-w);
+            margin-top: var(--navbar-h);
+            padding: 28px;
+            min-height: calc(100vh - var(--navbar-h));
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* UI Components */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-blue {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-green {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-red {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-yellow {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .alert {
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .alert-error {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon.blue {
+            background: #EFF6FF;
+            color: #3B82F6;
+        }
+
+        .stat-icon.yellow {
+            background: #FFFBEB;
+            color: #D97706;
+        }
+
+        .stat-icon.green {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+
+        .stat-icon.purple {
+            background: #F5F3FF;
+            color: #8B5CF6;
+        }
+
+        .stat-info h4 {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 16px;
+            background: #F8FAFC;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #F8FAFC;
         }
 
         .navbar-right {
@@ -465,6 +785,341 @@
             font-weight: 600;
             color: var(--text);
         }
+
+        /* ── Bottom Navigation (MySIKA Aesthetic) ────────────────── */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: none;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0 10px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #94A3B8;
+            transition: all 0.3s ease;
+            position: relative;
+            flex: 1;
+        }
+
+        .bottom-nav-item i {
+            font-size: 22px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bottom-nav-item span {
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bottom-nav-item.active {
+            color: var(--primary);
+        }
+
+        .bottom-nav-item.active i {
+            transform: translateY(-4px);
+        }
+
+        .bottom-nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* ── Mobile Header (MySIKA Aesthetic) ────────────────────── */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: #FFFFFF;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .mobile-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-header-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .mobile-header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mobile-header-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 6px;
+            background: #FEF3C7;
+            color: #B45309;
+            border: 1px solid #FDE68A;
+            border-radius: 6px;
+        }
+
+        .mobile-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-header-btn {
+            color: #64748B;
+            font-size: 18px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        /* ── Profile & Grid Components (For Dashboard) ───────────── */
+        .m-profile-section {
+            text-align: center;
+            padding: 30px 20px;
+            background: #FFFFFF;
+        }
+
+        .m-avatar-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 16px;
+        }
+
+        .m-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #94A3B8;
+            border: 4px solid #F8FAFC;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .m-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .m-privacy-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .m-privacy-overlay.active {
+            opacity: 1;
+        }
+
+        .m-greeting {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 4px;
+        }
+
+        .m-subtext {
+            font-size: 13px;
+            color: #94A3B8;
+        }
+
+        .m-section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 20px 0 16px;
+            padding: 0 20px;
+        }
+
+        .m-grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 0 20px 20px;
+        }
+
+        .m-grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .m-grid-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .m-grid-item:active .m-grid-icon {
+            transform: scale(0.9);
+        }
+
+        .m-grid-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748B;
+            text-align: center;
+        }
+
+        .m-badge-new {
+            position: absolute;
+            top: -5px;
+            right: 0;
+            background: #EF4444;
+            color: #FFFFFF;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            border: 1.5px solid #FFFFFF;
+        }
+
+        /* Grid Icon Colors */
+        .bg-blue-soft {
+            background: #EFF6FF;
+            color: #3B82F6;
+        }
+
+        .bg-purple-soft {
+            background: #F5F3FF;
+            color: #8B5CF6;
+        }
+
+        .bg-green-soft {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+
+        .bg-orange-soft {
+            background: #FFF7ED;
+            color: #F97316;
+        }
+
+        .bg-pink-soft {
+            background: #FDF2F8;
+            color: #EC4899;
+        }
+
+        .bg-indigo-soft {
+            background: #EEF2FF;
+            color: #6366F1;
+        }
+
+        .m-summary-section {
+            padding: 0 20px 30px;
+        }
+
+        .m-summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .m-summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .m-summary-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .m-summary-card {
+            padding: 20px;
+            border-radius: 16px;
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .m-summary-card.blue {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+        }
+
+        .m-summary-card.green {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .m-card-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .m-card-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
 
         .navbar-user-role {
             font-size: 11px;
@@ -923,7 +1578,7 @@
 
         .modal h3 {
             font-size: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .modal p {
@@ -983,46 +1638,241 @@
         }
 
         /* ── Responsive Mobile ──────────────────────────── */
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .sidebar-wrapper {
-                transform: translateX(-100%);
-                padding: 12px;
-                width: 280px;
-                background: transparent;
+                display: none;
+                left: auto !important;
+                right: -320px !important;
+                width: 320px;
+                height: 100vh;
+                background: #FFFFFF;
+                z-index: 2001;
+                padding: 0;
+                transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+                overflow-y: auto;
+                transform: none !important;
             }
 
             .sidebar-wrapper.open {
-                transform: translateX(0);
+                display: block;
+                right: 0 !important;
+                left: auto !important;
             }
 
             .sidebar-card {
-                border-radius: 16px;
-            }
-
-            .sidebar-overlay.show {
+                border-radius: 0;
+                border: none;
+                min-height: 100%;
+                margin: 0;
                 display: block;
             }
 
+            .sidebar-brand {
+                display: none;
+            }
+
+            .sidebar-mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 24px;
+                border-bottom: 1px solid #F1F5F9;
+                margin-bottom: 0;
+            }
+
+            .m-user-info {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+
+            .m-avatar-square {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: #F1F5F9;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                border: 2px solid #FFFFFF;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .m-avatar-square img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .m-user-details {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .m-user-name {
+                font-weight: 700;
+                font-size: 16px;
+                color: #0F172A;
+                line-height: 1.2;
+                letter-spacing: -0.3px;
+            }
+
+            .m-user-id {
+                font-size: 12px;
+                color: #94A3B8;
+                font-weight: 500;
+                margin-top: 2px;
+            }
+
+            .m-close-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 14px;
+                background: #F8FAFC;
+                border: none;
+                color: #64748B;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .m-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .m-logout-icon-btn {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                background: #FFF1F2;
+                border: none;
+                color: #E11D48;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .m-logout-icon-btn:active {
+                transform: scale(0.92);
+                background: #FFE4E6;
+            }
+
+            .sidebar-menu {
+                padding: 0 20px 30px;
+                flex: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                display: block;
+            }
+
+            .sidebar-link {
+                margin-bottom: 12px;
+                padding: 18px 24px;
+                border-radius: 18px;
+                font-size: 15.5px;
+                font-weight: 500;
+                color: #475569;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                text-decoration: none;
+                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .sidebar-link i {
+                font-size: 22px;
+                width: 26px;
+                text-align: center;
+            }
+
+            .sidebar-link.active {
+                background: var(--primary);
+                color: #FFFFFF;
+                box-shadow: 0 10px 24px rgba(59, 130, 246, 0.35);
+                font-weight: 600;
+            }
+
+            .sidebar-label {
+                padding: 24px 24px 20px;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1.3px;
+                color: #94A3B8;
+                opacity: 0.9;
+            }
+
+            /* Add more space for subsequent labels */
+            .sidebar-label~.sidebar-label {
+                padding-top: 22px;
+            }
+
+            .m-btn {
+                width: 100%;
+                padding: 14px;
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                font-size: 14px;
+                font-weight: 600;
+                text-decoration: none;
+                border: none;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .m-btn-settings {
+                background: #FFFFFF;
+                color: #475569;
+                border: 1px solid #E2E8F0;
+            }
+
+            .m-btn-logout {
+                background: #FFF1F2;
+                color: #E11D48;
+            }
+
+            .sidebar-user-section {
+                display: none;
+            }
+
+            .sidebar-footer-note {
+                display: none;
+            }
+
+            /* Responsive Essentials */
             .navbar {
-                left: 0;
+                display: none !important;
+            }
+
+            .mobile-header {
+                display: flex;
             }
 
             .main-content {
-                margin-left: 0;
-                padding: 16px;
+                margin-left: 0 !important;
+                margin-top: 65px !important;
+                padding: 0 !important;
+                padding-bottom: 100px !important;
             }
 
-            .hamburger {
-                display: block;
+            .bottom-nav {
+                display: flex;
+            }
+
+            .sidebar-collapse-btn {
+                display: none;
             }
 
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            /* Hide collapse button on mobile */
-            .sidebar-collapse-btn {
-                display: none;
             }
         }
 
@@ -1076,6 +1926,7 @@
                 grid-template-columns: 1fr;
             }
         }
+
         /* ── Welcome Header ─────────────────────── */
         .welcome-header {
             display: flex;
@@ -1122,6 +1973,7 @@
             font-size: 14px;
             color: var(--text-secondary);
         }
+
         .hide-mobile {
             display: inline-block;
         }
@@ -1144,7 +1996,36 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
 
-            {{-- Brand Section Removed from Sidebar as it is now in Navbar --}}
+            {{-- New Mobile Header --}}
+            <div class="sidebar-mobile-header">
+                <div class="m-user-info">
+                    <div class="m-avatar-square">
+                        <img src="{{ auth()->user()->photo_url }}" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=2563eb&color=fff'">
+                    </div>
+                    <div class="m-user-details">
+                        <span class="m-user-name">{{ auth()->user()->name }}</span>
+                        <span class="m-user-id">{{ auth()->user()->identifier }}</span>
+                    </div>
+                </div>
+                <div class="m-header-actions">
+                    <form action="{{ route('logout') }}" method="POST" id="m-logout-form">
+                        @csrf
+                        <button type="submit" class="m-logout-icon-btn" title="Keluar">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                    <button class="m-close-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-brand">
+                <img src="{{ asset('assets/logo-sekolah.png') }}" alt="Logo"
+                    onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%232563EB%22 width=%2240%22 height=%2240%22 rx=%228%22/><text x=%2220%22 y=%2226%22 fill=%22white%22 font-size=%2218%22 text-anchor=%22middle%22 font-weight=%22bold%22>S1</text></svg>'">
+                <div class="sidebar-brand-title">LMS SMAN 1</div>
+                <div class="sidebar-brand-badge">Official</div>
+            </div>
 
             {{-- Menu Navigation --}}
             <nav class="sidebar-menu">
@@ -1189,6 +2070,12 @@
                     <a href="{{ route('admin.tahun-ajaran.index') }}"
                         class="sidebar-link {{ request()->routeIs('admin.tahun-ajaran.*') ? 'active' : '' }}">
                         <i class="fas fa-calendar-alt"></i> <span>Tahun Ajaran</span>
+                    </a>
+
+                    <div class="sidebar-label">Akun</div>
+                    <a href="{{ route('admin.profil.edit') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-cog"></i> <span>Profil Saya</span>
                     </a>
 
                 @elseif(auth()->user()->isGuru())
@@ -1250,13 +2137,13 @@
                         class="sidebar-link {{ request()->routeIs('siswa.profil.*') ? 'active' : '' }}">
                         <i class="fas fa-user-cog"></i> <span>Profil Saya</span>
                     </a>
-                @endif
 
-                {{-- Footer Note inside menu matching screenshot aesthetic exactly --}}
-                <div class="sidebar-footer-note">
-                    <i class="fas fa-code"></i> Dibuat untuk <span>@sman1tajurhalang</span>
-                </div>
+                @endif
             </nav>
+            {{-- Footer Note inside menu matching screenshot aesthetic exactly --}}
+            <div class="sidebar-footer-note">
+                <i class="fas fa-code"></i> Dibuat untuk <span>@sman1tajurhalang</span>
+            </div>
 
             {{-- Bottom User Profile Card exactly mimicking the user screenshot --}}
             <div class="sidebar-user-section" id="sidebarUserSection" onclick="toggleBottomUserDropdown(event)">
@@ -1291,19 +2178,27 @@
     {{-- Mobile Sidebar Overlay --}}
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    {{-- Navbar --}}
-    <header class="navbar">
-        <div class="flex items-center gap-3">
-            <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-            
-            <div class="flex items-center gap-2">
-                <img src="{{ asset('assets/logo-sekolah.png') }}" alt="Logo" style="width: 34px; height: 34px; object-fit: contain;"
-                    onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%232563EB%22 width=%2240%22 height=%2240%22 rx=%228%22/><text x=%2220%22 y=%2226%22 fill=%22white%22 font-size=%2218%22 text-anchor=%22middle%22 font-weight=%22bold%22>S1</text></svg>'">
-                <div style="font-size: 15px; font-weight: 700; color: #0F172A; letter-spacing: -0.3px;" class="hide-mobile">LMS SMAN 1</div>
+    {{-- Mobile Header (MySIKA Aesthetic) --}}
+    <header class="mobile-header">
+        <div class="mobile-header-left">
+            <img src="{{ asset('assets/logo-sekolah.png') }}" class="mobile-header-logo" alt="Logo">
+            <div class="mobile-header-title">
+                LMS SMAN 1
             </div>
+        </div>
+        <div class="mobile-header-right">
+            <button class="mobile-header-btn"><i class="fas fa-search"></i></button>
+            <button class="mobile-header-btn" onclick="location.reload()"><i class="fas fa-sync"></i></button>
+            <button class="mobile-header-btn"><i class="fas fa-moon"></i></button>
+            <button class="mobile-header-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
 
-            <div style="height: 18px; width: 1px; background: #E2E8F0; margin: 0 4px;" class="hide-mobile"></div>
-            
+    {{-- Navbar (Desktop Only) --}}
+    <header class="navbar">
+        <div class="flex items-center gap-2">
+            <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <div style="width: 1px; height: 20px; background: #E2E8F0; margin: 0 8px;"></div>
             <h1 class="navbar-title">@yield('page-title', 'Dashboard')</h1>
         </div>
         <div class="navbar-right">
@@ -1348,11 +2243,90 @@
         @yield('content')
     </main>
 
+    {{-- Bottom Navigation (Dynamic by Role) --}}
+    <nav class="bottom-nav">
+        @if(auth()->user()->isAdmin())
+            <a href="{{ route('admin.dashboard') }}"
+                class="bottom-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-home"></i><span>Dash</span>
+            </a>
+            <a href="{{ route('admin.guru.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('admin.guru.*') ? 'active' : '' }}">
+                <i class="fas fa-chalkboard-teacher"></i><span>Guru</span>
+            </a>
+            <a href="{{ route('admin.siswa.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('admin.siswa.*') ? 'active' : '' }}">
+                <i class="fas fa-user-graduate"></i><span>Siswa</span>
+            </a>
+            <a href="{{ route('admin.kelas.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('admin.kelas.*') ? 'active' : '' }}">
+                <i class="fas fa-school"></i><span>Kelas</span>
+            </a>
+            <a href="{{ route('admin.mapel.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('admin.mapel.*') ? 'active' : '' }}">
+                <i class="fas fa-book"></i><span>Mapel</span>
+            </a>
+        @elseif(auth()->user()->isGuru())
+            <a href="{{ route('guru.dashboard') }}"
+                class="bottom-nav-item {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-home"></i><span>Dash</span>
+            </a>
+            <a href="{{ route('guru.materi.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('guru.materi.*') ? 'active' : '' }}">
+                <i class="fas fa-file-alt"></i><span>Materi</span>
+            </a>
+            <a href="{{ route('guru.tugas.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('guru.tugas.*') ? 'active' : '' }}">
+                <i class="fas fa-clipboard-list"></i><span>Tugas</span>
+            </a>
+            <a href="{{ route('guru.nilai.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('guru.nilai.*') ? 'active' : '' }}">
+                <i class="fas fa-star"></i><span>Nilai</span>
+            </a>
+            <a href="{{ route('guru.profil.edit') }}"
+                class="bottom-nav-item {{ request()->routeIs('guru.profil.*') ? 'active' : '' }}">
+                <i class="fas fa-user-cog"></i><span>Profil</span>
+            </a>
+        @elseif(auth()->user()->isSiswa())
+            <a href="{{ route('siswa.dashboard') }}"
+                class="bottom-nav-item {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-home"></i><span>Dash</span>
+            </a>
+            <a href="{{ route('siswa.materi.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('siswa.materi.*') ? 'active' : '' }}">
+                <i class="fas fa-file-alt"></i><span>Materi</span>
+            </a>
+            <a href="{{ route('siswa.tugas.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('siswa.tugas.*') ? 'active' : '' }}">
+                <i class="fas fa-clipboard-list"></i><span>Tugas</span>
+            </a>
+            <a href="{{ route('siswa.nilai.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('siswa.nilai.*') ? 'active' : '' }}">
+                <i class="fas fa-chart-bar"></i><span>Nilai</span>
+            </a>
+            <a href="{{ route('siswa.profil.edit') }}"
+                class="bottom-nav-item {{ request()->routeIs('siswa.profil.*') ? 'active' : '' }}">
+                <i class="fas fa-user-cog"></i><span>Profil</span>
+            </a>
+        @endif
+    </nav>
+
     <script>
         // Toggle mobile sidebar
         function toggleSidebar() {
-            document.getElementById('sidebarWrapper').classList.toggle('open');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
+            const sidebar = document.getElementById('sidebarWrapper');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar.style.display === 'none' || !sidebar.classList.contains('open')) {
+                sidebar.style.display = 'block';
+                setTimeout(() => {
+                    sidebar.classList.add('open');
+                    overlay.classList.add('show');
+                }, 10);
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+                setTimeout(() => sidebar.style.display = 'none', 300);
+            }
         }
 
         // Toggle sidebar collapse state (desktop animation)

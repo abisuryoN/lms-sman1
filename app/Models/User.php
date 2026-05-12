@@ -58,12 +58,23 @@ class User extends Authenticatable
         return $this->hasOne(Siswa::class);
     }
 
-    // ── Accessor ─────────────────────────────────────────
+    // ── Accessors ────────────────────────────────────────
     public function getPhotoUrlAttribute(): string
     {
         if ($this->photo_profile) {
             return asset('storage/' . $this->photo_profile);
         }
         return asset('assets/default-avatar.png');
+    }
+
+    public function getIdentifierAttribute(): string
+    {
+        if ($this->isSiswa()) {
+            return $this->siswa ? $this->siswa->nis : 'NIS Not Found';
+        }
+        if ($this->isGuru()) {
+            return $this->guru ? $this->guru->nip : 'NIP Not Found';
+        }
+        return 'Administrator';
     }
 }

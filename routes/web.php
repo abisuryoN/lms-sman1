@@ -15,6 +15,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // ── Admin Routes ─────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('profil', [Admin\ProfilController::class, 'edit'])->name('profil.edit');
+    Route::put('profil', [Admin\ProfilController::class, 'update'])->name('profil.update');
 
     Route::resource('guru', Admin\GuruController::class);
     Route::post('guru/{guru}/reset-password', [Admin\GuruController::class, 'resetPassword'])->name('guru.reset-password');

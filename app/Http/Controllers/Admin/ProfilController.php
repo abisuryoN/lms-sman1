@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Guru;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,14 +11,12 @@ class ProfilController extends Controller
     public function edit()
     {
         $user = auth()->user();
-        $guru = $user->guru;
-        return view('guru.profil.edit', compact('user', 'guru'));
+        return view('admin.profil.edit', compact('user'));
     }
 
     public function update(Request $request)
     {
         $user = auth()->user();
-        $guru = $user->guru;
 
         $request->validate([
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
