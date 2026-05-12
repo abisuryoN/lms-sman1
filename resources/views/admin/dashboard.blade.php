@@ -56,6 +56,35 @@
             </a>
         </div>
     </div>
+    <div class="quick-access-section" style="padding-top: 0;">
+        <div class="section-label">Statistik Dashboard</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            {{-- Siswa --}}
+            <div style="background: linear-gradient(135deg, #3B82F6, #2563EB); padding: 16px; border-radius: 20px; color: #FFFFFF; position: relative; overflow: hidden; height: 110px;">
+                <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Siswa Aktif</div>
+                <div style="font-size: 28px; font-weight: 800; margin-top: 4px;">{{ $stats['total_siswa'] }}</div>
+                <i class="fas fa-user-graduate" style="position: absolute; bottom: -10px; right: -5px; font-size: 50px; opacity: 0.15; transform: rotate(-10deg);"></i>
+            </div>
+            {{-- Guru --}}
+            <div style="background: linear-gradient(135deg, #10B981, #059669); padding: 16px; border-radius: 20px; color: #FFFFFF; position: relative; overflow: hidden; height: 110px;">
+                <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Total Guru</div>
+                <div style="font-size: 28px; font-weight: 800; margin-top: 4px;">{{ $stats['total_guru'] }}</div>
+                <i class="fas fa-chalkboard-teacher" style="position: absolute; bottom: -10px; right: -5px; font-size: 50px; opacity: 0.15; transform: rotate(-10deg);"></i>
+            </div>
+            {{-- Kelas --}}
+            <div style="background: linear-gradient(135deg, #A855F7, #9333EA); padding: 16px; border-radius: 20px; color: #FFFFFF; position: relative; overflow: hidden; height: 110px;">
+                <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Total Kelas</div>
+                <div style="font-size: 28px; font-weight: 800; margin-top: 4px;">{{ $stats['total_kelas'] }}</div>
+                <i class="fas fa-school" style="position: absolute; bottom: -10px; right: -5px; font-size: 50px; opacity: 0.15; transform: rotate(-10deg);"></i>
+            </div>
+            {{-- Mapel --}}
+            <div style="background: linear-gradient(135deg, #14B8A6, #0D9488); padding: 16px; border-radius: 20px; color: #FFFFFF; position: relative; overflow: hidden; height: 110px;">
+                <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Mata Pelajaran</div>
+                <div style="font-size: 28px; font-weight: 800; margin-top: 4px;">{{ $stats['total_mapel'] }}</div>
+                <i class="fas fa-book" style="position: absolute; bottom: -10px; right: -5px; font-size: 50px; opacity: 0.15; transform: rotate(-10deg);"></i>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{-- Original Desktop Dashboard (Untouched) --}}

@@ -2000,7 +2000,7 @@
 
             /* ── Quick Access Grid (Mobile) ────── */
             .quick-access-section {
-                padding: 24px 20px;
+                padding: 24px 0;
             }
 
             .section-label {
@@ -2102,13 +2102,13 @@
             .main-content {
                 margin-left: 0 !important;
                 margin-top: 70px !important;
-                padding-top: 20px !important;
+                padding: 20px 16px 110px !important;
                 background: #F8FAFC;
                 min-height: 100vh;
             }
 
             .welcome-card-mobile {
-                padding: 40px 20px;
+                padding: 40px 0;
                 text-align: center;
                 background: radial-gradient(circle at top right, #F8FAFC, #FFFFFF);
             }
