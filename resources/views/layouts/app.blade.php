@@ -1646,6 +1646,20 @@
             backdrop-filter: blur(8px);
         }
 
+        /* ── Desktop Sidebar Tweaks ──────────────────── */
+        @media (min-width: 1025px) {
+            .sidebar-mobile-header,
+            .m-header-actions {
+                display: none !important;
+            }
+
+            .sidebar-card {
+                overflow: visible;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
         /* ── Responsive Mobile ──────────────────────────── */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
@@ -1708,6 +1722,7 @@
                 border: 2px solid #FFFFFF;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             }
+
             .m-avatar-square img {
                 width: 100%;
                 height: 100%;
@@ -1753,6 +1768,7 @@
                 align-items: center;
                 gap: 12px;
             }
+
             .m-logout-icon-btn {
                 width: 36px;
                 height: 36px;
@@ -1766,6 +1782,7 @@
                 cursor: pointer;
                 transition: all 0.2s;
             }
+
             .m-logout-icon-btn:active {
                 transform: scale(0.92);
                 background: #FFE4E6;
@@ -2007,14 +2024,9 @@
 
             {{-- New Mobile Header --}}
             <div class="sidebar-mobile-header">
-                <div class="m-user-info">
-                    <div class="m-avatar-square">
-                        <img src="{{ auth()->user()->photo_url }}" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=2563eb&color=fff'">
-                    </div>
-                    <div class="m-user-details">
-                        <span class="m-user-name">{{ auth()->user()->name }}</span>
-                        <span class="m-user-id">{{ auth()->user()->identifier }}</span>
-                    </div>
+                <div class="m-user-details">
+                    <span class="m-user-name">{{ auth()->user()->name }}</span>
+                    <span class="m-user-id">{{ auth()->user()->identifier }}</span>
                 </div>
                 <div class="m-header-actions">
                     <form action="{{ route('logout') }}" method="POST" id="m-logout-form">
@@ -2146,15 +2158,15 @@
                         class="sidebar-link {{ request()->routeIs('siswa.profil.*') ? 'active' : '' }}">
                         <i class="fas fa-user-cog"></i> <span>Profil Saya</span>
                     </a>
-
                 @endif
             </nav>
+
             {{-- Footer Note inside menu matching screenshot aesthetic exactly --}}
             <div class="sidebar-footer-note">
                 <i class="fas fa-code"></i> Dibuat untuk <span>@sman1tajurhalang</span>
             </div>
 
-            {{-- Bottom User Profile Card exactly mimicking the user screenshot --}}
+            {{-- Bottom User Profile Card --}}
             <div class="sidebar-user-section" id="sidebarUserSection" onclick="toggleBottomUserDropdown(event)">
                 <div class="user-avatar-box">
                     <span>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
