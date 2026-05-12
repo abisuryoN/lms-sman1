@@ -174,11 +174,11 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 13px 16px;
+            padding: 16px 20px;
             border-radius: 14px;
             color: #64748B;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
             transition: all 0.2s ease;
             margin-bottom: 8px;
@@ -1648,6 +1648,7 @@
 
         /* ── Desktop Sidebar Tweaks ──────────────────── */
         @media (min-width: 1025px) {
+
             .sidebar-mobile-header,
             .m-header-actions {
                 display: none !important;
@@ -1715,7 +1716,7 @@
                 overflow: hidden;
                 flex-shrink: 0;
                 border: 2px solid #FFFFFF;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             }
 
             .m-user-avatar img {
@@ -1755,7 +1756,8 @@
                 align-items: center;
             }
 
-            .m-close-btn, .m-logout-icon-btn {
+            .m-close-btn,
+            .m-logout-icon-btn {
                 width: 36px;
                 height: 36px;
                 border-radius: 10px;
@@ -1767,10 +1769,19 @@
                 border: none;
             }
 
-            .m-close-btn { background: #F8FAFC; color: #64748B; }
-            .m-logout-icon-btn { background: #FFF1F2; color: #E11D48; }
+            .m-close-btn {
+                background: #F8FAFC;
+                color: #64748B;
+            }
 
-            .m-logout-icon-btn:active { transform: scale(0.92); }
+            .m-logout-icon-btn {
+                background: #FFF1F2;
+                color: #E11D48;
+            }
+
+            .m-logout-icon-btn:active {
+                transform: scale(0.92);
+            }
 
             .sidebar-menu {
                 padding: 0 20px 30px;
@@ -1861,20 +1872,25 @@
             .navbar {
                 display: flex;
             }
-            .mobile-header, .bottom-nav {
+
+            .mobile-header,
+            .bottom-nav {
                 display: none !important;
             }
 
-        @media (max-width: 1024px) {
-            .navbar {
-                display: none !important;
-            }
-            .mobile-header {
-                display: flex !important;
-            }
-            .bottom-nav {
-                display: flex !important;
-            }
+            @media (max-width: 1024px) {
+                .navbar {
+                    display: none !important;
+                }
+
+                .mobile-header {
+                    display: flex !important;
+                }
+
+                .bottom-nav {
+                    display: flex !important;
+                }
+
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -2034,19 +2050,55 @@
             }
 
             /* Icon Colors */
-            .bg-blue-soft { background: #EFF6FF; color: #3B82F6; }
-            .bg-purple-soft { background: #F5F3FF; color: #8B5CF6; }
-            .bg-green-soft { background: #ECFDF5; color: #10B981; }
-            .bg-orange-soft { background: #FFF7ED; color: #F97316; }
-            .bg-red-soft { background: #FEF2F2; color: #EF4444; }
-            .bg-cyan-soft { background: #ECFEFF; color: #06B6D4; }
-            .bg-pink-soft { background: #FDF2F7; color: #DB2777; }
-            .bg-indigo-soft { background: #EEF2FF; color: #6366F1; }
+            .bg-blue-soft {
+                background: #EFF6FF;
+                color: #3B82F6;
+            }
+
+            .bg-purple-soft {
+                background: #F5F3FF;
+                color: #8B5CF6;
+            }
+
+            .bg-green-soft {
+                background: #ECFDF5;
+                color: #10B981;
+            }
+
+            .bg-orange-soft {
+                background: #FFF7ED;
+                color: #F97316;
+            }
+
+            .bg-red-soft {
+                background: #FEF2F2;
+                color: #EF4444;
+            }
+
+            .bg-cyan-soft {
+                background: #ECFEFF;
+                color: #06B6D4;
+            }
+
+            .bg-pink-soft {
+                background: #FDF2F7;
+                color: #DB2777;
+            }
+
+            .bg-indigo-soft {
+                background: #EEF2FF;
+                color: #6366F1;
+            }
 
             /* ── Mobile UI Helpers ────── */
-            .mobile-only-ui { display: block; }
-            .desktop-only-ui { display: none; }
-            
+            .mobile-only-ui {
+                display: block;
+            }
+
+            .desktop-only-ui {
+                display: none;
+            }
+
             .main-content {
                 margin-left: 0 !important;
                 margin-top: 70px !important;
@@ -2054,7 +2106,7 @@
                 background: #F8FAFC;
                 min-height: 100vh;
             }
-            
+
             .welcome-card-mobile {
                 padding: 40px 20px;
                 text-align: center;
@@ -2086,8 +2138,13 @@
         }
 
         @media (min-width: 1025px) {
-            .mobile-only-ui { display: none; }
-            .desktop-only-ui { display: block; }
+            .mobile-only-ui {
+                display: none;
+            }
+
+            .desktop-only-ui {
+                display: block;
+            }
         }
 
         @media (max-width: 480px) {
