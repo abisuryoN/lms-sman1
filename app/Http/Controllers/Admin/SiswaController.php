@@ -10,33 +10,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Services\SiswaService;
 
 class SiswaController extends Controller
 {
+    protected $siswaService;
+
+    public function __construct(SiswaService $siswaService)
+    {
+        $this->siswaService = $siswaService;
+    }
+
     public function index(Request $request)
     {
         $tahunAjaranAktif = TahunAjaran::aktif()->first();
-        $query = Siswa::with(['user', 'kelas']);
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nis', 'like', "%{$search}%");
-            });
-        }
-
-        if ($request->filled('kelas_id')) {
-            $query->where('kelas_id', $request->kelas_id);
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        } else {
-            $query->where('status', 'aktif');
-        }
-
-        $siswa = $query->latest()->paginate(15);
+        $siswa = $this->siswaService->getPaginated($request, 5);
         $kelasList = $tahunAjaranAktif ? Kelas::where('tahun_ajaran_id', $tahunAjaranAktif->id)->get() : collect();
 
         return view('admin.siswa.index', compact('siswa', 'kelasList'));

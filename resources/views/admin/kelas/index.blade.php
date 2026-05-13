@@ -27,7 +27,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">{{ $kelas->withQueryString()->links('pagination.simple') }}</div>
+        {{ $kelas->withQueryString()->links('pagination.custom') }}
     </div>
 </div>
 @endsection

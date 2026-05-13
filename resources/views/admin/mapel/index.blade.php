@@ -18,7 +18,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">{{ $mapel->links('pagination.simple') }}</div>
+        {{ $mapel->links('pagination.custom') }}
     </div>
 </div>
 @endsection

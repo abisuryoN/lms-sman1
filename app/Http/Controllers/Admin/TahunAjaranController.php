@@ -8,12 +8,20 @@ use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\TahunAjaranService;
 
 class TahunAjaranController extends Controller
 {
-    public function index()
+    protected $tahunAjaranService;
+
+    public function __construct(TahunAjaranService $tahunAjaranService)
     {
-        $tahunAjaran = TahunAjaran::withCount('kelas')->orderByDesc('id')->paginate(10);
+        $this->tahunAjaranService = $tahunAjaranService;
+    }
+
+    public function index(Request $request)
+    {
+        $tahunAjaran = $this->tahunAjaranService->getPaginated($request);
         return view('admin.tahun-ajaran.index', compact('tahunAjaran'));
     }
 

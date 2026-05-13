@@ -8,22 +8,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Services\GuruService;
 
 class GuruController extends Controller
 {
+    protected $guruService;
+
+    public function __construct(GuruService $guruService)
+    {
+        $this->guruService = $guruService;
+    }
+
     public function index(Request $request)
     {
-        $query = Guru::with('user');
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nip', 'like', "%{$search}%");
-            });
-        }
-
-        $guru = $query->latest()->paginate(15);
+        $guru = $this->guruService->getPaginated($request, 5);
         return view('admin.guru.index', compact('guru'));
     }
 

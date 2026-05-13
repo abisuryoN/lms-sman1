@@ -27,7 +27,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">{{ $tahunAjaran->links('pagination.simple') }}</div>
+        {{ $tahunAjaran->links('pagination.custom') }}
     </div>
 </div>
 @endsection

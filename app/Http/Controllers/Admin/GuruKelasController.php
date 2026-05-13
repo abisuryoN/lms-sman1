@@ -9,21 +9,21 @@ use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
+use App\Services\GuruKelasService;
 
 class GuruKelasController extends Controller
 {
+    protected $guruKelasService;
+
+    public function __construct(GuruKelasService $guruKelasService)
+    {
+        $this->guruKelasService = $guruKelasService;
+    }
+
     public function index(Request $request)
     {
         $tahunAktif = TahunAjaran::aktif()->first();
-        $query = GuruKelas::with(['guru', 'kelas', 'mapel', 'tahunAjaran']);
-
-        if ($tahunAktif && !$request->filled('tahun_ajaran_id')) {
-            $query->where('tahun_ajaran_id', $tahunAktif->id);
-        } elseif ($request->filled('tahun_ajaran_id')) {
-            $query->where('tahun_ajaran_id', $request->tahun_ajaran_id);
-        }
-
-        $guruKelas = $query->latest()->paginate(15);
+        $guruKelas = $this->guruKelasService->getPaginated($request);
         $guruList = Guru::all();
         $kelasList = $tahunAktif ? Kelas::where('tahun_ajaran_id', $tahunAktif->id)->get() : collect();
         $mapelList = Mapel::all();

@@ -38,7 +38,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">{{ $guru->withQueryString()->links('pagination.simple') }}</div>
+        {{ $guru->withQueryString()->links('pagination.custom') }}
     </div>
 </div>
 @endsection

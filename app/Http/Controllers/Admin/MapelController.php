@@ -5,19 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Mapel;
 use Illuminate\Http\Request;
+use App\Services\MapelService;
 
 class MapelController extends Controller
 {
+    protected $mapelService;
+
+    public function __construct(MapelService $mapelService)
+    {
+        $this->mapelService = $mapelService;
+    }
+
     public function index(Request $request)
     {
-        $query = Mapel::query();
-
-        if ($request->filled('search')) {
-            $query->where('nama_mapel', 'like', "%{$request->search}%")
-                  ->orWhere('kode_mapel', 'like', "%{$request->search}%");
-        }
-
-        $mapel = $query->orderBy('nama_mapel')->paginate(15);
+        $mapel = $this->mapelService->getPaginated($request);
         return view('admin.mapel.index', compact('mapel'));
     }
 

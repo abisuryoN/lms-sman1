@@ -8,22 +8,21 @@ use App\Models\Kelas;
 use App\Models\TahunAjaran;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\KelasService;
 
 class KelasController extends Controller
 {
+    protected $kelasService;
+
+    public function __construct(KelasService $kelasService)
+    {
+        $this->kelasService = $kelasService;
+    }
+
     public function index(Request $request)
     {
         $tahunAjaranAktif = TahunAjaran::aktif()->first();
-
-        $query = Kelas::with(['tahunAjaran', 'waliKelas', 'siswa']);
-
-        if ($tahunAjaranAktif && !$request->filled('tahun_ajaran_id')) {
-            $query->where('tahun_ajaran_id', $tahunAjaranAktif->id);
-        } elseif ($request->filled('tahun_ajaran_id')) {
-            $query->where('tahun_ajaran_id', $request->tahun_ajaran_id);
-        }
-
-        $kelas = $query->withCount('siswa')->orderBy('nama_kelas')->paginate(15);
+        $kelas = $this->kelasService->getPaginated($request, 5);
         $tahunAjaranList = TahunAjaran::orderByDesc('id')->get();
 
         // Guru list for wali kelas dropdown

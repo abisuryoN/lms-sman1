@@ -49,7 +49,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">{{ $siswa->withQueryString()->links('pagination.simple') }}</div>
+        {{ $siswa->withQueryString()->links('pagination.custom') }}
     </div>
 </div>
 @endsection
