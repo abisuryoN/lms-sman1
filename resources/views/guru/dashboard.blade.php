@@ -39,7 +39,7 @@
             </a>
             <a href="{{ route('guru.nilai.index') }}" class="quick-item">
                 <div class="quick-icon-box bg-blue-soft"><i class="fas fa-star"></i></div>
-                <div class="quick-label">Nilai</div>
+                <div class="quick-label">Penilaian</div>
             </a>
             <a href="{{ route('guru.similarity.index') }}" class="quick-item">
                 <div class="quick-icon-box bg-indigo-soft"><i class="fas fa-search-plus"></i></div>
@@ -48,18 +48,6 @@
             <a href="{{ route('guru.profil.edit') }}" class="quick-item">
                 <div class="quick-icon-box bg-orange-soft"><i class="fas fa-user-cog"></i></div>
                 <div class="quick-label">Profil</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-pink-soft"><i class="fas fa-book"></i></div>
-                <div class="quick-label">Mapel</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-blue-soft"><i class="fas fa-school"></i></div>
-                <div class="quick-label">Kelas</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-green-soft"><i class="fas fa-chart-pie"></i></div>
-                <div class="quick-label">Laporan</div>
             </a>
         </div>
     </div>

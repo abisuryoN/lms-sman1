@@ -27,39 +27,23 @@
     </div>
 
     <div class="quick-access-section">
-        <div class="section-label">Akses Cepat</div>
+        <div class="section-label">Manajemen Pembelajaran</div>
         <div class="quick-grid">
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-blue-soft"><i class="fas fa-calendar-alt"></i></div>
-                <div class="quick-label">Jadwal</div>
-            </a>
             <a href="{{ route('siswa.materi.index') }}" class="quick-item">
-                <div class="quick-icon-box bg-purple-soft"><i class="fas fa-book"></i></div>
+                <div class="quick-icon-box bg-purple-soft"><i class="fas fa-file-alt"></i></div>
                 <div class="quick-label">Materi</div>
             </a>
+            <a href="{{ route('siswa.tugas.index') }}" class="quick-item">
+                <div class="quick-icon-box bg-green-soft"><i class="fas fa-clipboard-list"></i></div>
+                <div class="quick-label">Tugas</div>
+            </a>
             <a href="{{ route('siswa.nilai.index') }}" class="quick-item">
-                <div class="quick-icon-box bg-green-soft"><i class="fas fa-file-invoice"></i></div>
+                <div class="quick-icon-box bg-blue-soft"><i class="fas fa-chart-bar"></i></div>
                 <div class="quick-label">Nilai</div>
             </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-orange-soft"><i class="fas fa-wallet"></i></div>
-                <div class="quick-label">SPP</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-pink-soft"><i class="fas fa-id-card"></i></div>
-                <div class="quick-label">Kartu Ujian</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-purple-soft"><i class="fas fa-comment-dots"></i></div>
-                <div class="quick-label">Forum</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-indigo-soft"><i class="fas fa-sparkles"></i></div>
-                <div class="quick-label">Rekap</div>
-            </a>
-            <a href="#" class="quick-item">
-                <div class="quick-icon-box bg-pink-soft"><i class="fas fa-edit"></i></div>
-                <div class="quick-label">Kuesioner</div>
+            <a href="{{ route('siswa.profil.edit') }}" class="quick-item">
+                <div class="quick-icon-box bg-orange-soft"><i class="fas fa-user-cog"></i></div>
+                <div class="quick-label">Profil</div>
             </a>
         </div>
     </div>
