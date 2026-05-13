@@ -1552,15 +1552,23 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            padding-right: 20px;
+            border-right: 1px solid #F1F5F9;
         }
 
         .pagination-per-page select {
-            padding: 6px 12px;
-            border-radius: 8px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 14px;
+            padding: 8px 32px 8px 12px;
+            border-radius: 10px;
             font-size: 13px;
+            font-weight: 600;
             border: 1px solid var(--border);
-            color: var(--text-secondary);
-            background: #fff;
+            color: var(--text-main);
+            background-color: #fff;
             cursor: pointer;
             outline: none;
             transition: all 0.2s;
@@ -1568,6 +1576,12 @@
 
         .pagination-per-page select:hover {
             border-color: var(--primary);
+            background-color: #F8FAFC;
+        }
+
+        .pagination-per-page select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .pagination-info {
@@ -1639,13 +1653,45 @@
         @media (max-width: 640px) {
             .pagination-container {
                 flex-direction: column;
-                gap: 16px;
-                padding: 16px;
-                text-align: center;
+                gap: 12px;
+                padding: 14px 20px;
+            }
+
+            .pagination-left {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                gap: 10px;
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 1px solid #F1F5F9;
+                padding-bottom: 10px;
+            }
+
+            .pagination-info {
+                font-size: 10px;
+                letter-spacing: -0.2px;
+            }
+
+            .pagination-per-page select {
+                padding: 3px 8px;
+                font-size: 10px;
+                height: 28px;
+                border-radius: 6px;
+                background-color: #F8FAFC;
+                border-color: #E2E8F0;
+            }
+
+            .pagination-item {
+                min-width: 28px;
+                height: 28px;
+                padding: 0 6px;
+                font-size: 10px;
+                border-radius: 6px;
             }
 
             .pagination-numbers {
-                display: none; /* Hide numbers on very small screens, keep Prev/Next */
+                gap: 2px;
             }
         }
 

@@ -8,7 +8,7 @@
             <select onchange="window.location.href = this.value" class="form-control form-control-sm">
                 @foreach([5, 10, 25, 50] as $size)
                     <option value="{{ request()->fullUrlWithQuery(['per_page' => $size, 'page' => 1]) }}" {{ request('per_page', 5) == $size ? 'selected' : '' }}>
-                        {{ $size }} per hal
+                        {{ $size }} data per hal
                     </option>
                 @endforeach
             </select>
