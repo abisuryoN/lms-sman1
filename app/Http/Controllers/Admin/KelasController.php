@@ -52,6 +52,15 @@ class KelasController extends Controller
             ->with('success', 'Kelas berhasil ditambahkan.');
     }
 
+    public function show(Kelas $kela)
+    {
+        $kela->load(['tahunAjaran', 'waliKelas', 'siswa' => function($q) {
+            $q->orderBy('nama');
+        }]);
+        
+        return view('admin.kelas.show', compact('kela'));
+    }
+
     public function edit(Kelas $kela)
     {
         $kela->load('tahunAjaran', 'waliKelas');

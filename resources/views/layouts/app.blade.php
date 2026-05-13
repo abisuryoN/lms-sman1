@@ -2624,6 +2624,10 @@
                     </a>
 
                     <div class="sidebar-label">Analisis</div>
+                    <a href="{{ route('guru.kelas.index') }}"
+                        class="sidebar-link {{ request()->routeIs('guru.kelas.*') ? 'active' : '' }}">
+                        <i class="fas fa-school"></i> <span>Data Kelas</span>
+                    </a>
                     <a href="{{ route('guru.similarity.index') }}"
                         class="sidebar-link {{ request()->routeIs('guru.similarity.*') ? 'active' : '' }}">
                         <i class="fas fa-search-plus"></i> <span>Deteksi Similarity</span>

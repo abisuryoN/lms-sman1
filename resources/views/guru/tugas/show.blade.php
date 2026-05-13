@@ -2,6 +2,10 @@
 @section('title', 'Detail Tugas')
 @section('page-title', 'Detail Tugas')
 @section('content')
+<div class="mb-4">
+    <a href="{{ route('guru.tugas.index') }}" class="btn btn-outline" style="background:#fff;border:1px solid #E2E8F0"><i class="fas fa-arrow-left"></i> Kembali</a>
+</div>
+
 <div class="card mb-4">
     <div class="card-header"><h3>{{ $tuga->judul }}</h3>
         <div class="flex gap-2">

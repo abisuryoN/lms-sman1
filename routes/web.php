@@ -59,6 +59,9 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'role:guru'])->group(f
     Route::get('similarity', [Guru\SimilarityController::class, 'index'])->name('similarity.index');
     Route::get('similarity/{tuga}', [Guru\SimilarityController::class, 'detail'])->name('similarity.detail');
     Route::post('similarity/{tuga}/run', [Guru\SimilarityController::class, 'runCheck'])->name('similarity.run');
+
+    Route::get('kelas', [Guru\KelasController::class, 'index'])->name('kelas.index');
+    Route::get('kelas/{kela}', [Guru\KelasController::class, 'show'])->name('kelas.show');
 });
 
 // ── Siswa Routes ─────────────────────────────────────────

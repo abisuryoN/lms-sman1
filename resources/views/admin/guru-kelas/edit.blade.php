@@ -3,6 +3,10 @@
 @section('page-title', 'Edit Jadwal Guru & Mapel')
 
 @section('content')
+<div class="mb-4">
+    <a href="{{ route('admin.guru-kelas.index') }}" class="btn btn-outline" style="background:#fff;border:1px solid #E2E8F0"><i class="fas fa-arrow-left"></i> Kembali</a>
+</div>
+
 <div class="card mb-4">
     <div class="card-header">
         <h3>Edit Penugasan: {{ $guruKela->guru->nama }}</h3>

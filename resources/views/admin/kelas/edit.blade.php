@@ -2,6 +2,10 @@
 @section('title', 'Edit Kelas')
 @section('page-title', 'Edit Kelas')
 @section('content')
+<div class="mb-4">
+    <a href="{{ route('admin.kelas.index') }}" class="btn btn-outline" style="background:#fff;border:1px solid #E2E8F0"><i class="fas fa-arrow-left"></i> Kembali</a>
+</div>
+
 <div class="card" style="max-width:500px">
     <div class="card-header"><h3>Form Edit Kelas</h3></div>
     <div class="card-body">

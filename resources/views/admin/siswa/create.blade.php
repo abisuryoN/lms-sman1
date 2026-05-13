@@ -2,6 +2,10 @@
 @section('title', 'Tambah Siswa')
 @section('page-title', 'Tambah Siswa')
 @section('content')
+<div class="mb-4">
+    <a href="{{ route('admin.siswa.index') }}" class="btn btn-outline" style="background:#fff;border:1px solid #E2E8F0"><i class="fas fa-arrow-left"></i> Kembali</a>
+</div>
+
 <div class="card" style="max-width:600px">
     <div class="card-header"><h3>Form Tambah Siswa</h3></div>
     <div class="card-body">
