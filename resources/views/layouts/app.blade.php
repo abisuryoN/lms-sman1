@@ -2571,7 +2571,11 @@
             {{-- Bottom User Profile Card --}}
             <div class="sidebar-user-section" id="sidebarUserSection" onclick="toggleBottomUserDropdown(event)">
                 <div class="user-avatar-box">
-                    <span>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    @if(auth()->user()->photo_url)
+                        <img src="{{ auth()->user()->photo_url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                    @else
+                        <span>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    @endif
                     <div class="online-dot"></div>
                 </div>
                 <div class="user-info-box">
