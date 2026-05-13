@@ -2349,6 +2349,53 @@
             }
         }
 
+        /* ── Profile Layout ─────────────────────── */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .profile-card-left {
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        @media (max-width: 992px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card-left {
+                position: relative !important;
+                width: 100% !important;
+            }
+        }
+
+        /* ── Profile Grid Info ──────────────────── */
+        .profile-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 640px) {
+            .profile-info-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .main-content {
+                padding: 16px !important;
+                padding-bottom: 100px !important;
+            }
+
+            .card-body {
+                padding: 20px 16px !important;
+            }
+        }
+
         /* ── Welcome Header ─────────────────────── */
         .welcome-header {
             display: flex;

@@ -3,9 +3,9 @@
 @section('page-title', 'Profil Saya')
 
 @section('content')
-<div class="profile-container" style="display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start;">
+<div class="profile-container">
     {{-- Left Card: Photo & Action --}}
-    <div class="card profile-card-left" style="padding: 32px 24px; text-align: center;">
+    <div class="card profile-card-left">
         <div class="profile-avatar-wrapper" style="position: relative; display: inline-block; margin-bottom: 24px;">
             <img src="{{ $user->photo_url }}" alt="Avatar" 
                 style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 6px solid #FFFFFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
@@ -30,11 +30,11 @@
     {{-- Right Card: Information & Password --}}
     <div style="display: flex; flex-direction: column; gap: 24px;">
         <div class="card">
-            <div class="card-header" style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+            <div class="card-header">
                 <h3 style="font-size: 16px; font-weight: 700;"><i class="fas fa-user-shield" style="margin-right: 8px; color: var(--primary);"></i> Akun Administrator</h3>
             </div>
-            <div class="card-body" style="padding: 32px 24px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="card-body">
+                <div class="profile-info-grid">
                     <div class="form-group">
                         <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Username / Nama</label>
                         <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $user->name }}</div>
@@ -55,10 +55,10 @@
         </div>
 
         <div class="card" id="password-section">
-            <div class="card-header" style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+            <div class="card-header">
                 <h3 style="font-size: 16px; font-weight: 700;"><i class="fas fa-key" style="margin-right: 8px; color: var(--warning);"></i> Keamanan & Password</h3>
             </div>
-            <div class="card-body" style="padding: 32px 24px;">
+            <div class="card-body">
                 <form action="{{ route('admin.profil.update') }}" method="POST">
                     @csrf @method('PUT')
                     <div style="display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 500px;">
