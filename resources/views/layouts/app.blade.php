@@ -1298,7 +1298,7 @@
 
         thead th {
             padding: 12px 16px;
-            text-align: left;
+            text-align: center;
             font-size: 12px;
             font-weight: 600;
             color: var(--text-muted);
@@ -1314,6 +1314,29 @@
             border-bottom: 1px solid var(--border);
             color: var(--text);
             vertical-align: middle;
+            text-align: center;
+        }
+
+        /* Flex Utilities */
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        tbody td.flex {
+            justify-content: center;
         }
 
         tbody tr {
