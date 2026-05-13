@@ -92,6 +92,8 @@
             </div>
         </div>
     </div>
+
+    </div>
 </div>
 
 {{-- Original Desktop Dashboard (Untouched) --}}
@@ -196,6 +198,7 @@
         </div>
     </div>
     @endif
+
 </div>
 
 {{-- Modal Akhiri Tahun Ajaran --}}

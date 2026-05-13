@@ -27,7 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('kelas', Admin\KelasController::class);
     Route::resource('mapel', Admin\MapelController::class);
 
-    Route::resource('guru-kelas', Admin\GuruKelasController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('guru-kelas', Admin\GuruKelasController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
 
     Route::get('tahun-ajaran', [Admin\TahunAjaranController::class, 'index'])->name('tahun-ajaran.index');
     Route::get('tahun-ajaran/create', [Admin\TahunAjaranController::class, 'create'])->name('tahun-ajaran.create');

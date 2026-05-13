@@ -25,12 +25,19 @@ class DashboardController extends Controller
         }
 
         $tugasTerbaru = collect();
+        $jadwal = collect();
         if ($siswa && $siswa->kelas_id) {
             $tugasTerbaru = Tugas::where('kelas_id', $siswa->kelas_id)
                 ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
                 ->aktif()->with('mapel')->orderBy('deadline')->take(5)->get();
+
+            $jadwal = \App\Models\GuruKelas::where('kelas_id', $siswa->kelas_id)
+                ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
+                ->whereNotNull('hari')
+                ->with(['guru', 'mapel'])
+                ->get();
         }
 
-        return view('siswa.dashboard', compact('stats', 'siswa', 'tugasTerbaru'));
+        return view('siswa.dashboard', compact('stats', 'siswa', 'tugasTerbaru', 'jadwal'));
     }
 }

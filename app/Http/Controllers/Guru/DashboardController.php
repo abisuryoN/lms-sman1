@@ -27,7 +27,12 @@ class DashboardController extends Controller
         }
 
         $recentTugas = $guru ? Tugas::where('guru_id', $guru->id)->with(['kelas', 'mapel'])->latest()->take(5)->get() : collect();
+        $jadwal = $guru ? \App\Models\GuruKelas::where('guru_id', $guru->id)
+            ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
+            ->whereNotNull('hari')
+            ->with(['kelas', 'mapel'])
+            ->get() : collect();
 
-        return view('guru.dashboard', compact('stats', 'tahunAktif', 'recentTugas'));
+        return view('guru.dashboard', compact('stats', 'tahunAktif', 'recentTugas', 'jadwal'));
     }
 }

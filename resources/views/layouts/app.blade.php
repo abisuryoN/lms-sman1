@@ -2396,6 +2396,59 @@
             }
         }
 
+        /* ── Schedule Card ─────────────────────── */
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-icon {
+            width: 48px;
+            height: 48px;
+            background: #FFF7ED;
+            color: #F97316;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .schedule-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0 0 4px 0;
+        }
+
+        .schedule-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 13px;
+            color: #64748B;
+        }
+
+        .schedule-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .schedule-tags {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
         /* ── Welcome Header ─────────────────────── */
         .welcome-header {
             display: flex;

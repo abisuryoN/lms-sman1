@@ -78,6 +78,40 @@
             </div>
         </div>
     </div>
+
+    <div class="quick-access-section" style="padding-top: 0;">
+        <div class="section-label">Jadwal Mendatang</div>
+        <div class="card" style="border: none; box-shadow: none; background: transparent; padding: 0;">
+            <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9;">
+                <div class="schedule-icon" style="background: #FFF7ED; color: #F97316;"><i class="far fa-edit"></i></div>
+                <div class="schedule-info">
+                    <h4 style="font-size: 16px;">Akhlak dan Etika</h4>
+                    <div class="schedule-meta" style="margin-top: 5px;">
+                        <span><i class="far fa-calendar"></i> Jumat</span>
+                        <span><i class="far fa-clock"></i> 08.00</span>
+                    </div>
+                    <div class="schedule-tags">
+                        <span class="badge badge-purple" style="font-size: 10px;">LUSA</span>
+                        <span class="badge badge-gray" style="font-size: 10px;">2 SKS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9;">
+                <div class="schedule-icon" style="background: #FFF7ED; color: #F97316;"><i class="far fa-edit"></i></div>
+                <div class="schedule-info">
+                    <h4 style="font-size: 16px;">Pemrograman Visual</h4>
+                    <div class="schedule-meta" style="margin-top: 5px;">
+                        <span><i class="far fa-calendar"></i> Jumat</span>
+                        <span><i class="far fa-clock"></i> 09.45</span>
+                    </div>
+                    <div class="schedule-tags">
+                        <span class="badge badge-purple" style="font-size: 10px;">LUSA</span>
+                        <span class="badge badge-gray" style="font-size: 10px;">3 SKS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="desktop-only-ui">
@@ -125,6 +159,32 @@
                 @endforelse
                 </tbody>
             </table>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3><i class="fas fa-calendar-check" style="color:var(--primary)"></i> Jadwal Mendatang</h3>
+            <span class="badge badge-blue">{{ $jadwal->count() }} Acara</span>
+        </div>
+        <div class="card-body">
+            @forelse($jadwal as $j)
+                <div class="schedule-item">
+                    <div class="schedule-icon"><i class="far fa-edit"></i></div>
+                    <div class="schedule-info">
+                        <h4>{{ $j->mapel->nama_mapel ?? '-' }}</h4>
+                        <div class="schedule-meta">
+                            <span><i class="far fa-calendar"></i> {{ $j->hari }}</span>
+                            <span><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($j->jam_mulai)->format('H.i') }} - {{ \Carbon\Carbon::parse($j->jam_selesai)->format('H.i') }}</span>
+                            <span><i class="fas fa-chalkboard-teacher" style="font-size: 11px;"></i> {{ $j->guru->nama }}</span>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div style="padding: 24px; text-align: center; color: var(--text-muted);">
+                    <i class="fas fa-calendar-times" style="font-size: 32px; opacity: 0.2; margin-bottom: 12px;"></i>
+                    <p>Belum ada jadwal untuk kelas Anda.</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>

@@ -16,6 +16,9 @@ class GuruKelas extends Model
         'kelas_id',
         'mapel_id',
         'tahun_ajaran_id',
+        'hari',
+        'jam_mulai',
+        'jam_selesai',
     ];
 
     // ── Relationships ────────────────────────────────────

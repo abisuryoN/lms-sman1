@@ -63,6 +63,29 @@
             </a>
         </div>
     </div>
+
+    <div class="quick-access-section" style="padding-top: 0;">
+        <div class="section-label">Jadwal Mengajar</div>
+        <div class="card" style="border: none; box-shadow: none; background: transparent; padding: 0;">
+            @forelse($jadwal as $j)
+                <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9;">
+                    <div class="schedule-icon" style="background: #EFF6FF; color: #3B82F6;"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="schedule-info">
+                        <h4 style="font-size: 16px;">{{ $j->mapel->nama_mapel ?? '-' }}</h4>
+                        <div class="schedule-meta" style="margin-top: 5px;">
+                            <span><i class="far fa-calendar"></i> {{ $j->hari }}</span>
+                            <span><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($j->jam_mulai)->format('H.i') }}</span>
+                            <span><i class="fas fa-school"></i> {{ $j->kelas->nama_kelas ?? '-' }}</span>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div style="padding: 20px; text-align: center; color: #64748B; background: #F8FAFC; border-radius: 20px;">
+                    <p style="font-size: 13px;">Belum ada jadwal mengajar.</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
 </div>
 
 <div class="desktop-only-ui">
@@ -110,6 +133,32 @@
                 @endforelse
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3><i class="fas fa-calendar-check" style="color:var(--primary)"></i> Jadwal Mengajar Mendatang</h3>
+            <span class="badge badge-blue">{{ $jadwal->count() }} Sesi</span>
+        </div>
+        <div class="card-body">
+            @forelse($jadwal as $j)
+                <div class="schedule-item">
+                    <div class="schedule-icon" style="background: #EFF6FF; color: #3B82F6;"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="schedule-info">
+                        <h4>{{ $j->mapel->nama_mapel ?? '-' }} ({{ $j->kelas->nama_kelas ?? '-' }})</h4>
+                        <div class="schedule-meta">
+                            <span><i class="far fa-calendar"></i> {{ $j->hari }}</span>
+                            <span><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($j->jam_mulai)->format('H.i') }} - {{ \Carbon\Carbon::parse($j->jam_selesai)->format('H.i') }}</span>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div style="padding: 24px; text-align: center; color: var(--text-muted);">
+                    <i class="fas fa-calendar-times" style="font-size: 32px; opacity: 0.2; margin-bottom: 12px;"></i>
+                    <p>Belum ada jadwal mengajar yang di-assign.</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>
