@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         *,
@@ -2504,6 +2505,21 @@
             .hide-mobile {
                 display: none !important;
             }
+            .swal2-popup.swal2-toast {
+                padding: 10px !important;
+                border-radius: 12px !important;
+            }
+            .swal2-toast .swal2-title {
+                font-size: 14px !important;
+                font-weight: 700 !important;
+            }
+            .swal2-toast .swal2-html-container {
+                font-size: 12px !important;
+            }
+            .swal2-toast .swal2-icon {
+                margin: 0 8px 0 0 !important;
+                scale: 0.8;
+            }
         }
     </style>
     @stack('styles')
@@ -2529,7 +2545,7 @@
                 </div>
                 <div class="m-user-details">
                     <span class="m-user-name">{{ auth()->user()->name }}</span>
-                    <span class="m-user-id">{{ auth()->user()->identifier }}</span>
+                    <span class="m-user-id">{{ auth()->user()->identifier }} @if(auth()->user()->isSiswa()) | {{ auth()->user()->siswa->kelas->nama_kelas ?? '-' }} @endif</span>
                 </div>
                 <div class="m-header-actions">
                     <form action="{{ route('logout') }}" method="POST" id="m-logout-form">
@@ -2685,7 +2701,11 @@
                 </div>
                 <div class="user-info-box">
                     <div class="user-name-text">{{ auth()->user()->name }}</div>
-                    <div class="user-sub-text">Klik untuk menu</div>
+                    @if(auth()->user()->isSiswa())
+                        <div class="user-sub-text">{{ auth()->user()->siswa->kelas->nama_kelas ?? 'Tanpa Kelas' }}</div>
+                    @else
+                        <div class="user-sub-text">Klik untuk menu</div>
+                    @endif
                 </div>
                 <i class="fas fa-chevron-down chevron-icon"></i>
 
@@ -2901,6 +2921,72 @@
                 topDd.classList.remove('show');
             }
         });
+
+        // Dynamic Time-Based Greeting Toast
+        @if(request()->routeIs('*.dashboard'))
+            document.addEventListener('DOMContentLoaded', function() {
+                const greeting = @json(auth()->user()->getGreetingData());
+                const isMobile = window.innerWidth < 768;
+                
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: isMobile ? 'top' : 'top-end',
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    timer: 6000,
+                    timerProgressBar: true,
+                    width: isMobile ? 'calc(100% - 40px)' : '400px',
+                    didOpen: (toast) => {
+                        // Keep timer running even on hover
+                        
+                        // Simple Draggable Implementation
+                        let isDragging = false;
+                        let offset = { x: 0, y: 0 };
+
+                        const startDrag = (e) => {
+                            isDragging = true;
+                            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+                            offset.x = clientX - toast.getBoundingClientRect().left;
+                            offset.y = clientY - toast.getBoundingClientRect().top;
+                            toast.style.transition = 'none';
+                        };
+
+                        const doDrag = (e) => {
+                            if (!isDragging) return;
+                            e.preventDefault();
+                            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+                            toast.style.position = 'fixed';
+                            toast.style.left = (clientX - offset.x) + 'px';
+                            toast.style.top = (clientY - offset.y) + 'px';
+                            toast.style.right = 'auto';
+                            toast.style.bottom = 'auto';
+                            toast.style.margin = '0';
+                        };
+
+                        const endDrag = () => {
+                            isDragging = false;
+                            toast.style.transition = 'all 0.3s ease';
+                        };
+
+                        toast.addEventListener('mousedown', startDrag);
+                        toast.addEventListener('touchstart', startDrag);
+                        window.addEventListener('mousemove', doDrag);
+                        window.addEventListener('touchmove', doDrag, { passive: false });
+                        window.addEventListener('mouseup', endDrag);
+                        window.addEventListener('touchend', endDrag);
+                    }
+                });
+
+                Toast.fire({
+                    icon: greeting.icon,
+                    title: greeting.title,
+                    text: greeting.message,
+                    padding: isMobile ? '12px' : '20px',
+                });
+            });
+        @endif
     </script>
     @stack('scripts')
 </body>

@@ -15,7 +15,7 @@
         </div>
         <div class="welcome-text-mobile">
             <h2 style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px;">Halo, {{ strtoupper($siswa->nama ?? auth()->user()->name) }}!</h2>
-            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">NIS: {{ auth()->user()->identifier }} | LMS SMAN 1</p>
+            <p style="font-size: 14px; color: #64748B; margin-top: 8px;">NIS: {{ auth()->user()->identifier }} | Kelas: {{ $siswa->kelas->nama_kelas ?? '-' }}</p>
         </div>
     </div>
 
@@ -109,6 +109,7 @@
         </div>
         <div class="welcome-text">
             <h2 style="font-size: 26px; font-weight: 700; color: #0F172A;">Halo, {{ strtoupper($siswa->nama ?? auth()->user()->name) }}!</h2>
+            <p style="font-size: 16px; color: #64748B; margin-top: 4px; font-weight: 500;">Kelas: {{ $siswa->kelas->nama_kelas ?? '-' }}</p>
             <div class="alert alert-warning" style="margin-top: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
                 <i class="fas fa-shield-alt"></i>
                 <div>
