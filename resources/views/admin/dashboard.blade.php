@@ -22,7 +22,7 @@
     <div class="alert alert-warning" style="margin: 0 20px 20px 20px; font-size: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
         <i class="fas fa-shield-alt"></i>
         <div>
-            Password default Anda adalah <code>admin123</code>. Silakan <a href="{{ route('admin.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a>.
+            Password default Anda adalah <code>admin123</code>. Silakan <a href="{{ route('admin.profil.edit') }}#password-section" style="color:var(--warning);font-weight:700">ganti password</a>.
         </div>
     </div>
 
@@ -110,7 +110,7 @@
                 <i class="fas fa-shield-alt"></i>
                 <div>
                     <strong>Peringatan Keamanan:</strong> Password default Anda adalah <code>admin123</code>. 
-                    Harap segera <a href="{{ route('admin.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a> demi keamanan akun Anda.
+                    Harap segera <a href="{{ route('admin.profil.edit') }}#password-section" style="color:var(--warning);font-weight:700">ganti password</a> demi keamanan akun Anda.
                 </div>
             </div>
         </div>

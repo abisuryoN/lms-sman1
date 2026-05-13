@@ -22,7 +22,7 @@
     <div class="alert alert-warning" style="margin: 0 20px 20px 20px; font-size: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
         <i class="fas fa-shield-alt"></i>
         <div>
-            Password default Anda adalah **NIP** Anda (<code>{{ auth()->user()->identifier }}</code>). Silakan <a href="{{ route('guru.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a>.
+            Password default Anda adalah **NIP** Anda. Silakan <a href="{{ route('guru.profil.edit') }}#password-section" style="color:var(--warning);font-weight:700">ganti password</a>.
         </div>
     </div>
 
@@ -79,8 +79,8 @@
             <div class="alert alert-warning" style="margin-top: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
                 <i class="fas fa-shield-alt"></i>
                 <div>
-                    <strong>Peringatan Keamanan:</strong> Password default Anda adalah **NIP** Anda (<code>{{ auth()->user()->identifier }}</code>). 
-                    Harap segera <a href="{{ route('guru.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a> demi keamanan akun Anda.
+                    <strong>Peringatan Keamanan:</strong> Password default Anda adalah **NIP** Anda. 
+                    Harap segera <a href="{{ route('guru.profil.edit') }}#password-section" style="color:var(--warning);font-weight:700">ganti password</a> demi keamanan akun Anda.
                 </div>
             </div>
         </div>

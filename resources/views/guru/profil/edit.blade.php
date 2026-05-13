@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="password-section">
             <div class="card-header" style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
                 <h3 style="font-size: 16px; font-weight: 700;"><i class="fas fa-key" style="margin-right: 8px; color: var(--warning);"></i> Keamanan & Password</h3>
             </div>
