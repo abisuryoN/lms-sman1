@@ -27,44 +27,68 @@
         </form>
     </div>
 
-    {{-- Right Card: Information --}}
-    <div class="card">
-        <div class="card-header" style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
-            <h3 style="font-size: 16px; font-weight: 700;"><i class="fas fa-id-card" style="margin-right: 8px; color: var(--primary);"></i> Biodata Tenaga Pengajar</h3>
-        </div>
-        <div class="card-body" style="padding: 32px 24px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                <div class="form-group">
-                    <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nama Lengkap</label>
-                    <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $guru->nama ?? $user->name }}</div>
+    {{-- Right Card: Information & Password --}}
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div class="card">
+            <div class="card-header" style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+                <h3 style="font-size: 16px; font-weight: 700;"><i class="fas fa-id-card" style="margin-right: 8px; color: var(--primary);"></i> Biodata Tenaga Pengajar</h3>
+            </div>
+            <div class="card-body" style="padding: 32px 24px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nama Lengkap</label>
+                        <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $guru->nama ?? $user->name }}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
+                        <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $user->email }}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nomor Induk Pegawai (NIP)</label>
+                        <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $guru->nip ?? '-' }}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Telepon</label>
+                        <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $guru->telepon ?? '-' }}</div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
-                    <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $user->email }}</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nomor Induk Pegawai (NIP)</label>
-                    <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $guru->nip ?? '-' }}</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Jabatan</label>
-                    <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">Guru Mata Pelajaran</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Telepon</label>
-                    <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-weight: 600; color: #1E293B;">{{ $guru->telepon ?? '-' }}</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" style="color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Status Kepegawaian</label>
-                    <div style="padding: 12px 0; border-bottom: 1px solid #F1F5F9;"><span class="badge badge-blue">Aktif</span></div>
+
+                <div style="margin-top: 32px; padding: 16px; background: #F8FAFC; border-radius: 12px; display: flex; gap: 16px; align-items: flex-start;">
+                    <i class="fas fa-info-circle" style="color: var(--primary); margin-top: 2px;"></i>
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                        Biodata guru dikelola langsung oleh administrator. Jika terdapat ketidaksesuaian data NIP atau Nama, silakan hubungi bagian TU untuk perbaikan data.
+                    </p>
                 </div>
             </div>
+        </div>
 
-            <div style="margin-top: 32px; padding: 16px; background: #F8FAFC; border-radius: 12px; display: flex; gap: 16px; align-items: flex-start;">
-                <i class="fas fa-info-circle" style="color: var(--primary); margin-top: 2px;"></i>
-                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
-                    Biodata guru dikelola langsung oleh administrator. Jika terdapat ketidaksesuaian data NIP atau Nama, silakan hubungi bagian TU untuk perbaikan data.
-                </p>
+        <div class="card">
+            <div class="card-header" style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+                <h3 style="font-size: 16px; font-weight: 700;"><i class="fas fa-key" style="margin-right: 8px; color: var(--warning);"></i> Keamanan & Password</h3>
+            </div>
+            <div class="card-body" style="padding: 32px 24px;">
+                <form action="{{ route('guru.profil.update') }}" method="POST">
+                    @csrf @method('PUT')
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 500px;">
+                        <div class="form-group">
+                            <label class="form-label">Password Saat Ini</label>
+                            <input type="password" name="current_password" class="form-control" placeholder="Masukkan password lama">
+                            @error('current_password') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password Baru</label>
+                            <input type="password" name="new_password" class="form-control" placeholder="Minimal 8 karakter">
+                            @error('new_password') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Konfirmasi Password Baru</label>
+                            <input type="password" name="new_password_confirmation" class="form-control" placeholder="Ulangi password baru">
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Perbarui Password</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

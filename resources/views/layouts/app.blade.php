@@ -259,6 +259,7 @@
             justify-content: center;
             position: relative;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         /* Green dot with white border matching light screenshot exactly */

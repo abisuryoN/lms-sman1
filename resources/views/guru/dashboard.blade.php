@@ -19,6 +19,13 @@
         </div>
     </div>
 
+    <div class="alert alert-warning" style="margin: 0 20px 20px 20px; font-size: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
+        <i class="fas fa-shield-alt"></i>
+        <div>
+            Password default Anda adalah **NIP** Anda (<code>{{ auth()->user()->identifier }}</code>). Silakan <a href="{{ route('guru.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a>.
+        </div>
+    </div>
+
     <div class="quick-access-section">
         <div class="section-label">Manajemen Pembelajaran</div>
         <div class="quick-grid">
@@ -58,8 +65,27 @@
     </div>
 </div>
 
-{{-- Original Desktop Dashboard (Untouched) --}}
 <div class="desktop-only-ui">
+    <div class="welcome-header">
+        <div class="welcome-avatar">
+            @if(auth()->user()->photo_url)
+                <img src="{{ auth()->user()->photo_url }}" alt="Avatar">
+            @else
+                <i class="fas fa-user-circle" style="font-size: 80px; color: #CBD5E1;"></i>
+            @endif
+        </div>
+        <div class="welcome-text">
+            <h2 style="font-size: 26px; font-weight: 700; color: #0F172A;">Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
+            <div class="alert alert-warning" style="margin-top: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>Peringatan Keamanan:</strong> Password default Anda adalah **NIP** Anda (<code>{{ auth()->user()->identifier }}</code>). 
+                    Harap segera <a href="{{ route('guru.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a> demi keamanan akun Anda.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-school"></i></div><div class="stat-info"><h4>Kelas Diampu</h4><div class="stat-value">{{ $stats['total_kelas'] }}</div></div></div>
         <div class="stat-card"><div class="stat-icon yellow"><i class="fas fa-clipboard-list"></i></div><div class="stat-info"><h4>Total Tugas</h4><div class="stat-value">{{ $stats['total_tugas'] }}</div></div></div>

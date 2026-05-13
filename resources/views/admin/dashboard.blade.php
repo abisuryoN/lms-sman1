@@ -18,6 +18,13 @@
             <p style="font-size: 14px; color: #64748B; margin-top: 8px;">ID: {{ auth()->user()->identifier }} | LMS SMAN 1</p>
         </div>
     </div>
+    
+    <div class="alert alert-warning" style="margin: 0 20px 20px 20px; font-size: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
+        <i class="fas fa-shield-alt"></i>
+        <div>
+            Password default Anda adalah <code>admin123</code>. Silakan <a href="{{ route('admin.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a>.
+        </div>
+    </div>
 
     <div class="quick-access-section">
         <div class="section-label">Akses Cepat</div>
@@ -99,7 +106,13 @@
         </div>
         <div class="welcome-text">
             <h2>Halo, {{ strtoupper(auth()->user()->name) }}!</h2>
-            <p>Selamat datang di dashboard LMS SMAN 1 Tajurhalang. Silakan kelola data akademik Anda.</p>
+            <div class="alert alert-warning" style="margin-top: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>Peringatan Keamanan:</strong> Password default Anda adalah <code>admin123</code>. 
+                    Harap segera <a href="{{ route('admin.profil.edit') }}" style="color:var(--warning);font-weight:700">ganti password</a> demi keamanan akun Anda.
+                </div>
+            </div>
         </div>
     </div>
 

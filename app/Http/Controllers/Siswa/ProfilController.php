@@ -21,6 +21,8 @@ class ProfilController extends Controller
 
         $request->validate([
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'current_password' => 'nullable|required_with:new_password|current_password',
+            'new_password' => 'nullable|min:8|confirmed',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -31,6 +33,12 @@ class ProfilController extends Controller
             $user->update(['photo_profile' => $path]);
         }
 
-        return back()->with('success', 'Foto profil berhasil diperbarui.');
+        if ($request->filled('new_password')) {
+            $user->update([
+                'password' => bcrypt($request->new_password)
+            ]);
+        }
+
+        return back()->with('success', 'Profil berhasil diperbarui.');
     }
 }
