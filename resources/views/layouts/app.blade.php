@@ -2521,6 +2521,11 @@
                 scale: 0.8;
             }
         }
+        .greeting-icon-no-border {
+            border: none !important;
+            background: transparent !important;
+            font-size: 24px !important;
+        }
     </style>
     @stack('styles')
 </head>
@@ -2935,7 +2940,7 @@
                     showCloseButton: true,
                     timer: 6000,
                     timerProgressBar: true,
-                    width: isMobile ? 'calc(100% - 40px)' : '400px',
+                    width: isMobile ? 'calc(100% - 40px)' : '350px',
                     didOpen: (toast) => {
                         // Keep timer running even on hover
                         
@@ -2947,8 +2952,13 @@
                             isDragging = true;
                             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
                             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-                            offset.x = clientX - toast.getBoundingClientRect().left;
-                            offset.y = clientY - toast.getBoundingClientRect().top;
+                            
+                            // Lock width to prevent stretching
+                            const rect = toast.getBoundingClientRect();
+                            toast.style.width = rect.width + 'px';
+                            
+                            offset.x = clientX - rect.left;
+                            offset.y = clientY - rect.top;
                             toast.style.transition = 'none';
                         };
 
@@ -2980,10 +2990,13 @@
                 });
 
                 Toast.fire({
-                    icon: greeting.icon,
+                    iconHtml: greeting.iconHtml,
                     title: greeting.title,
                     text: greeting.message,
                     padding: isMobile ? '12px' : '20px',
+                    customClass: {
+                        icon: 'greeting-icon-no-border'
+                    }
                 });
             });
         @endif

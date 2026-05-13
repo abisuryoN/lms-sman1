@@ -122,11 +122,11 @@ class User extends Authenticatable
         return [
             'title' => "$greeting, $name!",
             'message' => $message,
-            'icon' => match($time) {
-                'pagi' => 'success',
-                'siang' => 'info',
-                'sore' => 'warning',
-                'malam' => 'question',
+            'iconHtml' => match($time) {
+                'pagi' => '<i class="fas fa-sun" style="color: #FBBF24;"></i>',
+                'siang' => '<i class="fas fa-cloud-sun" style="color: #FB923C;"></i>',
+                'sore' => '<i class="fas fa-cloud-moon" style="color: #6366F1;"></i>',
+                'malam' => '<i class="fas fa-moon" style="color: #4F46E5;"></i>',
             }
         ];
     }
