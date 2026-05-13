@@ -12,14 +12,33 @@ class MateriController extends Controller
     {
         $siswa = auth()->user()->siswa;
         $tahunAktif = TahunAjaran::aktif()->first();
+        $guruId = request('guru_id');
 
-        $materi = collect();
-        if ($siswa && $siswa->kelas_id) {
-            $materi = Materi::where('kelas_id', $siswa->kelas_id)
-                ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
-                ->with(['mapel', 'guru'])->latest()->paginate(10);
+        if (!$siswa || !$siswa->kelas_id) {
+            return view('siswa.materi.index', ['teachers' => collect(), 'materi' => collect()]);
         }
 
-        return view('siswa.materi.index', compact('materi'));
+        // Jika tidak ada guru_id, tampilkan daftar guru yang mengupload materi untuk kelas ini
+        if (!$guruId) {
+            $teachers = \App\Models\Guru::whereHas('materi', function($q) use ($siswa, $tahunAktif) {
+                $q->where('kelas_id', $siswa->kelas_id)
+                  ->when($tahunAktif, fn($q2) => $q2->where('tahun_ajaran_id', $tahunAktif->id));
+            })->with(['user', 'materi' => function($q) use ($siswa, $tahunAktif) {
+                $q->where('kelas_id', $siswa->kelas_id)
+                  ->when($tahunAktif, fn($q2) => $q2->where('tahun_ajaran_id', $tahunAktif->id))
+                  ->with('mapel');
+            }])->get();
+
+            return view('siswa.materi.index', compact('teachers'));
+        }
+
+        // Jika ada guru_id, tampilkan materi dari guru tersebut
+        $selectedGuru = \App\Models\Guru::findOrFail($guruId);
+        $materi = Materi::where('kelas_id', $siswa->kelas_id)
+            ->where('guru_id', $guruId)
+            ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
+            ->with(['mapel', 'guru'])->latest()->paginate(10);
+
+        return view('siswa.materi.index', compact('materi', 'selectedGuru'));
     }
 }
