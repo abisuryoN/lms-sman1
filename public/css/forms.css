@@ -1,0 +1,159 @@
+/* ── Forms ────────────────────────────────── */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 7px 12px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: #FFFFFF;
+    color: #1E293B;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background: #fff;
+}
+
+select.form-control {
+    cursor: pointer;
+    padding-right: 30px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    color: var(--danger);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* ── Custom Select Dropdown (Global & Mobile Optimized) ── */
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+    user-select: none;
+}
+
+.custom-select-wrapper select {
+    display: none !important;
+}
+
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 14px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: #1E293B;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-align: left;
+    height: 42px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.custom-select-trigger.open {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.custom-select-options {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    padding: 5px;
+    margin-top: 5px;
+    animation: selectFadeIn 0.2s ease;
+}
+
+.custom-select-options.show { display: block; }
+
+.custom-select-option {
+    padding: 9px 12px;
+    font-size: 13.5px;
+    color: #334155;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.custom-select-option:hover, .custom-select-option.selected {
+    background: #EFF6FF;
+    color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .custom-select-trigger { height: 38px; padding: 0 12px; font-size: 13px; }
+    .custom-select-options { max-height: 180px; }
+}
+
+/* ── Validation Error States ────────────────── */
+.form-control.is-invalid,
+.custom-select-trigger.is-invalid {
+    border-color: #EF4444 !important; /* var(--danger) fallback */
+    background-image: none !important;
+}
+
+.form-control.is-invalid:focus,
+.custom-select-trigger.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #EF4444; /* var(--danger) fallback */
+    animation: fadeInError 0.2s ease;
+}
+
+@keyframes fadeInError {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .invalid-feedback { font-size: 10.5px; }
+}
+
+@keyframes selectFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }

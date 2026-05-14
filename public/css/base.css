@@ -1,0 +1,115 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #3B82F6;
+    --primary-dark: #2563EB;
+    --primary-light: #EFF6FF;
+    --secondary: #64748B;
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --background: #F8FAFC;
+    --sidebar-bg: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --text-main: #1E293B;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --border: #E2E8F0;
+    --navbar-h: 56px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    --sidebar-w: 280px;
+    font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+    background: var(--background);
+    color: var(--text-main);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ── Animations ──────────────────────────── */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ── Utilities ───────────────────────────── */
+.text-center { text-align: center; }
+.mb-4 { margin-bottom: 16px; }
+.mt-4 { margin-top: 16px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hide-mobile {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+    .swal2-popup.swal2-toast {
+        padding: 10px !important;
+        border-radius: 12px !important;
+    }
+    .swal2-toast .swal2-title {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+    }
+    .swal2-toast .swal2-html-container {
+        font-size: 12px !important;
+    }
+    .swal2-toast .swal2-icon {
+        margin: 0 8px 0 0 !important;
+        scale: 0.8;
+    }
+}
+
+.greeting-icon-no-border {
+    border: none !important;
+    background: transparent !important;
+    font-size: 24px !important;
+}

@@ -1,0 +1,65 @@
+/* ── Main Content Layout ────────────────────────── */
+.main-content {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--navbar-h);
+    padding: 28px;
+    min-height: calc(100vh - var(--navbar-h));
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 0 !important;
+        margin-top: 65px !important; /* Matches mobile-header height */
+        padding: 32px 16px 110px !important; /* Increased top padding from 20px to 32px */
+        background: #F8FAFC;
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 640px) {
+    .main-content {
+        padding: 16px !important;
+        padding-bottom: 100px !important;
+    }
+}
+
+/* ── Mobile UI Specifics ────── */
+.mobile-only-ui { display: block; }
+.desktop-only-ui { display: none; }
+
+@media (min-width: 1025px) {
+    .mobile-only-ui { display: none; }
+    .desktop-only-ui { display: block; }
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-main);
+    padding: 8px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 2000;
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+    backdrop-filter: blur(8px);
+}
+
+@media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+}
