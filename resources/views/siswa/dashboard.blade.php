@@ -53,48 +53,62 @@
         <div class="section-label">Ringkasan Studi</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div style="background: #EFF6FF; padding: 20px; border-radius: 20px; text-align: center;">
-                <div style="font-size: 11px; font-weight: 700; color: #3B82F6; text-transform: uppercase;">IPK</div>
-                <div style="font-size: 24px; font-weight: 800; color: #1E3A8A; margin-top: 5px;">{{ number_format($stats['rata_nilai'] ?? 0, 1) }}</div>
+                <div style="font-size: 11px; font-weight: 700; color: #3B82F6; text-transform: uppercase;">Total Tugas</div>
+                <div style="font-size: 24px; font-weight: 800; color: #1E3A8A; margin-top: 5px;">{{ $stats['total_tugas'] }}</div>
             </div>
             <div style="background: #ECFDF5; padding: 20px; border-radius: 20px; text-align: center;">
-                <div style="font-size: 11px; font-weight: 700; color: #10B981; text-transform: uppercase;">Kehadiran</div>
-                <div style="font-size: 24px; font-weight: 800; color: #064E3B; margin-top: 5px;">98%</div>
+                <div style="font-size: 11px; font-weight: 700; color: #10B981; text-transform: uppercase;">Selesai</div>
+                <div style="font-size: 24px; font-weight: 800; color: #064E3B; margin-top: 5px;">{{ $stats['tugas_selesai'] }}</div>
             </div>
         </div>
     </div>
 
+    {{-- Tugas Mendatang Section --}}
+    <div class="quick-access-section" style="padding-top: 0;">
+        <div class="section-label">Tugas Mendatang</div>
+        @forelse($tugasTerbaru as $t)
+            <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9; display: flex; align-items: center; gap: 16px;">
+                <div class="schedule-icon" style="background: #FEF2F2; color: #EF4444;"><i class="fas fa-bell"></i></div>
+                <div class="schedule-info" style="flex: 1;">
+                    <h4 style="font-size: 16px; margin: 0;">{{ $t->judul }}</h4>
+                    <p style="font-size: 12px; color: #64748B; margin: 4px 0;">{{ $t->mapel->nama_mapel }}</p>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                        <span class="badge {{ $t->isExpired() ? 'badge-red' : 'badge-green' }}" style="font-size: 10px;">
+                            {{ $t->isExpired() ? 'Berakhir' : $t->deadline->diffForHumans() }}
+                        </span>
+                    </div>
+                </div>
+                <a href="{{ route('siswa.tugas.show', $t) }}" style="color: #3B82F6;"><i class="fas fa-chevron-right"></i></a>
+            </div>
+        @empty
+            <div style="background: #FFFFFF; border-radius: 20px; padding: 30px; text-align: center; border: 1px dashed #CBD5E1;">
+                <p style="color: #94A3B8; font-size: 14px; margin: 0;">Tidak ada tugas mendatang.</p>
+            </div>
+        @endforelse
+    </div>
+
     <div class="quick-access-section" style="padding-top: 0;">
         <div class="section-label">Jadwal Mendatang</div>
-        <div class="card" style="border: none; box-shadow: none; background: transparent; padding: 0;">
-            <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9;">
+        @forelse($jadwal as $j)
+            <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9; display: flex; align-items: center; gap: 16px;">
                 <div class="schedule-icon" style="background: #FFF7ED; color: #F97316;"><i class="far fa-edit"></i></div>
                 <div class="schedule-info">
-                    <h4 style="font-size: 16px;">Akhlak dan Etika</h4>
-                    <div class="schedule-meta" style="margin-top: 5px;">
-                        <span><i class="far fa-calendar"></i> Jumat</span>
-                        <span><i class="far fa-clock"></i> 08.00</span>
+                    <h4 style="font-size: 16px; margin: 0;">{{ $j->mapel->nama_mapel ?? '-' }}</h4>
+                    <div class="schedule-meta" style="margin-top: 5px; display: flex; gap: 12px; font-size: 12px; color: #64748B;">
+                        <span><i class="far fa-calendar"></i> {{ $j->hari }}</span>
+                        <span><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($j->jam_mulai)->format('H.i') }}</span>
                     </div>
-                    <div class="schedule-tags">
-                        <span class="badge badge-purple" style="font-size: 10px;">LUSA</span>
-                        <span class="badge badge-gray" style="font-size: 10px;">2 SKS</span>
+                    <div class="schedule-tags" style="margin-top: 8px;">
+                        <span class="badge badge-purple" style="font-size: 10px;">{{ strtoupper($j->hari) }}</span>
+                        <span class="badge badge-gray" style="font-size: 10px;">{{ $j->guru->nama }}</span>
                     </div>
                 </div>
             </div>
-            <div class="schedule-item" style="background: #FFFFFF; border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid #F1F5F9;">
-                <div class="schedule-icon" style="background: #FFF7ED; color: #F97316;"><i class="far fa-edit"></i></div>
-                <div class="schedule-info">
-                    <h4 style="font-size: 16px;">Pemrograman Visual</h4>
-                    <div class="schedule-meta" style="margin-top: 5px;">
-                        <span><i class="far fa-calendar"></i> Jumat</span>
-                        <span><i class="far fa-clock"></i> 09.45</span>
-                    </div>
-                    <div class="schedule-tags">
-                        <span class="badge badge-purple" style="font-size: 10px;">LUSA</span>
-                        <span class="badge badge-gray" style="font-size: 10px;">3 SKS</span>
-                    </div>
-                </div>
+        @empty
+            <div style="background: #FFFFFF; border-radius: 20px; padding: 30px; text-align: center; border: 1px dashed #CBD5E1;">
+                <p style="color: #94A3B8; font-size: 14px; margin: 0;">Belum ada jadwal.</p>
             </div>
-        </div>
+        @endforelse
     </div>
 </div>
 
@@ -144,6 +158,7 @@
                 @endforelse
                 </tbody>
             </table>
+        </div>
     </div>
 
     <div class="card mt-4">

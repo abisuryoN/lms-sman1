@@ -76,6 +76,7 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->grou
     Route::get('materi/{materi}/download', [Siswa\MateriController::class, 'download'])->name('materi.download');
     Route::get('tugas', [Siswa\TugasController::class, 'index'])->name('tugas.index');
     Route::get('tugas/{tuga}', [Siswa\TugasController::class, 'show'])->name('tugas.show');
+    Route::get('tugas/{tuga}/download', [Siswa\TugasController::class, 'download'])->name('tugas.download');
     Route::post('tugas/{tuga}/submit', [Siswa\TugasController::class, 'submit'])->name('tugas.submit');
     Route::get('nilai', [Siswa\NilaiController::class, 'index'])->name('nilai.index');
 });

@@ -7,6 +7,7 @@ use App\Models\JawabanTugas;
 use App\Models\TahunAjaran;
 use App\Models\Tugas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TugasController extends Controller
 {
@@ -39,7 +40,7 @@ class TugasController extends Controller
         $siswa = auth()->user()->siswa;
 
         $request->validate([
-            'jawaban_text' => 'required|string|min:10',
+            'jawaban_text' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,docx,doc,txt|max:5120',
         ]);
 
@@ -54,5 +55,18 @@ class TugasController extends Controller
         );
 
         return redirect()->route('siswa.tugas.index')->with('success', 'Jawaban berhasil dikumpulkan.');
+    }
+
+    public function download(Tugas $tuga)
+    {
+        if ($tuga->tipe === 'file' && $tuga->file_url) {
+            if (Storage::disk('public')->exists($tuga->file_url)) {
+                return Storage::disk('public')->download(
+                    $tuga->file_url,
+                    $tuga->original_filename ?? basename($tuga->file_url)
+                );
+            }
+        }
+        return back()->with('error', 'File lampiran tidak ditemukan.');
     }
 }

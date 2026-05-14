@@ -1,0 +1,312 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [7 0 R 9 0 R 11 0 R 13 0 R] /Count 4 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+6 0 obj
+<< /Length 5616 >>
+stream
+BT /F2 18 Tf 42 800.00 Td (Implementasi Algoritma Cosine Similarity) Tj ET
+BT /F1 10 Tf 42 786.00 Td (LMS SMAN 1) Tj ET
+BT /F1 10 Tf 42 772.00 Td () Tj ET
+BT /F1 10 Tf 42 758.00 Td (Lokasi file utama: app/Services/CosineSimilarityService.php) Tj ET
+BT /F1 10 Tf 42 744.00 Td (Controller pemanggil: app/Http/Controllers/Guru/SimilarityController.php) Tj ET
+BT /F1 10 Tf 42 730.00 Td () Tj ET
+BT /F1 10 Tf 42 716.00 Td (Ringkasan alur:) Tj ET
+BT /F1 10 Tf 42 702.00 Td (1. preprocess\(\): teks dirapikan dulu, tanda baca dihapus, lalu dipecah jadi kata-kata.) Tj ET
+BT /F1 10 Tf 42 688.00 Td (2. Kata umum dan kata yang terlalu pendek dibuang agar hasil perbandingan lebih fokus.) Tj ET
+BT /F1 10 Tf 42 674.00 Td (3. buildTFVector\(\): setiap kata dihitung frekuensinya lalu dibuat menjadi vektor TF.) Tj ET
+BT /F1 10 Tf 42 660.00 Td (4. calculateSimilarity\(\): dua vektor dibandingkan menggunakan rumus cosine similarity.) Tj ET
+BT /F1 10 Tf 42 646.00 Td (5. compareAnswers\(\): semua pasangan jawaban dalam satu tugas dibandingkan dan hasilnya disimpan.) Tj ET
+BT /F1 10 Tf 42 632.00 Td () Tj ET
+BT /F1 10 Tf 42 618.00 Td (Rumus:) Tj ET
+BT /F1 10 Tf 42 604.00 Td (similarity = dot\(A, B\) / \(|A| * |B|\)) Tj ET
+BT /F1 10 Tf 42 590.00 Td (Hasilnya diubah ke persen dengan round\(similarity * 100, 2\).) Tj ET
+BT /F1 10 Tf 42 576.00 Td () Tj ET
+BT /F1 10 Tf 42 562.00 Td (Status hasil:) Tj ET
+BT /F1 10 Tf 42 548.00 Td (- > 70%  : plagiat) Tj ET
+BT /F1 10 Tf 42 534.00 Td (- 30-70% : warning) Tj ET
+BT /F1 10 Tf 42 520.00 Td (- < 30%  : safe) Tj ET
+BT /F1 10 Tf 42 506.00 Td () Tj ET
+BT /F1 10 Tf 42 492.00 Td (Kode sumber:) Tj ET
+BT /F3 7.2 Tf 42 478.00 Td (  1: <?php) Tj ET
+BT /F3 7.2 Tf 42 468.50 Td (  2: ) Tj ET
+BT /F3 7.2 Tf 42 459.00 Td (  3: namespace App\\Services;) Tj ET
+BT /F3 7.2 Tf 42 449.50 Td (  4: ) Tj ET
+BT /F3 7.2 Tf 42 440.00 Td (  5: use App\\Models\\JawabanTugas;) Tj ET
+BT /F3 7.2 Tf 42 430.50 Td (  6: use App\\Models\\SimilarityResult;) Tj ET
+BT /F3 7.2 Tf 42 421.00 Td (  7: use App\\Models\\Tugas;) Tj ET
+BT /F3 7.2 Tf 42 411.50 Td (  8: ) Tj ET
+BT /F3 7.2 Tf 42 402.00 Td (  9: class CosineSimilarityService) Tj ET
+BT /F3 7.2 Tf 42 392.50 Td ( 10: {) Tj ET
+BT /F3 7.2 Tf 42 383.00 Td ( 11:     /**) Tj ET
+BT /F3 7.2 Tf 42 373.50 Td ( 12:      * Daftar kata umum yang tidak terlalu berpengaruh saat membandingkan jawaban) Tj ET
+BT /F3 7.2 Tf 42 364.00 Td ( 13:      */) Tj ET
+BT /F3 7.2 Tf 42 354.50 Td ( 14:     private array $stopwords = [) Tj ET
+BT /F3 7.2 Tf 42 345.00 Td ( 15:         'dan', 'di', 'ke', 'dari', 'yang', 'untuk', 'pada', 'dengan', 'adalah',) Tj ET
+BT /F3 7.2 Tf 42 335.50 Td ( 16:         'ini', 'itu', 'atau', 'juga', 'sudah', 'saya', 'anda', 'kami', 'kita',) Tj ET
+BT /F3 7.2 Tf 42 326.00 Td ( 17:         'mereka', 'dia', 'akan', 'bisa', 'ada', 'tidak', 'bukan', 'hanya',) Tj ET
+BT /F3 7.2 Tf 42 316.50 Td ( 18:         'lebih', 'sangat', 'telah', 'sedang', 'masih', 'belum', 'harus',) Tj ET
+BT /F3 7.2 Tf 42 307.00 Td ( 19:         'dapat', 'oleh', 'karena', 'jika', 'maka', 'saat', 'ketika',) Tj ET
+BT /F3 7.2 Tf 42 297.50 Td ( 20:         'setelah', 'sebelum', 'antara', 'dalam', 'luar', 'atas', 'bawah',) Tj ET
+BT /F3 7.2 Tf 42 288.00 Td ( 21:         'seperti', 'sama', 'lain', 'semua', 'setiap', 'para', 'tersebut',) Tj ET
+BT /F3 7.2 Tf 42 278.50 Td ( 22:         'yaitu', 'bahwa', 'tentang', 'tanpa', 'melalui', 'secara', 'serta',) Tj ET
+BT /F3 7.2 Tf 42 269.00 Td ( 23:         'namun', 'tetapi', 'melainkan', 'selain', 'maupun', 'agar', 'supaya',) Tj ET
+BT /F3 7.2 Tf 42 259.50 Td ( 24:         'apabila', 'adapun', 'demikian', 'begitu', 'sehingga', 'meskipun',) Tj ET
+BT /F3 7.2 Tf 42 250.00 Td ( 25:         'walaupun', 'biarpun', 'sejak', 'sampai', 'hingga', 'terhadap',) Tj ET
+BT /F3 7.2 Tf 42 240.50 Td ( 26:         'mengenai', 'perihal', 'yakni', 'sebagai', 'merupakan',) Tj ET
+BT /F3 7.2 Tf 42 231.00 Td ( 27:         'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',) Tj ET
+BT /F3 7.2 Tf 42 221.50 Td ( 28:         'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',) Tj ET
+BT /F3 7.2 Tf 42 212.00 Td ( 29:         'should', 'may', 'might', 'shall', 'can', 'of', 'in', 'to', 'for',) Tj ET
+BT /F3 7.2 Tf 42 202.50 Td ( 30:         'with', 'on', 'at', 'by', 'from', 'as', 'into', 'through', 'during',) Tj ET
+BT /F3 7.2 Tf 42 193.00 Td ( 31:         'before', 'after', 'above', 'below', 'between', 'under', 'again',) Tj ET
+BT /F3 7.2 Tf 42 183.50 Td ( 32:         'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why',) Tj ET
+BT /F3 7.2 Tf 42 174.00 Td ( 33:         'how', 'all', 'each', 'every', 'both', 'few', 'more', 'most', 'other',) Tj ET
+BT /F3 7.2 Tf 42 164.50 Td ( 34:         'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so',) Tj ET
+BT /F3 7.2 Tf 42 155.00 Td ( 35:         'than', 'too', 'very', 'just', 'because', 'but', 'and', 'if', 'or',) Tj ET
+BT /F3 7.2 Tf 42 145.50 Td ( 36:         'while', 'about', 'against', 'it', 'this', 'that', 'these', 'those',) Tj ET
+BT /F3 7.2 Tf 42 136.00 Td ( 37:     ];) Tj ET
+BT /F3 7.2 Tf 42 126.50 Td ( 38: ) Tj ET
+BT /F3 7.2 Tf 42 117.00 Td ( 39:     /**) Tj ET
+BT /F3 7.2 Tf 42 107.50 Td ( 40:      * Tahap awal untuk merapikan teks jawaban) Tj ET
+BT /F3 7.2 Tf 42 98.00 Td ( 41:      * - ubah jadi huruf kecil) Tj ET
+BT /F3 7.2 Tf 42 88.50 Td ( 42:      * - hapus tanda baca) Tj ET
+BT /F3 7.2 Tf 42 79.00 Td ( 43:      * - pecah teks jadi kata-kata) Tj ET
+BT /F3 7.2 Tf 42 69.50 Td ( 44:      * - buang kata umum) Tj ET
+BT /F3 7.2 Tf 42 60.00 Td ( 45:      */) Tj ET
+BT /F1 8 Tf 42 26 Td (Halaman 1 dari 4 - dibuat 2026-05-14) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 5685 >>
+stream
+BT /F3 7.2 Tf 42 800.00 Td ( 46:     public function preprocess\(string $text\): array) Tj ET
+BT /F3 7.2 Tf 42 790.50 Td ( 47:     {) Tj ET
+BT /F3 7.2 Tf 42 781.00 Td ( 48:         // Ubah semua huruf jadi kecil biar perbandingannya konsisten) Tj ET
+BT /F3 7.2 Tf 42 771.50 Td ( 49:         $text = mb_strtolower\($text, 'UTF-8'\);) Tj ET
+BT /F3 7.2 Tf 42 762.00 Td ( 50: ) Tj ET
+BT /F3 7.2 Tf 42 752.50 Td ( 51:         // Hapus tanda baca dan karakter khusus, sisakan huruf, angka, dan spasi) Tj ET
+BT /F3 7.2 Tf 42 743.00 Td ( 52:         $text = preg_replace\('/[^\\p{L}\\p{N}\\s]/u', ' ', $text\);) Tj ET
+BT /F3 7.2 Tf 42 733.50 Td ( 53: ) Tj ET
+BT /F3 7.2 Tf 42 724.00 Td ( 54:         // Rapikan spasi yang berlebihan) Tj ET
+BT /F3 7.2 Tf 42 714.50 Td ( 55:         $text = preg_replace\('/\\s+/', ' ', trim\($text\)\);) Tj ET
+BT /F3 7.2 Tf 42 705.00 Td ( 56: ) Tj ET
+BT /F3 7.2 Tf 42 695.50 Td ( 57:         // Pecah teks jadi kumpulan kata) Tj ET
+BT /F3 7.2 Tf 42 686.00 Td ( 58:         $tokens = explode\(' ', $text\);) Tj ET
+BT /F3 7.2 Tf 42 676.50 Td ( 59: ) Tj ET
+BT /F3 7.2 Tf 42 667.00 Td ( 60:         // Buang kata umum dan kata yang terlalu pendek) Tj ET
+BT /F3 7.2 Tf 42 657.50 Td ( 61:         $tokens = array_filter\($tokens, function \($token\) {) Tj ET
+BT /F3 7.2 Tf 42 648.00 Td ( 62:             return strlen\($token\) >= 2 && !in_array\($token, $this->stopwords\);) Tj ET
+BT /F3 7.2 Tf 42 638.50 Td ( 63:         }\);) Tj ET
+BT /F3 7.2 Tf 42 629.00 Td ( 64: ) Tj ET
+BT /F3 7.2 Tf 42 619.50 Td ( 65:         return array_values\($tokens\);) Tj ET
+BT /F3 7.2 Tf 42 610.00 Td ( 66:     }) Tj ET
+BT /F3 7.2 Tf 42 600.50 Td ( 67: ) Tj ET
+BT /F3 7.2 Tf 42 591.00 Td ( 68:     /**) Tj ET
+BT /F3 7.2 Tf 42 581.50 Td ( 69:      * Membuat vektor Term Frequency \(TF\) dari kata-kata yang sudah dirapikan) Tj ET
+BT /F3 7.2 Tf 42 572.00 Td ( 70:      */) Tj ET
+BT /F3 7.2 Tf 42 562.50 Td ( 71:     public function buildTFVector\(array $tokens\): array) Tj ET
+BT /F3 7.2 Tf 42 553.00 Td ( 72:     {) Tj ET
+BT /F3 7.2 Tf 42 543.50 Td ( 73:         $tf = [];) Tj ET
+BT /F3 7.2 Tf 42 534.00 Td ( 74:         $totalTokens = count\($tokens\);) Tj ET
+BT /F3 7.2 Tf 42 524.50 Td ( 75: ) Tj ET
+BT /F3 7.2 Tf 42 515.00 Td ( 76:         if \($totalTokens === 0\) {) Tj ET
+BT /F3 7.2 Tf 42 505.50 Td ( 77:             return $tf;) Tj ET
+BT /F3 7.2 Tf 42 496.00 Td ( 78:         }) Tj ET
+BT /F3 7.2 Tf 42 486.50 Td ( 79: ) Tj ET
+BT /F3 7.2 Tf 42 477.00 Td ( 80:         // Hitung berapa kali tiap kata muncul) Tj ET
+BT /F3 7.2 Tf 42 467.50 Td ( 81:         $frequency = array_count_values\($tokens\);) Tj ET
+BT /F3 7.2 Tf 42 458.00 Td ( 82: ) Tj ET
+BT /F3 7.2 Tf 42 448.50 Td ( 83:         // Bagi dengan total kata agar nilainya lebih seimbang) Tj ET
+BT /F3 7.2 Tf 42 439.00 Td ( 84:         foreach \($frequency as $term => $count\) {) Tj ET
+BT /F3 7.2 Tf 42 429.50 Td ( 85:             $tf[$term] = $count / $totalTokens;) Tj ET
+BT /F3 7.2 Tf 42 420.00 Td ( 86:         }) Tj ET
+BT /F3 7.2 Tf 42 410.50 Td ( 87: ) Tj ET
+BT /F3 7.2 Tf 42 401.00 Td ( 88:         return $tf;) Tj ET
+BT /F3 7.2 Tf 42 391.50 Td ( 89:     }) Tj ET
+BT /F3 7.2 Tf 42 382.00 Td ( 90: ) Tj ET
+BT /F3 7.2 Tf 42 372.50 Td ( 91:     /**) Tj ET
+BT /F3 7.2 Tf 42 363.00 Td ( 92:      * Menghitung kemiripan dua jawaban dengan Cosine Similarity) Tj ET
+BT /F3 7.2 Tf 42 353.50 Td ( 93:      * Hasil akhirnya berupa persentase 0 sampai 100) Tj ET
+BT /F3 7.2 Tf 42 344.00 Td ( 94:      */) Tj ET
+BT /F3 7.2 Tf 42 334.50 Td ( 95:     public function calculateSimilarity\(array $vec1, array $vec2\): float) Tj ET
+BT /F3 7.2 Tf 42 325.00 Td ( 96:     {) Tj ET
+BT /F3 7.2 Tf 42 315.50 Td ( 97:         if \(empty\($vec1\) || empty\($vec2\)\) {) Tj ET
+BT /F3 7.2 Tf 42 306.00 Td ( 98:             return 0.0;) Tj ET
+BT /F3 7.2 Tf 42 296.50 Td ( 99:         }) Tj ET
+BT /F3 7.2 Tf 42 287.00 Td (100: ) Tj ET
+BT /F3 7.2 Tf 42 277.50 Td (101:         // Gabungkan semua kata unik dari dua jawaban) Tj ET
+BT /F3 7.2 Tf 42 268.00 Td (102:         $allTerms = array_unique\(array_merge\(array_keys\($vec1\), array_keys\($vec2\)\)\);) Tj ET
+BT /F3 7.2 Tf 42 258.50 Td (103: ) Tj ET
+BT /F3 7.2 Tf 42 249.00 Td (104:         // Hitung dot product dan panjang masing-masing vektor) Tj ET
+BT /F3 7.2 Tf 42 239.50 Td (105:         $dotProduct = 0.0;) Tj ET
+BT /F3 7.2 Tf 42 230.00 Td (106:         $magnitude1 = 0.0;) Tj ET
+BT /F3 7.2 Tf 42 220.50 Td (107:         $magnitude2 = 0.0;) Tj ET
+BT /F3 7.2 Tf 42 211.00 Td (108: ) Tj ET
+BT /F3 7.2 Tf 42 201.50 Td (109:         foreach \($allTerms as $term\) {) Tj ET
+BT /F3 7.2 Tf 42 192.00 Td (110:             $val1 = $vec1[$term] ?? 0.0;) Tj ET
+BT /F3 7.2 Tf 42 182.50 Td (111:             $val2 = $vec2[$term] ?? 0.0;) Tj ET
+BT /F3 7.2 Tf 42 173.00 Td (112: ) Tj ET
+BT /F3 7.2 Tf 42 163.50 Td (113:             $dotProduct += $val1 * $val2;) Tj ET
+BT /F3 7.2 Tf 42 154.00 Td (114:             $magnitude1 += $val1 * $val1;) Tj ET
+BT /F3 7.2 Tf 42 144.50 Td (115:             $magnitude2 += $val2 * $val2;) Tj ET
+BT /F3 7.2 Tf 42 135.00 Td (116:         }) Tj ET
+BT /F3 7.2 Tf 42 125.50 Td (117: ) Tj ET
+BT /F3 7.2 Tf 42 116.00 Td (118:         $magnitude1 = sqrt\($magnitude1\);) Tj ET
+BT /F3 7.2 Tf 42 106.50 Td (119:         $magnitude2 = sqrt\($magnitude2\);) Tj ET
+BT /F3 7.2 Tf 42 97.00 Td (120: ) Tj ET
+BT /F3 7.2 Tf 42 87.50 Td (121:         // Kalau salah satu vektor kosong, hasilnya dianggap 0) Tj ET
+BT /F3 7.2 Tf 42 78.00 Td (122:         if \($magnitude1 == 0 || $magnitude2 == 0\) {) Tj ET
+BT /F3 7.2 Tf 42 68.50 Td (123:             return 0.0;) Tj ET
+BT /F3 7.2 Tf 42 59.00 Td (124:         }) Tj ET
+BT /F1 8 Tf 42 26 Td (Halaman 2 dari 4 - dibuat 2026-05-14) Tj ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 5985 >>
+stream
+BT /F3 7.2 Tf 42 800.00 Td (125: ) Tj ET
+BT /F3 7.2 Tf 42 790.50 Td (126:         // Rumus cosine similarity: dot\(A,B\) / \(|A| * |B|\)) Tj ET
+BT /F3 7.2 Tf 42 781.00 Td (127:         $similarity = $dotProduct / \($magnitude1 * $magnitude2\);) Tj ET
+BT /F3 7.2 Tf 42 771.50 Td (128: ) Tj ET
+BT /F3 7.2 Tf 42 762.00 Td (129:         // Ubah hasilnya ke bentuk persen) Tj ET
+BT /F3 7.2 Tf 42 752.50 Td (130:         return round\($similarity * 100, 2\);) Tj ET
+BT /F3 7.2 Tf 42 743.00 Td (131:     }) Tj ET
+BT /F3 7.2 Tf 42 733.50 Td (132: ) Tj ET
+BT /F3 7.2 Tf 42 724.00 Td (133:     /**) Tj ET
+BT /F3 7.2 Tf 42 714.50 Td (134:      * Membandingkan semua jawaban dalam satu tugas yang sama) Tj ET
+BT /F3 7.2 Tf 42 705.00 Td (135:      */) Tj ET
+BT /F3 7.2 Tf 42 695.50 Td (136:     public function compareAnswers\(int $tugasId\): array) Tj ET
+BT /F3 7.2 Tf 42 686.00 Td (137:     {) Tj ET
+BT /F3 7.2 Tf 42 676.50 Td (138:         $tugas = Tugas::findOrFail\($tugasId\);) Tj ET
+BT /F3 7.2 Tf 42 667.00 Td (139: ) Tj ET
+BT /F3 7.2 Tf 42 657.50 Td (140:         // Ambil jawaban teks dari tugas ini saja) Tj ET
+BT /F3 7.2 Tf 42 648.00 Td (141:         $jawaban = JawabanTugas::where\('tugas_id', $tugasId\)) Tj ET
+BT /F3 7.2 Tf 42 638.50 Td (142:             ->whereNotNull\('jawaban_text'\)) Tj ET
+BT /F3 7.2 Tf 42 629.00 Td (143:             ->where\('jawaban_text', '!=', ''\)) Tj ET
+BT /F3 7.2 Tf 42 619.50 Td (144:             ->with\('siswa'\)) Tj ET
+BT /F3 7.2 Tf 42 610.00 Td (145:             ->get\(\);) Tj ET
+BT /F3 7.2 Tf 42 600.50 Td (146: ) Tj ET
+BT /F3 7.2 Tf 42 591.00 Td (147:         if \($jawaban->count\(\) < 2\) {) Tj ET
+BT /F3 7.2 Tf 42 581.50 Td (148:             return [) Tj ET
+BT /F3 7.2 Tf 42 572.00 Td (149:                 'message' => 'Minimal 2 jawaban diperlukan untuk perbandingan.',) Tj ET
+BT /F3 7.2 Tf 42 562.50 Td (150:                 'results' => [],) Tj ET
+BT /F3 7.2 Tf 42 553.00 Td (151:             ];) Tj ET
+BT /F3 7.2 Tf 42 543.50 Td (152:         }) Tj ET
+BT /F3 7.2 Tf 42 534.00 Td (153: ) Tj ET
+BT /F3 7.2 Tf 42 524.50 Td (154:         // Hapus hasil lama supaya data tidak dobel saat dicek ulang) Tj ET
+BT /F3 7.2 Tf 42 515.00 Td (155:         SimilarityResult::where\('tugas_id', $tugasId\)->delete\(\);) Tj ET
+BT /F3 7.2 Tf 42 505.50 Td (156: ) Tj ET
+BT /F3 7.2 Tf 42 496.00 Td (157:         // Rapikan teks lalu buat vektor untuk tiap jawaban) Tj ET
+BT /F3 7.2 Tf 42 486.50 Td (158:         $vectors = [];) Tj ET
+BT /F3 7.2 Tf 42 477.00 Td (159:         foreach \($jawaban as $j\) {) Tj ET
+BT /F3 7.2 Tf 42 467.50 Td (160:             $tokens = $this->preprocess\($j->jawaban_text\);) Tj ET
+BT /F3 7.2 Tf 42 458.00 Td (161:             $vectors[$j->id] = $this->buildTFVector\($tokens\);) Tj ET
+BT /F3 7.2 Tf 42 448.50 Td (162:         }) Tj ET
+BT /F3 7.2 Tf 42 439.00 Td (163: ) Tj ET
+BT /F3 7.2 Tf 42 429.50 Td (164:         $results = [];) Tj ET
+BT /F3 7.2 Tf 42 420.00 Td (165:         $jawabanArray = $jawaban->values\(\);) Tj ET
+BT /F3 7.2 Tf 42 410.50 Td (166: ) Tj ET
+BT /F3 7.2 Tf 42 401.00 Td (167:         // Bandingkan setiap pasangan jawaban satu per satu) Tj ET
+BT /F3 7.2 Tf 42 391.50 Td (168:         for \($i = 0; $i < $jawabanArray->count\(\); $i++\) {) Tj ET
+BT /F3 7.2 Tf 42 382.00 Td (169:             for \($k = $i + 1; $k < $jawabanArray->count\(\); $k++\) {) Tj ET
+BT /F3 7.2 Tf 42 372.50 Td (170:                 $j1 = $jawabanArray[$i];) Tj ET
+BT /F3 7.2 Tf 42 363.00 Td (171:                 $j2 = $jawabanArray[$k];) Tj ET
+BT /F3 7.2 Tf 42 353.50 Td (172: ) Tj ET
+BT /F3 7.2 Tf 42 344.00 Td (173:                 $percentage = $this->calculateSimilarity\() Tj ET
+BT /F3 7.2 Tf 42 334.50 Td (174:                     $vectors[$j1->id],) Tj ET
+BT /F3 7.2 Tf 42 325.00 Td (175:                     $vectors[$j2->id]) Tj ET
+BT /F3 7.2 Tf 42 315.50 Td (176:                 \);) Tj ET
+BT /F3 7.2 Tf 42 306.00 Td (177: ) Tj ET
+BT /F3 7.2 Tf 42 296.50 Td (178:                 // Tentukan status dari nilai kemiripannya) Tj ET
+BT /F3 7.2 Tf 42 287.00 Td (179:                 $status = 'safe';) Tj ET
+BT /F3 7.2 Tf 42 277.50 Td (180:                 if \($percentage > 70\) {) Tj ET
+BT /F3 7.2 Tf 42 268.00 Td (181:                     $status = 'plagiat';) Tj ET
+BT /F3 7.2 Tf 42 258.50 Td (182:                 } elseif \($percentage >= 30\) {) Tj ET
+BT /F3 7.2 Tf 42 249.00 Td (183:                     $status = 'warning';) Tj ET
+BT /F3 7.2 Tf 42 239.50 Td (184:                 }) Tj ET
+BT /F3 7.2 Tf 42 230.00 Td (185: ) Tj ET
+BT /F3 7.2 Tf 42 220.50 Td (186:                 // Simpan hasil pengecekan ke database) Tj ET
+BT /F3 7.2 Tf 42 211.00 Td (187:                 $result = SimilarityResult::create\([) Tj ET
+BT /F3 7.2 Tf 42 201.50 Td (188:                     'tugas_id' => $tugasId,) Tj ET
+BT /F3 7.2 Tf 42 192.00 Td (189:                     'jawaban_1_id' => $j1->id,) Tj ET
+BT /F3 7.2 Tf 42 182.50 Td (190:                     'jawaban_2_id' => $j2->id,) Tj ET
+BT /F3 7.2 Tf 42 173.00 Td (191:                     'similarity_percentage' => $percentage,) Tj ET
+BT /F3 7.2 Tf 42 163.50 Td (192:                     'status' => $status,) Tj ET
+BT /F3 7.2 Tf 42 154.00 Td (193:                     'tahun_ajaran_id' => $tugas->tahun_ajaran_id,) Tj ET
+BT /F3 7.2 Tf 42 144.50 Td (194:                 ]\);) Tj ET
+BT /F3 7.2 Tf 42 135.00 Td (195: ) Tj ET
+BT /F3 7.2 Tf 42 125.50 Td (196:                 $results[] = [) Tj ET
+BT /F3 7.2 Tf 42 116.00 Td (197:                     'siswa_1' => $j1->siswa->nama,) Tj ET
+BT /F3 7.2 Tf 42 106.50 Td (198:                     'siswa_2' => $j2->siswa->nama,) Tj ET
+BT /F3 7.2 Tf 42 97.00 Td (199:                     'percentage' => $percentage,) Tj ET
+BT /F3 7.2 Tf 42 87.50 Td (200:                     'status' => $status,) Tj ET
+BT /F3 7.2 Tf 42 78.00 Td (201:                 ];) Tj ET
+BT /F3 7.2 Tf 42 68.50 Td (202:             }) Tj ET
+BT /F3 7.2 Tf 42 59.00 Td (203:         }) Tj ET
+BT /F1 8 Tf 42 26 Td (Halaman 3 dari 4 - dibuat 2026-05-14) Tj ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 918 >>
+stream
+BT /F3 7.2 Tf 42 800.00 Td (204: ) Tj ET
+BT /F3 7.2 Tf 42 790.50 Td (205:         // Urutkan dari nilai similarity paling tinggi) Tj ET
+BT /F3 7.2 Tf 42 781.00 Td (206:         usort\($results, fn\($a, $b\) => $b['percentage'] <=> $a['percentage']\);) Tj ET
+BT /F3 7.2 Tf 42 771.50 Td (207: ) Tj ET
+BT /F3 7.2 Tf 42 762.00 Td (208:         return [) Tj ET
+BT /F3 7.2 Tf 42 752.50 Td (209:             'message' => 'Analisis similarity selesai.',) Tj ET
+BT /F3 7.2 Tf 42 743.00 Td (210:             'total_jawaban' => $jawaban->count\(\),) Tj ET
+BT /F3 7.2 Tf 42 733.50 Td (211:             'total_comparisons' => count\($results\),) Tj ET
+BT /F3 7.2 Tf 42 724.00 Td (212:             'results' => $results,) Tj ET
+BT /F3 7.2 Tf 42 714.50 Td (213:         ];) Tj ET
+BT /F3 7.2 Tf 42 705.00 Td (214:     }) Tj ET
+BT /F3 7.2 Tf 42 695.50 Td (215: }) Tj ET
+BT /F1 8 Tf 42 26 Td (Halaman 4 dari 4 - dibuat 2026-05-14) Tj ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 12 0 R >>
+endobj
+xref
+0 14
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000141 00000 n 
+0000000211 00000 n 
+0000000286 00000 n 
+0000000354 00000 n 
+0000006022 00000 n 
+0000006168 00000 n 
+0000011905 00000 n 
+0000012051 00000 n 
+0000018089 00000 n 
+0000018237 00000 n 
+0000019207 00000 n 
+trailer
+<< /Size 14 /Root 1 0 R >>
+startxref
+19355
+%%EOF

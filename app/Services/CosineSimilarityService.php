@@ -9,7 +9,7 @@ use App\Models\Tugas;
 class CosineSimilarityService
 {
     /**
-     * Indonesian stopwords to filter out common words
+     * Daftar kata umum yang tidak terlalu berpengaruh saat membandingkan jawaban
      */
     private array $stopwords = [
         'dan', 'di', 'ke', 'dari', 'yang', 'untuk', 'pada', 'dengan', 'adalah',
@@ -37,27 +37,27 @@ class CosineSimilarityService
     ];
 
     /**
-     * Step 1: Preprocess text
-     * - lowercase
-     * - remove punctuation
-     * - tokenize
-     * - remove stopwords
+     * Tahap awal untuk merapikan teks jawaban
+     * - ubah jadi huruf kecil
+     * - hapus tanda baca
+     * - pecah teks jadi kata-kata
+     * - buang kata umum
      */
     public function preprocess(string $text): array
     {
-        // Convert to lowercase
+        // Ubah semua huruf jadi kecil biar perbandingannya konsisten
         $text = mb_strtolower($text, 'UTF-8');
 
-        // Remove punctuation and special characters, keep alphanumeric and spaces
+        // Hapus tanda baca dan karakter khusus, sisakan huruf, angka, dan spasi
         $text = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', $text);
 
-        // Remove extra whitespace
+        // Rapikan spasi yang berlebihan
         $text = preg_replace('/\s+/', ' ', trim($text));
 
-        // Tokenize (split into words)
+        // Pecah teks jadi kumpulan kata
         $tokens = explode(' ', $text);
 
-        // Remove stopwords and short tokens (< 2 chars)
+        // Buang kata umum dan kata yang terlalu pendek
         $tokens = array_filter($tokens, function ($token) {
             return strlen($token) >= 2 && !in_array($token, $this->stopwords);
         });
@@ -66,7 +66,7 @@ class CosineSimilarityService
     }
 
     /**
-     * Step 2: Build Term Frequency (TF) vector
+     * Membuat vektor Term Frequency (TF) dari kata-kata yang sudah dirapikan
      */
     public function buildTFVector(array $tokens): array
     {
@@ -77,10 +77,10 @@ class CosineSimilarityService
             return $tf;
         }
 
-        // Count frequency of each token
+        // Hitung berapa kali tiap kata muncul
         $frequency = array_count_values($tokens);
 
-        // Normalize by total number of tokens
+        // Bagi dengan total kata agar nilainya lebih seimbang
         foreach ($frequency as $term => $count) {
             $tf[$term] = $count / $totalTokens;
         }
@@ -89,8 +89,8 @@ class CosineSimilarityService
     }
 
     /**
-     * Step 3: Calculate Cosine Similarity between two TF vectors
-     * Returns percentage (0-100)
+     * Menghitung kemiripan dua jawaban dengan Cosine Similarity
+     * Hasil akhirnya berupa persentase 0 sampai 100
      */
     public function calculateSimilarity(array $vec1, array $vec2): float
     {
@@ -98,10 +98,10 @@ class CosineSimilarityService
             return 0.0;
         }
 
-        // Get all unique terms from both vectors
+        // Gabungkan semua kata unik dari dua jawaban
         $allTerms = array_unique(array_merge(array_keys($vec1), array_keys($vec2)));
 
-        // Calculate dot product
+        // Hitung dot product dan panjang masing-masing vektor
         $dotProduct = 0.0;
         $magnitude1 = 0.0;
         $magnitude2 = 0.0;
@@ -118,27 +118,26 @@ class CosineSimilarityService
         $magnitude1 = sqrt($magnitude1);
         $magnitude2 = sqrt($magnitude2);
 
-        // Avoid division by zero
+        // Kalau salah satu vektor kosong, hasilnya dianggap 0
         if ($magnitude1 == 0 || $magnitude2 == 0) {
             return 0.0;
         }
 
-        // Cosine similarity formula: dot(A,B) / (|A| * |B|)
+        // Rumus cosine similarity: dot(A,B) / (|A| * |B|)
         $similarity = $dotProduct / ($magnitude1 * $magnitude2);
 
-        // Convert to percentage
+        // Ubah hasilnya ke bentuk persen
         return round($similarity * 100, 2);
     }
 
     /**
-     * Step 4: Compare all answers for a specific assignment (tugas)
-     * Only compares jawaban within the SAME tugas_id
+     * Membandingkan semua jawaban dalam satu tugas yang sama
      */
     public function compareAnswers(int $tugasId): array
     {
         $tugas = Tugas::findOrFail($tugasId);
 
-        // Get all text-based answers for this specific assignment
+        // Ambil jawaban teks dari tugas ini saja
         $jawaban = JawabanTugas::where('tugas_id', $tugasId)
             ->whereNotNull('jawaban_text')
             ->where('jawaban_text', '!=', '')
@@ -152,10 +151,10 @@ class CosineSimilarityService
             ];
         }
 
-        // Delete old similarity results for this tugas
+        // Hapus hasil lama supaya data tidak dobel saat dicek ulang
         SimilarityResult::where('tugas_id', $tugasId)->delete();
 
-        // Preprocess and build TF vectors for each answer
+        // Rapikan teks lalu buat vektor untuk tiap jawaban
         $vectors = [];
         foreach ($jawaban as $j) {
             $tokens = $this->preprocess($j->jawaban_text);
@@ -165,7 +164,7 @@ class CosineSimilarityService
         $results = [];
         $jawabanArray = $jawaban->values();
 
-        // Compare every pair of answers (n*(n-1)/2 comparisons)
+        // Bandingkan setiap pasangan jawaban satu per satu
         for ($i = 0; $i < $jawabanArray->count(); $i++) {
             for ($k = $i + 1; $k < $jawabanArray->count(); $k++) {
                 $j1 = $jawabanArray[$i];
@@ -176,7 +175,7 @@ class CosineSimilarityService
                     $vectors[$j2->id]
                 );
 
-                // Determine status
+                // Tentukan status dari nilai kemiripannya
                 $status = 'safe';
                 if ($percentage > 70) {
                     $status = 'plagiat';
@@ -184,7 +183,7 @@ class CosineSimilarityService
                     $status = 'warning';
                 }
 
-                // Save to database
+                // Simpan hasil pengecekan ke database
                 $result = SimilarityResult::create([
                     'tugas_id' => $tugasId,
                     'jawaban_1_id' => $j1->id,
@@ -203,7 +202,7 @@ class CosineSimilarityService
             }
         }
 
-        // Sort by highest similarity first
+        // Urutkan dari nilai similarity paling tinggi
         usort($results, fn($a, $b) => $b['percentage'] <=> $a['percentage']);
 
         return [

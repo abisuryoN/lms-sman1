@@ -69,8 +69,10 @@ class MateriController extends Controller
         ]);
 
         $fileUrl = null;
+        $originalFilename = null;
         if ($request->tipe === 'file' && $request->hasFile('file')) {
             $fileUrl = $request->file('file')->store('uploads/materi', 'public');
+            $originalFilename = $request->file('file')->getClientOriginalName();
         } elseif ($request->tipe === 'link') {
             $fileUrl = $request->link_url;
         }
@@ -83,6 +85,7 @@ class MateriController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'file_url' => $fileUrl,
+            'original_filename' => $originalFilename,
             'tipe' => $request->tipe,
         ]);
 

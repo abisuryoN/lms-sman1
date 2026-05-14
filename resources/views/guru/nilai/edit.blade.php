@@ -14,7 +14,16 @@
                     @forelse($jawaban as $j)
                         <tr>
                             <td>{{ $j->siswa->nama }}</td>
-                            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ Str::limit($j->jawaban_text, 50) }}</td>
+                            <td>
+                                <div style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px;">{{ Str::limit($j->jawaban_text, 50) }}</div>
+                                @if($j->file_path)
+                                    <div style="margin-top:4px;">
+                                        <a href="{{ Storage::url($j->file_path) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; border-color:var(--primary); color:var(--primary);">
+                                            <i class="fas fa-file-pdf"></i> Lihat Dokumen
+                                        </a>
+                                    </div>
+                                @endif
+                            </td>
                             <td><input type="number" name="nilai[{{ $j->siswa_id }}]" class="form-control" style="width:100px" min="0" max="100" step="0.01" value="{{ $nilai[$j->siswa_id] ?? '' }}"></td>
                             <td><input type="text" name="komentar[{{ $j->siswa_id }}]" class="form-control" style="width:200px" placeholder="Komentar..."></td>
                         </tr>

@@ -28,7 +28,7 @@
     <div class="card-header"><h3>Jawaban Siswa ({{ $jawaban->count() }})</h3></div>
     <div class="card-body table-wrapper">
         <table>
-            <thead><tr><th>Siswa</th><th>Waktu Submit</th><th>Jawaban</th><th>File</th></tr></thead>
+            <thead><tr><th>Siswa</th><th>Waktu Submit</th><th>Deskripsi</th><th>File Jawaban</th></tr></thead>
             <tbody>
             @forelse($jawaban as $j)
                 <tr>

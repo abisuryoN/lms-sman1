@@ -35,7 +35,7 @@
                 <input type="url" name="link_url" class="form-control" placeholder="https://..." value="{{ old('link_url') }}">
             </div>
 
-            <div class="form-group"><label class="form-label">Deadline</label><input type="datetime-local" name="deadline" class="form-control" value="{{ old('deadline') }}" required></div>
+            <div class="form-group"><label class="form-label">Deadline</label><input type="text" name="deadline" id="deadlinePicker" class="form-control" value="{{ old('deadline') }}" placeholder="Pilih Tanggal & Waktu" required></div>
             <div class="flex gap-2" style="margin-top: 24px;"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Buat Tugas</button><a href="{{ route('guru.tugas.index') }}" class="btn btn-outline">Batal</a></div>
         </form>
     </div>
@@ -65,6 +65,14 @@
         } else if (this.value === 'link') {
             linkWrapper.classList.remove('hidden');
         }
+    });
+
+    flatpickr("#deadlinePicker", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+        locale: "id", // Use Indonesian if possible or default
     });
 </script>
 @endpush

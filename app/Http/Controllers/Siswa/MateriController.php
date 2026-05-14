@@ -57,6 +57,13 @@ class MateriController extends Controller
             return redirect($materi->file_url);
         }
 
-        return redirect(asset('storage/' . $materi->file_url));
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($materi->file_url)) {
+            return \Illuminate\Support\Facades\Storage::disk('public')->download(
+                $materi->file_url,
+                $materi->original_filename ?? basename($materi->file_url)
+            );
+        }
+
+        return back()->with('error', 'File tidak ditemukan.');
     }
 }

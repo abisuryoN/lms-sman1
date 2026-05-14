@@ -19,6 +19,7 @@ class Tugas extends Model
         'judul',
         'deskripsi',
         'file_url',
+        'original_filename',
         'tipe',
         'deadline',
         'status',

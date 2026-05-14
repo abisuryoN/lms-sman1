@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
@@ -22,6 +24,21 @@
     <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
 
     @stack('styles')
+    <style>
+        .flatpickr-calendar {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid #F1F5F9 !important;
+            border-radius: 16px !important;
+            padding: 8px !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+        .flatpickr-day.selected {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+        .flatpickr-months .flatpickr-month { height: 40px !important; }
+        .flatpickr-current-month { padding-top: 10px !important; }
+    </style>
 </head>
 
 <body>
