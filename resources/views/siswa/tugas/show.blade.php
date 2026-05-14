@@ -50,14 +50,50 @@
     <div class="card-header"><h3>{{ $jawaban ? 'Jawaban Anda (Sudah Dikumpulkan)' : 'Kumpulkan Jawaban' }}</h3></div>
     <div class="card-body">
         @if($jawaban)
-            <div style="padding:12px;background:#D1FAE5;border-radius:8px;margin-bottom:16px"><i class="fas fa-check-circle" style="color:var(--success)"></i> Dikumpulkan pada {{ $jawaban->submitted_at->format('d M Y H:i') }}</div>
+            <div style="padding:12px;background:#D1FAE5;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+                <div><i class="fas fa-check-circle" style="color:var(--success)"></i> Dikumpulkan pada {{ $jawaban->submitted_at->format('d M Y H:i') }}</div>
+                @if($jawaban->storage_path)
+                    <span class="badge badge-{{ $jawaban->ocr_badge_color }}">
+                        <i class="fas {{ $jawaban->ocr_status == 'success' ? 'fa-check' : ($jawaban->ocr_status == 'processing' ? 'fa-spinner fa-spin' : ($jawaban->ocr_status == 'failed' ? 'fa-exclamation-triangle' : 'fa-clock')) }}"></i>
+                        OCR: {{ $jawaban->ocr_status_label }}
+                    </span>
+                @endif
+            </div>
+
+            @if($jawaban->storage_path && $jawaban->ocr_status == 'failed')
+                <div style="padding:12px;background:#FEE2E2;border-radius:8px;margin-bottom:16px;color:#991B1B;font-size:13px;">
+                    <i class="fas fa-info-circle"></i> <strong>Catatan:</strong> OCR belum tersedia / Tesseract belum terinstal. File Anda tetap tersimpan dengan aman dan dapat diakses oleh guru.
+                </div>
+            @endif
+
             <div style="padding:16px;background:var(--bg);border-radius:12px;border:1px solid #E2E8F0;">
                 <div style="font-weight:700; font-size:13px; color:var(--primary); text-transform:uppercase; margin-bottom:8px;">Deskripsi Jawaban:</div>
                 <div style="color:var(--text); line-height:1.6;">{{ $jawaban->jawaban_text ?: '(Tidak ada jawaban teks)' }}</div>
                 
-                @if($jawaban->file_path)
+                @if($jawaban->storage_path)
                     <div style="margin-top:16px; padding-top:16px; border-top:1px dashed #E2E8F0;">
-                        <div style="font-weight:700; font-size:13px; color:var(--primary); text-transform:uppercase; margin-bottom:8px;">File Terlampir:</div>
+                        <div style="font-weight:700; font-size:13px; color:var(--primary); text-transform:uppercase; margin-bottom:12px;">File Terlampir (Supabase Storage):</div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; background:#F8FAFC; padding:12px 16px; border-radius:8px; border:1px solid #E2E8F0;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <i class="fas fa-file-alt" style="font-size:24px; color:#3B82F6;"></i>
+                                <div>
+                                    <div style="font-weight:600; color:#0F172A; font-size:14px; word-break:break-all;">{{ $jawaban->original_filename ?: basename($jawaban->storage_path) }}</div>
+                                    <div style="font-size:12px; color:#64748B;">Ukuran: {{ $jawaban->file_size_formatted }}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <a href="{{ route('siswa.jawaban.view-file', $jawaban) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff;">
+                                    <i class="fas fa-eye"></i> Lihat File
+                                </a>
+                                <a href="{{ route('siswa.jawaban.view-file', ['jawaban' => $jawaban->id, 'action' => 'download']) }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download File
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @elseif($jawaban->file_path)
+                    <div style="margin-top:16px; padding-top:16px; border-top:1px dashed #E2E8F0;">
+                        <div style="font-weight:700; font-size:13px; color:var(--primary); text-transform:uppercase; margin-bottom:8px;">File Terlampir (Lokal):</div>
                         <a href="{{ Storage::url($jawaban->file_path) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff">
                             <i class="fas fa-file-pdf"></i> Lihat File Jawaban
                         </a>

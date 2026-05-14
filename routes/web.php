@@ -60,9 +60,13 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'role:guru'])->group(f
     Route::get('similarity', [Guru\SimilarityController::class, 'index'])->name('similarity.index');
     Route::get('similarity/{tuga}', [Guru\SimilarityController::class, 'detail'])->name('similarity.detail');
     Route::post('similarity/{tuga}/run', [Guru\SimilarityController::class, 'runCheck'])->name('similarity.run');
+    Route::get('similarity/{tuga}/status', [Guru\SimilarityController::class, 'checkStatus'])->name('similarity.status');
+    Route::get('similarity/file/{jawaban}', [Guru\SimilarityController::class, 'viewFile'])->name('similarity.view-file');
+    Route::get('similarity/ocr-text/{jawaban}', [Guru\SimilarityController::class, 'viewOcrText'])->name('similarity.view-ocr');
 
     Route::get('kelas', [Guru\KelasController::class, 'index'])->name('kelas.index');
     Route::get('kelas/{kela}', [Guru\KelasController::class, 'show'])->name('kelas.show');
+    Route::get('jawaban/{jawaban}/download', [Guru\NilaiController::class, 'downloadJawaban'])->name('jawaban.download');
 });
 
 // ── Siswa Routes ─────────────────────────────────────────
@@ -78,5 +82,6 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->grou
     Route::get('tugas/{tuga}', [Siswa\TugasController::class, 'show'])->name('tugas.show');
     Route::get('tugas/{tuga}/download', [Siswa\TugasController::class, 'download'])->name('tugas.download');
     Route::post('tugas/{tuga}/submit', [Siswa\TugasController::class, 'submit'])->name('tugas.submit');
+    Route::get('jawaban/{jawaban}/file', [Siswa\TugasController::class, 'viewFile'])->name('jawaban.view-file');
     Route::get('nilai', [Siswa\NilaiController::class, 'index'])->name('nilai.index');
 });

@@ -131,22 +131,30 @@ class CosineSimilarityService
     }
 
     /**
-     * Membandingkan semua jawaban dalam satu tugas yang sama
+     * Membandingkan semua jawaban dalam satu tugas yang sama.
+     * Menggunakan processed_text dari database (hasil preprocessing oleh job).
+     * Fallback ke jawaban_text jika processed_text kosong.
      */
     public function compareAnswers(int $tugasId): array
     {
         $tugas = Tugas::findOrFail($tugasId);
 
-        // Ambil jawaban teks dari tugas ini saja
+        // Ambil jawaban dari tugas ini — hanya yang punya teks (processed/extracted/jawaban)
         $jawaban = JawabanTugas::where('tugas_id', $tugasId)
-            ->whereNotNull('jawaban_text')
-            ->where('jawaban_text', '!=', '')
+            ->where(function ($query) {
+                $query->whereNotNull('processed_text')
+                      ->where('processed_text', '!=', '')
+                      ->orWhere(function ($q) {
+                          $q->whereNotNull('jawaban_text')
+                            ->where('jawaban_text', '!=', '');
+                      });
+            })
             ->with('siswa')
             ->get();
 
         if ($jawaban->count() < 2) {
             return [
-                'message' => 'Minimal 2 jawaban diperlukan untuk perbandingan.',
+                'message' => 'Minimal 2 jawaban dengan teks diperlukan untuk perbandingan.',
                 'results' => [],
             ];
         }
@@ -156,40 +164,75 @@ class CosineSimilarityService
 
         // Rapikan teks lalu buat vektor untuk tiap jawaban
         $vectors = [];
+        $validJawaban = [];
         foreach ($jawaban as $j) {
-            $tokens = $this->preprocess($j->jawaban_text);
+            // Prioritas: processed_text > extracted_text > jawaban_text
+            $textToCompare = $j->processed_text ?? '';
+            if (empty(trim($textToCompare))) {
+                $textToCompare = $j->extracted_text ?? '';
+            }
+            if (empty(trim($textToCompare))) {
+                $textToCompare = $j->jawaban_text ?? '';
+            }
+
+            if (empty(trim($textToCompare))) {
+                continue;
+            }
+
+            $tokens = $this->preprocess($textToCompare);
+            if (empty($tokens)) {
+                continue;
+            }
+
             $vectors[$j->id] = $this->buildTFVector($tokens);
+            $validJawaban[] = $j;
+        }
+
+        if (count($validJawaban) < 2) {
+            return [
+                'message' => 'Minimal 2 jawaban dengan teks bermakna diperlukan.',
+                'results' => [],
+            ];
         }
 
         $results = [];
-        $jawabanArray = $jawaban->values();
 
         // Bandingkan setiap pasangan jawaban satu per satu
-        for ($i = 0; $i < $jawabanArray->count(); $i++) {
-            for ($k = $i + 1; $k < $jawabanArray->count(); $k++) {
-                $j1 = $jawabanArray[$i];
-                $j2 = $jawabanArray[$k];
+        for ($i = 0; $i < count($validJawaban); $i++) {
+            for ($k = $i + 1; $k < count($validJawaban); $k++) {
+                $j1 = $validJawaban[$i];
+                $j2 = $validJawaban[$k];
+
+                if (!isset($vectors[$j1->id]) || !isset($vectors[$j2->id])) {
+                    continue;
+                }
 
                 $percentage = $this->calculateSimilarity(
                     $vectors[$j1->id],
                     $vectors[$j2->id]
                 );
 
-                // Tentukan status dari nilai kemiripannya
+                // Tentukan status berdasarkan threshold baru:
+                // 0-39% safe, 40-69% warning, 70-100% plagiat
                 $status = 'safe';
-                if ($percentage > 70) {
+                if ($percentage >= 70) {
                     $status = 'plagiat';
-                } elseif ($percentage >= 30) {
+                } elseif ($percentage >= 40) {
                     $status = 'warning';
                 }
 
                 // Simpan hasil pengecekan ke database
                 $result = SimilarityResult::create([
                     'tugas_id' => $tugasId,
+                    'kelas_id' => $tugas->kelas_id,
+                    'mapel_id' => $tugas->mapel_id,
                     'jawaban_1_id' => $j1->id,
                     'jawaban_2_id' => $j2->id,
+                    'student_1_id' => $j1->siswa_id,
+                    'student_2_id' => $j2->siswa_id,
                     'similarity_percentage' => $percentage,
                     'status' => $status,
+                    'checked_at' => now(),
                     'tahun_ajaran_id' => $tugas->tahun_ajaran_id,
                 ]);
 
@@ -207,7 +250,7 @@ class CosineSimilarityService
 
         return [
             'message' => 'Analisis similarity selesai.',
-            'total_jawaban' => $jawaban->count(),
+            'total_jawaban' => count($validJawaban),
             'total_comparisons' => count($results),
             'results' => $results,
         ];

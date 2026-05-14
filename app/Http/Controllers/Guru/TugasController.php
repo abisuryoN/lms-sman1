@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\CheckAssignmentSimilarityJob;
 use App\Models\GuruKelas;
 use App\Models\JawabanTugas;
 use App\Models\TahunAjaran;
 use App\Models\Tugas;
-use App\Services\CosineSimilarityService;
 use Illuminate\Http\Request;
 
 class TugasController extends Controller
@@ -87,10 +87,12 @@ class TugasController extends Controller
 
     public function checkSimilarity(Tugas $tuga)
     {
-        $service = new CosineSimilarityService();
-        $results = $service->compareAnswers($tuga->id);
+        // Dispatch job background agar tidak ngelag
+        CheckAssignmentSimilarityJob::dispatch($tuga->id);
+
+        $tuga->update(['similarity_status' => 'processing']);
 
         return redirect()->route('guru.similarity.detail', $tuga->id)
-            ->with('similarity_results', $results);
+            ->with('success', 'Pengecekan kemiripan sedang diproses di background. Halaman akan diperbarui otomatis.');
     }
 }

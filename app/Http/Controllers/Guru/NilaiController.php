@@ -7,6 +7,7 @@ use App\Models\Nilai;
 use App\Models\JawabanTugas;
 use App\Models\TahunAjaran;
 use App\Models\Tugas;
+use App\Services\SupabaseStorageService;
 use Illuminate\Http\Request;
 
 class NilaiController extends Controller
@@ -52,5 +53,51 @@ class NilaiController extends Controller
         }
 
         return back()->with('success', 'Nilai berhasil disimpan.');
+    }
+
+    /**
+     * Download file jawaban siswa via Supabase signed URL.
+     * Fallback ke local storage jika storage_path kosong.
+     */
+    public function downloadJawaban(JawabanTugas $jawaban)
+    {
+        $guru = auth()->user()->guru;
+        $tugas = $jawaban->tugas;
+
+        // Validasi: guru mengajar tugas ini
+        if ($tugas->guru_id !== $guru->id) {
+            abort(403, 'Anda tidak memiliki akses ke file ini.');
+        }
+
+        // Coba Supabase Storage dulu
+        if ($jawaban->storage_path) {
+            $filename = $jawaban->original_filename ?? basename($jawaban->storage_path);
+            $supabase = new SupabaseStorageService();
+            $signedUrl = $supabase->getSignedUrl($jawaban->storage_path, null, $filename);
+
+            if ($signedUrl) {
+                return redirect($signedUrl);
+            }
+
+            return back()->with('error', 'Gagal membuat link download file. Silakan coba lagi.');
+        }
+
+        // Fallback: local storage (untuk file lama sebelum migrasi ke Supabase)
+        if ($jawaban->file_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($jawaban->file_path)) {
+            $siswa = $jawaban->siswa;
+            $kelas = $tugas->kelas;
+
+            $filename = sprintf(
+                "[%s]_[%s]_%s_%s",
+                str_replace([' ', '/', '\\'], '_', $kelas->nama_kelas),
+                str_replace([' ', '/', '\\'], '_', $tugas->judul),
+                str_replace([' ', '/', '\\'], '_', $siswa->nama),
+                $jawaban->original_filename ?? basename($jawaban->file_path)
+            );
+
+            return \Illuminate\Support\Facades\Storage::disk('public')->download($jawaban->file_path, $filename);
+        }
+
+        return back()->with('error', 'File jawaban tidak ditemukan.');
     }
 }

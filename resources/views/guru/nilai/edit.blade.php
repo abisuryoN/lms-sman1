@@ -18,7 +18,7 @@
                                 <div style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px;">{{ Str::limit($j->jawaban_text, 50) }}</div>
                                 @if($j->file_path)
                                     <div style="margin-top:4px;">
-                                        <a href="{{ Storage::url($j->file_path) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; border-color:var(--primary); color:var(--primary);">
+                                        <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; border-color:var(--primary); color:var(--primary);">
                                             <i class="fas fa-file-pdf"></i> Lihat Dokumen
                                         </a>
                                     </div>

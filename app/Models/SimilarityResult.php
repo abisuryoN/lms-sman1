@@ -13,10 +13,15 @@ class SimilarityResult extends Model
 
     protected $fillable = [
         'tugas_id',
+        'kelas_id',
+        'mapel_id',
         'jawaban_1_id',
         'jawaban_2_id',
+        'student_1_id',
+        'student_2_id',
         'similarity_percentage',
         'status',
+        'checked_at',
         'tahun_ajaran_id',
     ];
 
@@ -24,6 +29,7 @@ class SimilarityResult extends Model
     {
         return [
             'similarity_percentage' => 'decimal:2',
+            'checked_at' => 'datetime',
         ];
     }
 
@@ -43,20 +49,58 @@ class SimilarityResult extends Model
         return $this->belongsTo(JawabanTugas::class, 'jawaban_2_id');
     }
 
+    public function student1()
+    {
+        return $this->belongsTo(Siswa::class, 'student_1_id');
+    }
+
+    public function student2()
+    {
+        return $this->belongsTo(Siswa::class, 'student_2_id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
+
+    public function mapel()
+    {
+        return $this->belongsTo(Mapel::class, 'mapel_id');
+    }
+
     public function tahunAjaran()
     {
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
     }
 
     // ── Helpers ──────────────────────────────────────────
+
+    /**
+     * Badge warna sesuai spesifikasi:
+     * 0-39% Rendah (hijau), 40-69% Sedang (kuning), 70-100% Tinggi (merah)
+     */
     public function getBadgeColorAttribute(): string
     {
-        if ($this->similarity_percentage < 30) {
+        if ($this->similarity_percentage < 40) {
             return 'green';
-        } elseif ($this->similarity_percentage <= 70) {
+        } elseif ($this->similarity_percentage < 70) {
             return 'yellow';
         }
         return 'red';
+    }
+
+    /**
+     * Label kategori similarity
+     */
+    public function getSimilarityCategoryAttribute(): string
+    {
+        if ($this->similarity_percentage < 40) {
+            return 'Rendah';
+        } elseif ($this->similarity_percentage < 70) {
+            return 'Sedang';
+        }
+        return 'Tinggi';
     }
 
     public function getStatusLabelAttribute(): string

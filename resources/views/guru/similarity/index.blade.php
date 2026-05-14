@@ -9,16 +9,32 @@
     <div class="card-header"><h3>Analisis per Tugas</h3></div>
     <div class="card-body table-wrapper">
         <table>
-            <thead><tr><th>Tugas</th><th>Kelas</th><th>Jawaban</th><th>Hasil</th><th>Aksi</th></tr></thead>
+            <thead><tr><th>Tugas</th><th>Kelas</th><th>Jawaban</th><th>Status Terakhir</th><th>Aksi</th></tr></thead>
             <tbody>
             @forelse($tugas as $t)
                 <tr>
-                    <td><strong>{{ $t->judul }}</strong></td><td>{{ $t->kelas->nama_kelas }}</td>
+                    <td><strong>{{ $t->judul }}</strong></td>
+                    <td>{{ $t->kelas->nama_kelas }}</td>
                     <td><span class="badge badge-blue">{{ $t->jawaban_tugas_count }}</span></td>
-                    <td>@if($t->similarity_results_count > 0)<span class="badge badge-green">{{ $t->similarity_results_count }}</span>@else<span class="badge badge-gray">Belum</span>@endif</td>
+                    <td>
+                        <span class="badge badge-{{ $t->similarity_badge_color }}">
+                            <i class="fas {{ $t->similarity_status == 'completed' ? 'fa-check' : ($t->similarity_status == 'processing' ? 'fa-spinner fa-spin' : 'fa-clock') }}"></i>
+                            {{ $t->similarity_status_label }}
+                        </span>
+                        @if($t->similarity_results_count > 0)
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">{{ $t->similarity_results_count }} pasangan diuji</div>
+                        @endif
+                    </td>
                     <td class="flex gap-2">
-                        <form action="{{ route('guru.similarity.run', $t) }}" method="POST">@csrf<button class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Cek</button></form>
-                        <a href="{{ route('guru.similarity.detail', $t) }}" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
+                        <form action="{{ route('guru.similarity.run', $t) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-sm" {{ $t->similarity_status == 'processing' ? 'disabled' : '' }} title="Jalankan Uji Kemiripan">
+                                <i class="fas {{ $t->similarity_status == 'processing' ? 'fa-spinner fa-spin' : 'fa-play' }}"></i> Cek
+                            </button>
+                        </form>
+                        <a href="{{ route('guru.similarity.detail', $t) }}" class="btn btn-outline btn-sm" style="background:#fff;" title="Lihat Hasil Detail">
+                            <i class="fas fa-eye"></i> Detail
+                        </a>
                     </td>
                 </tr>
             @empty

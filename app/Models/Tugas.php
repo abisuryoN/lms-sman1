@@ -23,12 +23,15 @@ class Tugas extends Model
         'tipe',
         'deadline',
         'status',
+        'similarity_status',
+        'similarity_checked_at',
     ];
 
     protected function casts(): array
     {
         return [
             'deadline' => 'datetime',
+            'similarity_checked_at' => 'datetime',
         ];
     }
 
@@ -83,5 +86,27 @@ class Tugas extends Model
     public function getSubmissionCountAttribute(): int
     {
         return $this->jawabanTugas()->count();
+    }
+
+    public function getSimilarityStatusLabelAttribute(): string
+    {
+        return match ($this->similarity_status) {
+            'unchecked' => 'Belum Dicek',
+            'processing' => 'Sedang Diproses',
+            'completed' => 'Selesai',
+            'failed' => 'Gagal',
+            default => 'Belum Dicek',
+        };
+    }
+
+    public function getSimilarityBadgeColorAttribute(): string
+    {
+        return match ($this->similarity_status) {
+            'unchecked' => 'gray',
+            'processing' => 'blue',
+            'completed' => 'green',
+            'failed' => 'red',
+            default => 'gray',
+        };
     }
 }

@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'supabase' => [
+        'url' => env('SUPABASE_URL'),
+        'service_role_key' => env('SUPABASE_SERVICE_ROLE_KEY'),
+        'bucket' => env('SUPABASE_BUCKET', 'tugas-siswa'),
+        'region' => env('SUPABASE_REGION', 'ap-southeast-1'),
+        'signed_url_expires' => 600, // 10 menit
+    ],
+
+    'tesseract' => [
+        'path' => env('TESSERACT_PATH', 'tesseract'),
+    ],
+
 ];
