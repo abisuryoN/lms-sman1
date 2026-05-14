@@ -49,6 +49,7 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'role:guru'])->group(f
     Route::put('profil', [Guru\ProfilController::class, 'update'])->name('profil.update');
 
     Route::resource('materi', Guru\MateriController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::get('materi/{materi}/logs', [Guru\MateriController::class, 'logs'])->name('materi.logs');
     Route::resource('tugas', Guru\TugasController::class)->only(['index', 'create', 'store', 'show']);
     Route::post('tugas/{tuga}/check-similarity', [Guru\TugasController::class, 'checkSimilarity'])->name('tugas.check-similarity');
 
@@ -72,6 +73,7 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->grou
     Route::put('profil', [Siswa\ProfilController::class, 'update'])->name('profil.update');
 
     Route::get('materi', [Siswa\MateriController::class, 'index'])->name('materi.index');
+    Route::get('materi/{materi}/download', [Siswa\MateriController::class, 'download'])->name('materi.download');
     Route::get('tugas', [Siswa\TugasController::class, 'index'])->name('tugas.index');
     Route::get('tugas/{tuga}', [Siswa\TugasController::class, 'show'])->name('tugas.show');
     Route::post('tugas/{tuga}/submit', [Siswa\TugasController::class, 'submit'])->name('tugas.submit');

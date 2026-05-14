@@ -43,6 +43,11 @@ class Materi extends Model
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
     }
 
+    public function logs()
+    {
+        return $this->hasMany(MateriLog::class, 'materi_id');
+    }
+
     // ── Accessor ─────────────────────────────────────────
     public function getFileFullUrlAttribute(): string
     {

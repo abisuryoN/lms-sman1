@@ -1431,36 +1431,45 @@
 
         .form-label {
             display: block;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: var(--text);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--border);
+            padding: 7px 12px;
+            border: 1px solid #E2E8F0;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-family: inherit;
             transition: all 0.2s ease;
-            background: #fff;
-            color: var(--text);
+            background: #FFFFFF;
+            color: #1E293B;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: #fff;
         }
 
         select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 32px;
+            cursor: pointer;
+            padding-right: 30px;
+        }
+
+        .form-control::placeholder {
+            color: #94A3B8;
+        }
+
+        select.form-control option {
+            font-family: sans-serif;
         }
 
         textarea.form-control {
@@ -2526,6 +2535,139 @@
             background: transparent !important;
             font-size: 24px !important;
         }
+
+        /* ── Custom Select Dropdown (Global & Mobile Optimized) ── */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+            user-select: none;
+        }
+
+        .custom-select-wrapper select {
+            display: none !important;
+        }
+
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 8px 14px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 13.5px;
+            color: #1E293B;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-align: left;
+            height: 42px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .custom-select-trigger:hover {
+            border-color: #CBD5E1;
+            background: #F8FAFC;
+        }
+
+        .custom-select-trigger.open {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+            background: #FFFFFF;
+        }
+
+        .custom-select-trigger .trigger-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            margin-right: 8px;
+        }
+
+        .custom-select-trigger .trigger-icon {
+            font-size: 11px;
+            color: #94A3B8;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .custom-select-trigger.open .trigger-icon {
+            transform: rotate(180deg);
+        }
+
+        .custom-select-options {
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+            padding: 5px;
+            margin-top: 5px;
+            animation: selectFadeIn 0.2s ease;
+        }
+
+        .custom-select-options.show {
+            display: block;
+        }
+
+        .custom-select-options.open-upwards {
+            bottom: calc(100% + 5px);
+            top: auto;
+            margin-top: 0;
+            margin-bottom: 5px;
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-select-option {
+            padding: 9px 12px;
+            font-size: 13.5px;
+            color: #334155;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .custom-select-option:hover {
+            background: #EFF6FF;
+            color: var(--primary);
+        }
+
+        .custom-select-option.selected {
+            background: #EFF6FF;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @keyframes selectFadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .custom-select-trigger {
+                height: 38px;
+                padding: 0 12px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+            .custom-select-option {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            .custom-select-options {
+                max-height: 180px;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -3000,6 +3142,107 @@
                 });
             });
         @endif
+
+        // ── Custom Select Initializer ──
+        function initCustomSelects() {
+            const selects = document.querySelectorAll('select:not([data-no-custom])');
+            selects.forEach(select => {
+                if (select.closest('.custom-select-wrapper') || select.classList.contains('swal2-select')) return;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'custom-select-wrapper';
+                
+                // Salin class form-control-sm jika ada
+                if (select.classList.contains('form-control-sm')) wrapper.classList.add('select-sm');
+                
+                // Salin inline style (seperti max-width atau width) ke wrapper
+                if (select.getAttribute('style')) {
+                    wrapper.setAttribute('style', select.getAttribute('style'));
+                }
+                
+                select.parentNode.insertBefore(wrapper, select);
+                wrapper.appendChild(select);
+
+                const trigger = document.createElement('div');
+                trigger.className = 'custom-select-trigger';
+                const initialText = select.options[select.selectedIndex]?.text || 'Pilih...';
+                trigger.innerHTML = `<span class="trigger-text">${initialText}</span><i class="fas fa-chevron-down trigger-icon"></i>`;
+                wrapper.appendChild(trigger);
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'custom-select-options';
+                wrapper.appendChild(optionsContainer);
+
+                function updateOptions() {
+                    optionsContainer.innerHTML = '';
+                    Array.from(select.options).forEach((option, index) => {
+                        const opt = document.createElement('div');
+                        opt.className = 'custom-select-option';
+                        if (option.selected) opt.classList.add('selected');
+                        opt.innerHTML = `<span>${option.text}</span>${option.selected ? '<i class="fas fa-check" style="font-size:10px"></i>' : ''}`;
+                        
+                        opt.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            select.selectedIndex = index;
+                            // Trigger native change event
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                            trigger.querySelector('.trigger-text').innerText = option.text;
+                            optionsContainer.classList.remove('show');
+                            trigger.classList.remove('open');
+                        });
+                        optionsContainer.appendChild(opt);
+                    });
+                }
+
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = optionsContainer.classList.contains('show');
+                    
+                    // Tutup semua dropdown lain
+                    document.querySelectorAll('.custom-select-options').forEach(c => {
+                        if (c !== optionsContainer) c.classList.remove('show');
+                    });
+                    document.querySelectorAll('.custom-select-trigger').forEach(t => {
+                        if (t !== trigger) t.classList.remove('open');
+                    });
+
+                    if (!isOpen) {
+                        updateOptions();
+                        const rect = trigger.getBoundingClientRect();
+                        const spaceBelow = window.innerHeight - rect.bottom;
+                        const listHeight = Math.min(select.options.length * 40, 220);
+                        
+                        if (spaceBelow < listHeight && rect.top > listHeight) {
+                            optionsContainer.classList.add('open-upwards');
+                        } else {
+                            optionsContainer.classList.remove('open-upwards');
+                        }
+                        optionsContainer.classList.add('show');
+                        trigger.classList.add('open');
+                        
+                        // Scroll ke item yang dipilih
+                        const selected = optionsContainer.querySelector('.selected');
+                        if (selected) {
+                            optionsContainer.scrollTop = selected.offsetTop - 10;
+                        }
+                    } else {
+                        optionsContainer.classList.remove('show');
+                        trigger.classList.remove('open');
+                    }
+                });
+
+                // Sync jika select asli berubah lewat JS lain
+                select.addEventListener('change', () => {
+                    trigger.querySelector('.trigger-text').innerText = select.options[select.selectedIndex]?.text || '';
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initCustomSelects);
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select-options').forEach(c => c.classList.remove('show'));
+            document.querySelectorAll('.custom-select-trigger').forEach(t => t.classList.remove('open'));
+        });
     </script>
     @stack('scripts')
 </body>

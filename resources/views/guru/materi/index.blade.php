@@ -14,6 +14,9 @@
                     <td><span class="badge {{ $m->tipe === 'file' ? 'badge-blue' : 'badge-green' }}">{{ ucfirst($m->tipe) }}</span></td>
                     <td>{{ $m->created_at->format('d M Y') }}</td>
                     <td class="flex gap-2">
+                        <a href="{{ route('guru.materi.logs', $m) }}" class="btn btn-outline btn-sm" title="Lihat Pengunduh">
+                            <i class="fas fa-users"></i> <span style="font-size: 11px; margin-left: 4px;">{{ $m->logs_count }}</span>
+                        </a>
                         @if($m->tipe === 'link')<a href="{{ $m->file_url }}" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-external-link-alt"></i></a>@else<a href="{{ asset('storage/'.$m->file_url) }}" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-download"></i></a>@endif
                         <form action="{{ route('guru.materi.destroy', $m) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form>
                     </td>

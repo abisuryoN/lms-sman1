@@ -18,6 +18,8 @@ class Tugas extends Model
         'tahun_ajaran_id',
         'judul',
         'deskripsi',
+        'file_url',
+        'tipe',
         'deadline',
         'status',
     ];

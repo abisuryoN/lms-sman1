@@ -41,4 +41,22 @@ class MateriController extends Controller
 
         return view('siswa.materi.index', compact('materi', 'selectedGuru'));
     }
+
+    public function download(Materi $materi)
+    {
+        $siswa = auth()->user()->siswa;
+        
+        if ($siswa) {
+            \App\Models\MateriLog::firstOrCreate([
+                'materi_id' => $materi->id,
+                'siswa_id' => $siswa->id
+            ]);
+        }
+
+        if ($materi->tipe === 'link') {
+            return redirect($materi->file_url);
+        }
+
+        return redirect(asset('storage/' . $materi->file_url));
+    }
 }

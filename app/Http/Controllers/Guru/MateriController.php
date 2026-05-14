@@ -21,9 +21,25 @@ class MateriController extends Controller
         $materi = Materi::where('guru_id', $guru->id)
             ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
             ->with(['kelas', 'mapel'])
+            ->withCount('logs')
             ->latest()->paginate(10);
 
         return view('guru.materi.index', compact('materi'));
+    }
+
+    public function logs(Materi $materi)
+    {
+        // Pastikan guru ini adalah pemilik materi
+        if ($materi->guru_id !== auth()->user()->guru->id) {
+            abort(403);
+        }
+
+        $logs = \App\Models\MateriLog::where('materi_id', $materi->id)
+            ->with('siswa.kelas')
+            ->latest()
+            ->get();
+
+        return view('guru.materi.logs', compact('materi', 'logs'));
     }
 
     public function create()

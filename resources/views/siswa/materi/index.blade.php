@@ -85,11 +85,11 @@
                             <td style="padding: 16px 24px; color: #64748B; font-size: 13px;">{{ $m->created_at->format('d M Y') }}</td>
                             <td style="padding: 16px 24px; text-align: right;">
                                 @if($m->tipe === 'link')
-                                    <a href="{{ $m->file_url }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 8px 16px;">
+                                    <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 8px 16px;">
                                         <i class="fas fa-external-link-alt" style="margin-right: 6px;"></i> Buka
                                     </a>
                                 @else
-                                    <a href="{{ asset('storage/'.$m->file_url) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 8px 16px;">
+                                    <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 8px 16px;">
                                         <i class="fas fa-download" style="margin-right: 6px;"></i> Download
                                     </a>
                                 @endif

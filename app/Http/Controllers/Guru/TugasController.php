@@ -48,7 +48,17 @@ class TugasController extends Controller
             'kelas_id' => 'required|exists:kelas,id',
             'mapel_id' => 'required|exists:mapel,id',
             'deadline' => 'required|date|after:now',
+            'tipe' => 'nullable|in:file,link',
+            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc|max:10240',
+            'link_url' => 'required_if:tipe,link|nullable|url',
         ]);
+
+        $fileUrl = null;
+        if ($request->tipe === 'file' && $request->hasFile('file')) {
+            $fileUrl = $request->file('file')->store('uploads/tugas', 'public');
+        } elseif ($request->tipe === 'link') {
+            $fileUrl = $request->link_url;
+        }
 
         Tugas::create([
             'guru_id' => $guru->id,
@@ -57,6 +67,8 @@ class TugasController extends Controller
             'tahun_ajaran_id' => $tahunAktif->id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
+            'file_url' => $fileUrl,
+            'tipe' => $request->tipe,
             'deadline' => $request->deadline,
         ]);
 
