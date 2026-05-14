@@ -18,8 +18,10 @@ class Materi extends Model
         'tahun_ajaran_id',
         'judul',
         'deskripsi',
-        'file_url',
+        'storage_path',
         'original_filename',
+        'mime_type',
+        'file_size',
         'tipe',
     ];
 
@@ -49,12 +51,44 @@ class Materi extends Model
         return $this->hasMany(MateriLog::class, 'materi_id');
     }
 
-    // ── Accessor ─────────────────────────────────────────
+    // ── Accessors ────────────────────────────────────────
     public function getFileFullUrlAttribute(): string
     {
         if ($this->tipe === 'link') {
-            return $this->file_url;
+            return $this->storage_path ?? '#';
         }
-        return asset('storage/' . $this->file_url);
+
+        if (!$this->storage_path) return '#';
+
+        // Gunakan cache untuk Signed URL agar performa tetap terjaga
+        return \Illuminate\Support\Facades\Cache::remember(
+            "materi_url_{$this->id}",
+            540, // 9 menit (Signed URL 10 menit)
+            function () {
+                $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.materi_bucket'));
+                return $supabase->getSignedUrl($this->storage_path) ?? '#';
+            }
+        );
+    }
+
+    public function getDownloadUrlAttribute(): string
+    {
+        if ($this->tipe === 'link' || !$this->storage_path) return '#';
+
+        // Paksa download dengan parameter download=filename
+        $url = $this->file_full_url;
+        if ($url !== '#') {
+            $separator = str_contains($url, '?') ? '&' : '?';
+            return $url . $separator . 'download=' . urlencode($this->original_filename);
+        }
+        return '#';
+    }
+
+    public function getFileSizeHumanAttribute(): string
+    {
+        if (!$this->file_size) return '0 B';
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $i = floor(log($this->file_size, 1024));
+        return round($this->file_size / pow(1024, $i), 2) . ' ' . $units[$i];
     }
 }

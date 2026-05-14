@@ -22,22 +22,28 @@
             </div>
         @endif
 
-        @if($tuga->file_url)
+        @if($tuga->soal_storage_path)
             <div style="margin-top:20px; padding:20px; background:#F8FAFC; border-radius:16px; border:1px solid #E2E8F0;">
                 <div style="display:flex; align-items:center; gap:16px;">
                     <div style="width:48px; height:48px; background:{{ $tuga->tipe == 'file' ? '#EFF6FF' : '#F5F3FF' }}; color:{{ $tuga->tipe == 'file' ? '#3B82F6' : '#8B5CF6' }}; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px;">
                         <i class="fas {{ $tuga->tipe == 'file' ? 'fa-file-pdf' : 'fa-link' }}"></i>
                     </div>
                     <div style="flex:1">
-                        <div style="font-weight:700; font-size:15px; color:#0F172A;">{{ $tuga->tipe == 'file' ? 'Lampiran Soal' : 'Link Eksternal' }}</div>
-                        <div style="font-size:12px; color:#64748B;">{{ $tuga->tipe == 'file' ? 'Dokumen soal dari Guru' : 'Klik tombol untuk membuka link' }}</div>
+                        <div style="font-weight:700; font-size:15px; color:#0F172A;">{{ $tuga->tipe == 'file' ? 'Lampiran Soal / Dokumen' : 'Link Eksternal' }}</div>
+                        <div style="font-size:12px; color:#64748B;">
+                            @if($tuga->tipe == 'file')
+                                {{ $tuga->soal_original_filename }} ({{ $tuga->soal_size_human }})
+                            @else
+                                Klik tombol untuk membuka link referensi
+                            @endif
+                        </div>
                     </div>
                     <div style="display:flex; gap:10px;">
                         @if($tuga->tipe == 'file')
-                            <a href="{{ Storage::url($tuga->file_url) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff"><i class="fas fa-eye"></i> Lihat</a>
+                            <a href="{{ $tuga->soal_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff"><i class="fas fa-eye"></i> Lihat</a>
                             <a href="{{ route('siswa.tugas.download', $tuga) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Unduh</a>
                         @else
-                            <a href="{{ $tuga->file_url }}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Buka Link</a>
+                            <a href="{{ $tuga->soal_storage_path }}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Buka Link</a>
                         @endif
                     </div>
                 </div>
@@ -105,7 +111,7 @@
         <form action="{{ route('siswa.tugas.submit', $tuga) }}" method="POST" enctype="multipart/form-data" style="margin-top:16px">
             @csrf
             <div class="form-group"><label class="form-label">Deskripsi Jawaban Anda</label><textarea name="jawaban_text" class="form-control" rows="8" placeholder="Tulis jawaban Anda di sini...">{{ $jawaban->jawaban_text ?? old('jawaban_text') }}</textarea></div>
-            <div class="form-group"><label class="form-label">File Jawaban Mu</label><input type="file" name="file" class="form-control" accept=".pdf,.docx,.doc,.txt"><small style="color:var(--text-muted);font-size:11px">PDF, DOCX, TXT (maks 5MB)</small></div>
+            <div class="form-group"><label class="form-label">File Jawaban Mu</label><input type="file" name="file" class="form-control" accept=".pdf,.docx,.doc,.txt"><small style="color:var(--text-muted);font-size:11px">PDF, DOCX, TXT (maks 1MB)</small></div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> {{ $jawaban ? 'Update Jawaban' : 'Kumpulkan' }}</button>
         </form>
     </div>

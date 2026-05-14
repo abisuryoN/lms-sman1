@@ -39,13 +39,38 @@ class TugasController extends Controller
         return view('siswa.tugas.show', compact('tuga', 'jawaban'));
     }
 
+    public function download(Tugas $tuga)
+    {
+        $siswa = auth()->user()->siswa;
+        
+        // Pastikan siswa ini ada di kelas yang sama dengan tugas
+        if (!$siswa || $tuga->kelas_id !== $siswa->kelas_id) {
+            abort(403, 'Anda tidak memiliki akses ke tugas ini.');
+        }
+
+        if ($tuga->tipe === 'link') {
+            return redirect($tuga->soal_storage_path ?? '#');
+        }
+
+        if (!$tuga->soal_storage_path) {
+            return back()->with('error', 'Tugas tidak memiliki lampiran soal.');
+        }
+
+        $url = $tuga->soal_download_url;
+        if ($url === '#') {
+            return back()->with('error', 'Gagal menghasilkan link download soal.');
+        }
+
+        return redirect($url);
+    }
+
     public function submit(Request $request, Tugas $tuga)
     {
         $siswa = auth()->user()->siswa;
 
         $request->validate([
             'jawaban_text' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:1024',
         ]);
 
         $filePath = null;

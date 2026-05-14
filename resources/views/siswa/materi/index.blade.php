@@ -62,9 +62,9 @@
                         <tr style="background: #F8FAFC;">
                             <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">JUDUL MATERI</th>
                             <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">MATA PELAJARAN</th>
+                            <th style="text-align: center; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">UKURAN</th>
                             <th style="text-align: center; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">TIPE</th>
-                            <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">TANGGAL</th>
-                            <th style="text-align: right; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">AKSI</th>
+                            <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">AKSI</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,24 +75,30 @@
                                 @if($m->deskripsi)
                                     <div style="font-size: 12px; color: #94A3B8; margin-top: 4px;">{{ Str::limit($m->deskripsi, 60) }}</div>
                                 @endif
+                                <div style="font-size: 11px; color: #CBD5E1; margin-top: 2px;">{{ $m->created_at->format('d M Y') }}</div>
                             </td>
                             <td style="padding: 16px 24px; color: #475569; font-weight: 500;">{{ $m->mapel->nama_mapel }}</td>
+                            <td style="padding: 16px 24px; text-align: center; color: #64748B; font-size: 12px;">{{ $m->tipe === 'file' ? $m->file_size_human : '-' }}</td>
                             <td style="padding: 16px 24px; text-align: center;">
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; {{ $m->tipe === 'file' ? 'background: #EFF6FF; color: #3B82F6;' : 'background: #ECFDF5; color: #10B981;' }}">
                                     {{ $m->tipe }}
                                 </span>
                             </td>
-                            <td style="padding: 16px 24px; color: #64748B; font-size: 13px;">{{ $m->created_at->format('d M Y') }}</td>
                             <td style="padding: 16px 24px; text-align: right;">
-                                @if($m->tipe === 'link')
-                                    <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 8px 16px;">
-                                        <i class="fas fa-external-link-alt" style="margin-right: 6px;"></i> Buka
-                                    </a>
-                                @else
-                                    <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 8px 16px;">
-                                        <i class="fas fa-download" style="margin-right: 6px;"></i> Download
-                                    </a>
-                                @endif
+                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                    @if($m->tipe === 'link')
+                                        <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;">
+                                            <i class="fas fa-external-link-alt"></i> Buka
+                                        </a>
+                                    @else
+                                        <a href="{{ $m->file_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Pratinjau">
+                                            <i class="fas fa-eye"></i> Lihat
+                                        </a>
+                                        <a href="{{ route('siswa.materi.download', $m) }}" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Unduh File">
+                                            <i class="fas fa-download"></i> Unduh
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

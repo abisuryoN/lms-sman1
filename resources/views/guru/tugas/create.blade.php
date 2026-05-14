@@ -26,8 +26,8 @@
 
             <div id="fileInputWrapper" class="form-group {{ old('tipe') == 'file' ? '' : 'hidden' }}">
                 <label class="form-label">Pilih File</label>
-                <input type="file" name="file" class="form-control">
-                <small class="text-muted">Maksimal 10MB. Format: pdf, docx, pptx, doc</small>
+                <input type="file" name="file" class="form-control" accept=".pdf,.docx,.pptx,.doc,.jpg,.jpeg,.png">
+                <small class="text-muted">Maksimal 1MB. Format: pdf, docx, doc, jpg, png</small>
             </div>
 
             <div id="linkInputWrapper" class="form-group {{ old('tipe') == 'link' ? '' : 'hidden' }}">

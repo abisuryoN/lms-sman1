@@ -22,7 +22,7 @@
                     <i class="fas fa-camera"></i> Ganti Foto Profil
                     <input type="file" name="photo" style="display: none;" onchange="this.form.submit()">
                 </label>
-                <small style="display: block; margin-top: 8px; font-size: 11px; color: var(--text-muted);">Format: JPG, PNG (Maks 2MB)</small>
+                <small style="display: block; margin-top: 8px; font-size: 11px; color: var(--text-muted);">Format: JPG, PNG (Maks 1MB)</small>
             </div>
         </form>
     </div>

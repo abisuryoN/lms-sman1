@@ -39,6 +39,9 @@ return [
         'url' => env('SUPABASE_URL'),
         'service_role_key' => env('SUPABASE_SERVICE_ROLE_KEY'),
         'bucket' => env('SUPABASE_BUCKET', 'tugas-siswa'),
+        'profile_bucket' => env('SUPABASE_PROFILE_BUCKET', 'profile-photos'),
+        'materi_bucket' => env('SUPABASE_MATERI_BUCKET', 'materi-guru'),
+        'soal_bucket' => env('SUPABASE_SOAL_BUCKET', 'soal-tugas'),
         'region' => env('SUPABASE_REGION', 'ap-southeast-1'),
         'signed_url_expires' => 600, // 10 menit
     ],

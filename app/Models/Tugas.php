@@ -18,8 +18,10 @@ class Tugas extends Model
         'tahun_ajaran_id',
         'judul',
         'deskripsi',
-        'file_url',
-        'original_filename',
+        'soal_storage_path',
+        'soal_original_filename',
+        'soal_mime_type',
+        'soal_file_size',
         'tipe',
         'deadline',
         'status',
@@ -108,5 +110,44 @@ class Tugas extends Model
             'failed' => 'red',
             default => 'gray',
         };
+    }
+
+    // ── File Accessors ───────────────────────────────────
+    public function getSoalFullUrlAttribute(): string
+    {
+        if ($this->tipe === 'link') {
+            return $this->soal_storage_path ?? '#';
+        }
+
+        if (!$this->soal_storage_path) return '#';
+
+        return \Illuminate\Support\Facades\Cache::remember(
+            "tugas_soal_url_{$this->id}",
+            540,
+            function () {
+                $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.soal_bucket'));
+                return $supabase->getSignedUrl($this->soal_storage_path) ?? '#';
+            }
+        );
+    }
+
+    public function getSoalDownloadUrlAttribute(): string
+    {
+        if ($this->tipe === 'link' || !$this->soal_storage_path) return '#';
+
+        $url = $this->soal_full_url;
+        if ($url !== '#') {
+            $separator = str_contains($url, '?') ? '&' : '?';
+            return $url . $separator . 'download=' . urlencode($this->soal_original_filename);
+        }
+        return '#';
+    }
+
+    public function getSoalSizeHumanAttribute(): string
+    {
+        if (!$this->soal_file_size) return '0 B';
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $i = floor(log($this->soal_file_size, 1024));
+        return round($this->soal_file_size / pow(1024, $i), 2) . ' ' . $units[$i];
     }
 }

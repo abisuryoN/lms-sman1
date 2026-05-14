@@ -43,6 +43,37 @@
             <div><strong>Status Tugas:</strong> <span class="badge {{ $tuga->isExpired() ? 'badge-red' : 'badge-green' }}">{{ $tuga->isExpired() ? 'Berakhir' : 'Aktif' }}</span></div>
         </div>
         @if($tuga->deskripsi)<div style="margin-top:16px;padding:12px;background:var(--primary-50);border-radius:8px">{{ $tuga->deskripsi }}</div>@endif
+
+        @if($tuga->soal_storage_path)
+            <div style="margin-top:20px; padding:16px; background:#F8FAFC; border-radius:12px; border:1px solid #E2E8F0;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="width:40px; height:40px; background:{{ $tuga->tipe == 'file' ? '#EFF6FF' : '#F5F3FF' }}; color:{{ $tuga->tipe == 'file' ? '#3B82F6' : '#8B5CF6' }}; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px;">
+                            <i class="fas {{ $tuga->tipe == 'file' ? 'fa-file-alt' : 'fa-link' }}"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:700; font-size:14px; color:#0F172A;">{{ $tuga->tipe == 'file' ? 'Lampiran Soal' : 'Link Eksternal' }}</div>
+                            <div style="font-size:12px; color:#64748B;">
+                                @if($tuga->tipe == 'file')
+                                    {{ $tuga->soal_original_filename }} ({{ $tuga->soal_size_human }})
+                                @else
+                                    {{ Str::limit($tuga->soal_storage_path, 50) }}
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        @if($tuga->tipe == 'file')
+                            <a href="{{ $tuga->soal_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff;"><i class="fas fa-eye"></i> Lihat</a>
+                            {{-- Gunakan route download siswa karena logikanya sama atau buat route khusus guru --}}
+                            <a href="{{ $tuga->soal_download_url }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Download</a>
+                        @else
+                            <a href="{{ $tuga->soal_storage_path }}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Buka Link</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 

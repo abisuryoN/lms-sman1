@@ -61,10 +61,33 @@ class User extends Authenticatable
     // ── Accessors ────────────────────────────────────────
     public function getPhotoUrlAttribute(): string
     {
+        // Gunakan UI Avatars sebagai fallback yang cantik dan dinamis (berdasarkan inisial nama)
+        $defaultAvatar = 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=6366f1&color=fff&bold=true';
+
         if ($this->photo_profile) {
+            // Jika menggunakan Supabase (path diawali 'users/')
+            if (str_starts_with($this->photo_profile, 'users/')) {
+                return \Illuminate\Support\Facades\Cache::remember(
+                    "user_photo_{$this->id}",
+                    540, // Cache selama 9 menit (URL aktif 10 menit)
+                    function () use ($defaultAvatar) {
+                        try {
+                            $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.profile_bucket'));
+                            $url = $supabase->getSignedUrl($this->photo_profile);
+                            
+                            // Jika Supabase gagal memberikan URL (misal karena auth error), gunakan default
+                            return $url ?: $defaultAvatar;
+                        } catch (\Exception $e) {
+                            return $defaultAvatar;
+                        }
+                    }
+                );
+            }
+            // Fallback untuk storage lokal lama jika file masih ada
             return asset('storage/' . $this->photo_profile);
         }
-        return asset('assets/default-avatar.png');
+
+        return $defaultAvatar;
     }
 
     public function getIdentifierAttribute(): string

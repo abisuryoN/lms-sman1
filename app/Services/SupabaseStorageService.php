@@ -11,11 +11,11 @@ class SupabaseStorageService
     private string $serviceRoleKey;
     private string $bucket;
 
-    public function __construct()
+    public function __construct(?string $customBucket = null)
     {
         $this->baseUrl = rtrim(config('services.supabase.url'), '/');
         $this->serviceRoleKey = config('services.supabase.service_role_key');
-        $this->bucket = config('services.supabase.bucket');
+        $this->bucket = $customBucket ?? config('services.supabase.bucket');
     }
 
     /**

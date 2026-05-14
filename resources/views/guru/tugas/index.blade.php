@@ -16,9 +16,14 @@
                     <td><span class="badge badge-blue">{{ $t->jawaban_tugas_count }}</span></td>
                     <td><span class="badge {{ $t->isExpired() ? 'badge-red' : 'badge-green' }}">{{ $t->isExpired() ? 'Berakhir' : 'Aktif' }}</span></td>
                     <td class="flex gap-2">
-                        <a href="{{ route('guru.tugas.show', $t) }}" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
+                        <a href="{{ route('guru.tugas.show', $t) }}" class="btn btn-outline btn-sm" title="Detail"><i class="fas fa-eye"></i></a>
+                        <a href="{{ route('guru.tugas.edit', $t) }}" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                         <a href="{{ route('guru.nilai.edit', $t) }}" class="btn btn-warning btn-sm" title="Nilai"><i class="fas fa-star"></i></a>
-                        <a href="{{ route('guru.similarity.detail', $t) }}" class="btn btn-primary btn-sm" title="Similarity"><i class="fas fa-search-plus"></i></a>
+                        <a href="{{ route('guru.similarity.detail', $t) }}" class="btn btn-outline btn-sm" title="Similarity" style="background:#fff; border:1px solid #E2E8F0;"><i class="fas fa-search-plus"></i></a>
+                        <form action="{{ route('guru.tugas.destroy', $t) }}" method="POST" onsubmit="return confirm('Hapus tugas ini? Semua jawaban siswa juga akan terhapus.')" style="display:inline;">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </form>
                     </td>
                 </tr>
             @empty

@@ -15,7 +15,7 @@
             <div class="form-group"><label class="form-label">Kelas & Mapel</label><select name="kelas_id" class="form-control" required id="kelasSelect"><option value="">Pilih Kelas & Mapel</option>@foreach($guruKelas as $gk)<option value="{{ $gk->kelas_id }}" data-mapel="{{ $gk->mapel_id }}">{{ $gk->kelas->nama_kelas }} — {{ $gk->mapel->nama_mapel }}</option>@endforeach</select><input type="hidden" name="mapel_id" id="mapelInput"></div>
             <div class="form-group"><label class="form-label">Deskripsi</label><textarea name="deskripsi" class="form-control">{{ old('deskripsi') }}</textarea></div>
             <div class="form-group"><label class="form-label">Tipe</label><select name="tipe" class="form-control" id="tipeSelect" onchange="toggleTipe()"><option value="file">Upload File</option><option value="link">Link URL</option></select></div>
-            <div class="form-group" id="fileGroup"><label class="form-label">File (PDF, DOCX, PPT, maks 10MB)</label><input type="file" name="file" class="form-control" accept=".pdf,.docx,.pptx,.ppt,.doc"></div>
+            <div class="form-group" id="fileGroup"><label class="form-label">File (PDF, DOCX, PPTX, JPG, PNG, maks 1MB)</label><input type="file" name="file" class="form-control" accept=".pdf,.docx,.pptx,.ppt,.doc,.jpg,.jpeg,.png"></div>
             <div class="form-group" id="linkGroup" style="display:none"><label class="form-label">URL (Google Drive / YouTube)</label><input type="url" name="link_url" class="form-control" placeholder="https://..."></div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Upload</button>
         </form>

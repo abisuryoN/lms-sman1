@@ -50,7 +50,7 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'role:guru'])->group(f
 
     Route::resource('materi', Guru\MateriController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::get('materi/{materi}/logs', [Guru\MateriController::class, 'logs'])->name('materi.logs');
-    Route::resource('tugas', Guru\TugasController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('tugas', Guru\TugasController::class);
     Route::post('tugas/{tuga}/check-similarity', [Guru\TugasController::class, 'checkSimilarity'])->name('tugas.check-similarity');
 
     Route::get('nilai', [Guru\NilaiController::class, 'index'])->name('nilai.index');

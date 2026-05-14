@@ -64,17 +64,31 @@ class MateriController extends Controller
             'kelas_id' => 'required|exists:kelas,id',
             'mapel_id' => 'required|exists:mapel,id',
             'tipe' => 'required|in:file,link',
-            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc|max:10240',
+            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:1024',
             'link_url' => 'required_if:tipe,link|nullable|url',
         ]);
 
-        $fileUrl = null;
+        $storagePath = null;
         $originalFilename = null;
+        $mimeType = null;
+        $fileSize = null;
+
         if ($request->tipe === 'file' && $request->hasFile('file')) {
-            $fileUrl = $request->file('file')->store('uploads/materi', 'public');
-            $originalFilename = $request->file('file')->getClientOriginalName();
+            $file = $request->file('file');
+            $originalFilename = $file->getClientOriginalName();
+            $mimeType = $file->getMimeType();
+            $fileSize = $file->getSize();
+            $timestamp = time();
+            $extension = $file->getClientOriginalExtension();
+            $storagePath = "materi/{$guru->id}/{$timestamp}-" . \Illuminate\Support\Str::slug(pathinfo($originalFilename, PATHINFO_FILENAME)) . ".{$extension}";
+
+            $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.materi_bucket'));
+            
+            if (!$supabase->upload($file->getPathname(), $storagePath, $mimeType)) {
+                return back()->with('error', 'Gagal mengunggah materi ke Supabase Storage.');
+            }
         } elseif ($request->tipe === 'link') {
-            $fileUrl = $request->link_url;
+            $storagePath = $request->link_url;
         }
 
         Materi::create([
@@ -84,8 +98,10 @@ class MateriController extends Controller
             'tahun_ajaran_id' => $tahunAktif->id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'file_url' => $fileUrl,
+            'storage_path' => $storagePath,
             'original_filename' => $originalFilename,
+            'mime_type' => $mimeType,
+            'file_size' => $fileSize,
             'tipe' => $request->tipe,
         ]);
 
@@ -94,8 +110,14 @@ class MateriController extends Controller
 
     public function destroy(Materi $materi)
     {
-        if ($materi->tipe === 'file' && $materi->file_url) {
-            Storage::disk('public')->delete($materi->file_url);
+        // Pastikan guru ini adalah pemilik materi
+        if ($materi->guru_id !== auth()->user()->guru->id) {
+            abort(403);
+        }
+
+        if ($materi->tipe === 'file' && $materi->storage_path) {
+            $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.materi_bucket'));
+            $supabase->delete($materi->storage_path);
         }
         $materi->delete();
         return back()->with('success', 'Materi berhasil dihapus.');
