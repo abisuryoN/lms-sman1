@@ -30,7 +30,7 @@
                             <td>{{ $k->tahunAjaran->full_name ?? '-' }}</td>
                             <td><span class="badge badge-blue">{{ $k->siswa_count }} Siswa</span></td>
                             <td>
-                                <a href="{{ route('guru.kelas.show', $k) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('guru.kelas.show', $k) }}" class="btn btn-primary btn-sm" title="Lihat Daftar Siswa">
                                     <i class="fas fa-users"></i> Lihat Siswa
                                 </a>
                             </td>

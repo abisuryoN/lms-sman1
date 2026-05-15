@@ -23,16 +23,16 @@
         <div class="flex gap-2">
             <form action="{{ route('guru.similarity.run', $tuga) }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-primary btn-sm" {{ $tuga->similarity_status == 'processing' ? 'disabled' : '' }}>
+                <button type="submit" class="btn btn-primary btn-sm" {{ $tuga->similarity_status == 'processing' ? 'disabled' : '' }} title="Jalankan Deteksi Kemiripan">
                     <i class="fas fa-search-plus"></i> {{ $tuga->similarity_status == 'processing' ? 'Memproses...' : 'Cek Similarity' }}
                 </button>
             </form>
             @if($tuga->similarityResults->count() > 0)
-                <a href="{{ route('guru.similarity.detail', $tuga->id) }}" class="btn btn-outline btn-sm" style="background:#fff;">
+                <a href="{{ route('guru.similarity.detail', $tuga->id) }}" class="btn btn-outline btn-sm" style="background:#fff;" title="Lihat Hasil Detail">
                     <i class="fas fa-list-alt"></i> Hasil Similarity
                 </a>
             @endif
-            <a href="{{ route('guru.nilai.edit', $tuga) }}" class="btn btn-warning btn-sm"><i class="fas fa-star"></i> Nilai</a>
+            <a href="{{ route('guru.nilai.edit', $tuga) }}" class="btn btn-warning btn-sm" title="Beri Nilai"><i class="fas fa-star"></i> Nilai</a>
         </div>
     </div>
     <div class="card-body">
@@ -64,11 +64,11 @@
                     </div>
                     <div style="display:flex; gap:8px;">
                         @if($tuga->tipe == 'file')
-                            <a href="{{ $tuga->soal_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff;"><i class="fas fa-eye"></i> Lihat</a>
+                            <a href="{{ $tuga->soal_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff;" title="Pratinjau Soal"><i class="fas fa-eye"></i> Lihat</a>
                             {{-- Gunakan route download siswa karena logikanya sama atau buat route khusus guru --}}
-                            <a href="{{ $tuga->soal_download_url }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Download</a>
+                            <a href="{{ $tuga->soal_download_url }}" class="btn btn-primary btn-sm" title="Unduh Soal"><i class="fas fa-download"></i> Download</a>
                         @else
-                            <a href="{{ $tuga->soal_storage_path }}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Buka Link</a>
+                            <a href="{{ $tuga->soal_storage_path }}" target="_blank" class="btn btn-primary btn-sm" title="Buka Link Soal"><i class="fas fa-external-link-alt"></i> Buka Link</a>
                         @endif
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                             @endif
                             
                             @if($j->extracted_text || $j->processed_text)
-                                <button type="button" onclick="showOcrText({{ $j->id }})" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; background:#fff;">
+                                <button type="button" onclick="showOcrText({{ $j->id }})" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; background:#fff;" title="Lihat Teks Hasil OCR">
                                     <i class="fas fa-align-left"></i> Lihat Teks OCR
                                 </button>
                             @elseif($j->jawaban_text)
@@ -136,7 +136,7 @@
                         @elseif($j->file_path)
                             <div style="display:flex; flex-direction:column; gap:4px;">
                                 <div style="font-size:12px; color:var(--text-muted);">File Lokal Lama</div>
-                                <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm" style="width:fit-content;"><i class="fas fa-download"></i> Download</a>
+                                <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm" style="width:fit-content;" title="Unduh File Lokal"><i class="fas fa-download"></i> Download</a>
                             </div>
                         @else
                             <span style="color:var(--text-muted);">—</span>

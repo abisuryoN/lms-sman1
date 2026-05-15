@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
 
         // ── 5. Guru ──────────────────────────────
         $guruData = [
-            ['Budi Santoso', '198501012010011001', 'budi@sman1tajurhalang.sch.id'],
+            ['Budi Santoso', 'cc', 'budi@sman1tajurhalang.sch.id'],
             ['Siti Aminah', '198602022011012002', 'siti@sman1tajurhalang.sch.id'],
             ['Ahmad Hidayat', '198703032012011003', 'ahmad@sman1tajurhalang.sch.id'],
         ];

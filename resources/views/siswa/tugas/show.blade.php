@@ -40,10 +40,10 @@
                     </div>
                     <div style="display:flex; gap:10px;">
                         @if($tuga->tipe == 'file')
-                            <a href="{{ $tuga->soal_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff"><i class="fas fa-eye"></i> Lihat</a>
-                            <a href="{{ route('siswa.tugas.download', $tuga) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Unduh</a>
+                            <a href="{{ $tuga->soal_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff" title="Pratinjau Soal"><i class="fas fa-eye"></i> Lihat</a>
+                            <a href="{{ route('siswa.tugas.download', $tuga) }}" class="btn btn-primary btn-sm" title="Unduh Soal"><i class="fas fa-download"></i> Unduh</a>
                         @else
-                            <a href="{{ $tuga->soal_storage_path }}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Buka Link</a>
+                            <a href="{{ $tuga->soal_storage_path }}" target="_blank" class="btn btn-primary btn-sm" title="Buka Link Soal"><i class="fas fa-external-link-alt"></i> Buka Link</a>
                         @endif
                     </div>
                 </div>
@@ -88,10 +88,10 @@
                                 </div>
                             </div>
                             <div style="display:flex; gap:8px;">
-                                <a href="{{ route('siswa.jawaban.view-file', $jawaban) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff;">
+                                <a href="{{ route('siswa.jawaban.view-file', $jawaban) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff;" title="Pratinjau File Jawaban">
                                     <i class="fas fa-eye"></i> Lihat File
                                 </a>
-                                <a href="{{ route('siswa.jawaban.view-file', ['jawaban' => $jawaban->id, 'action' => 'download']) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('siswa.jawaban.view-file', ['jawaban' => $jawaban->id, 'action' => 'download']) }}" class="btn btn-primary btn-sm" title="Download File Jawaban">
                                     <i class="fas fa-download"></i> Download File
                                 </a>
                             </div>
@@ -100,7 +100,7 @@
                 @elseif($jawaban->file_path)
                     <div style="margin-top:16px; padding-top:16px; border-top:1px dashed #E2E8F0;">
                         <div style="font-weight:700; font-size:13px; color:var(--primary); text-transform:uppercase; margin-bottom:8px;">File Terlampir (Lokal):</div>
-                        <a href="{{ Storage::url($jawaban->file_path) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff">
+                        <a href="{{ Storage::url($jawaban->file_path) }}" target="_blank" class="btn btn-outline btn-sm" style="background:#fff" title="Lihat File Jawaban">
                             <i class="fas fa-file-pdf"></i> Lihat File Jawaban
                         </a>
                     </div>

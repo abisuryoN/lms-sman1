@@ -56,12 +56,12 @@
                             <div style="font-weight:600; color:var(--text-strong);">{{ $r->jawaban1->siswa->nama ?? '-' }}</div>
                             <div style="display:flex; gap:6px; margin-top:6px;">
                                 @if($r->jawaban1?->storage_path)
-                                    <a href="{{ route('guru.similarity.view-file', $r->jawaban1) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;">
+                                    <a href="{{ route('guru.similarity.view-file', $r->jawaban1) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;" title="Lihat File Asli">
                                         <i class="fas fa-file-alt text-primary"></i> File Asli
                                     </a>
                                 @endif
                                 @if($r->jawaban1?->extracted_text || $r->jawaban1?->processed_text)
-                                    <button type="button" onclick="showOcrText({{ $r->jawaban1->id }})" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;">
+                                    <button type="button" onclick="showOcrText({{ $r->jawaban1->id }})" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;" title="Lihat Teks OCR">
                                         <i class="fas fa-align-left text-success"></i> Teks OCR
                                     </button>
                                 @endif
@@ -71,12 +71,12 @@
                             <div style="font-weight:600; color:var(--text-strong);">{{ $r->jawaban2->siswa->nama ?? '-' }}</div>
                             <div style="display:flex; gap:6px; margin-top:6px;">
                                 @if($r->jawaban2?->storage_path)
-                                    <a href="{{ route('guru.similarity.view-file', $r->jawaban2) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;">
+                                    <a href="{{ route('guru.similarity.view-file', $r->jawaban2) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;" title="Lihat File Asli">
                                         <i class="fas fa-file-alt text-primary"></i> File Asli
                                     </a>
                                 @endif
                                 @if($r->jawaban2?->extracted_text || $r->jawaban2?->processed_text)
-                                    <button type="button" onclick="showOcrText({{ $r->jawaban2->id }})" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;">
+                                    <button type="button" onclick="showOcrText({{ $r->jawaban2->id }})" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px; background:#fff;" title="Lihat Teks OCR">
                                         <i class="fas fa-align-left text-success"></i> Teks OCR
                                     </button>
                                 @endif

@@ -11,7 +11,7 @@
                 <tbody>
                 @forelse($mapel as $i => $m)
                     <tr><td>{{ $mapel->firstItem() + $i }}</td><td><code>{{ $m->kode_mapel }}</code></td><td>{{ $m->nama_mapel }}</td>
-                    <td class="flex gap-2"><a href="{{ route('admin.mapel.edit', $m) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a><form action="{{ route('admin.mapel.destroy', $m) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form></td></tr>
+                    <td class="flex gap-2"><a href="{{ route('admin.mapel.edit', $m) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a><form action="{{ route('admin.mapel.destroy', $m) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button></form></td></tr>
                 @empty
                     <tr><td colspan="4" class="text-center" style="padding:32px;color:var(--text-muted)">Belum ada data.</td></tr>
                 @endforelse

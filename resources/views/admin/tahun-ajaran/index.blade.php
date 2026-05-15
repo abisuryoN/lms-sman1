@@ -17,7 +17,7 @@
                         <td>{{ $t->kelas_count }}</td>
                         <td>
                             @if($t->status !== 'aktif')
-                                <form action="{{ route('admin.tahun-ajaran.activate', $t) }}" method="POST" style="display:inline" onsubmit="return confirm('Aktifkan tahun ajaran ini?')">@csrf<button class="btn btn-success btn-sm"><i class="fas fa-check"></i> Aktifkan</button></form>
+                                <form action="{{ route('admin.tahun-ajaran.activate', $t) }}" method="POST" style="display:inline" onsubmit="return confirm('Aktifkan tahun ajaran ini?')">@csrf<button class="btn btn-success btn-sm" title="Aktifkan"><i class="fas fa-check"></i> Aktifkan</button></form>
                             @else
                                 <span class="badge badge-green">Sedang Aktif</span>
                             @endif

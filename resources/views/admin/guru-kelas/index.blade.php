@@ -43,8 +43,8 @@
                         <td><code>{{ $gk->jam_mulai ? \Carbon\Carbon::parse($gk->jam_mulai)->format('H.i') : '-' }} - {{ $gk->jam_selesai ? \Carbon\Carbon::parse($gk->jam_selesai)->format('H.i') : '-' }}</code></td>
                         <td>{{ $gk->tahunAjaran->full_name }}</td>
                         <td style="display: flex; gap: 8px; justify-content: center;">
-                            <a href="{{ route('admin.guru-kelas.edit', $gk) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('admin.guru-kelas.destroy', $gk) }}" method="POST" onsubmit="return confirm('Hapus penugasan?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form>
+                            <a href="{{ route('admin.guru-kelas.edit', $gk) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
+                            <form action="{{ route('admin.guru-kelas.destroy', $gk) }}" method="POST" onsubmit="return confirm('Hapus penugasan?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button></form>
                         </td>
                     </tr>
                 @empty

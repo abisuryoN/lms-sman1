@@ -162,17 +162,4 @@ class TugasController extends Controller
 
         return redirect($signedUrl);
     }
-
-    public function download(Tugas $tuga)
-    {
-        if ($tuga->tipe === 'file' && $tuga->file_url) {
-            if (Storage::disk('public')->exists($tuga->file_url)) {
-                return Storage::disk('public')->download(
-                    $tuga->file_url,
-                    $tuga->original_filename ?? basename($tuga->file_url)
-                );
-            }
-        }
-        return back()->with('error', 'File lampiran tidak ditemukan.');
-    }
 }

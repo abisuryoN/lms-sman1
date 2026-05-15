@@ -27,9 +27,9 @@
                         <td>{{ $g->user->email }}</td>
                         <td>{{ $g->telepon ?? '-' }}</td>
                         <td class="flex gap-2">
-                            <a href="{{ route('admin.guru.edit', $g) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                            <a href="{{ route('admin.guru.edit', $g) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                             <form action="{{ route('admin.guru.reset-password', $g) }}" method="POST" onsubmit="return confirm('Reset password ke NIP?')">@csrf<button class="btn btn-outline btn-sm" title="Reset Password"><i class="fas fa-key"></i></button></form>
-                            <form action="{{ route('admin.guru.destroy', $g) }}" method="POST" onsubmit="return confirm('Hapus guru ini?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form>
+                            <form action="{{ route('admin.guru.destroy', $g) }}" method="POST" onsubmit="return confirm('Hapus guru ini?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button></form>
                         </td>
                     </tr>
                 @empty

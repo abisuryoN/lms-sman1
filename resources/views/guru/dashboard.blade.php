@@ -104,7 +104,7 @@
     </div>
 
     <div class="card mt-4">
-        <div class="card-header"><h3><i class="fas fa-clock"></i> Tugas Terbaru</h3><a href="{{ route('guru.tugas.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Buat Tugas</a></div>
+        <div class="card-header"><h3><i class="fas fa-clock"></i> Tugas Terbaru</h3><a href="{{ route('guru.tugas.create') }}" class="btn btn-primary btn-sm" title="Buat Tugas Baru"><i class="fas fa-plus"></i> Buat Tugas</a></div>
         <div class="card-body table-wrapper">
             <table>
                 <thead><tr><th>Judul</th><th>Kelas</th><th>Mapel</th><th>Deadline</th><th>Status</th></tr></thead>

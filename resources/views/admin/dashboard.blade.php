@@ -156,8 +156,8 @@
                         <div style="font-size:28px;font-weight:700;color:var(--primary)">{{ $tahunAjaranAktif->nama_tahun }}</div>
                         <div style="margin-top:4px"><span class="badge badge-blue">{{ $tahunAjaranAktif->semester }}</span></div>
                         <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
-                            <a href="{{ route('admin.tahun-ajaran.create') }}" class="btn btn-outline btn-sm"><i class="fas fa-plus"></i> Tahun Baru</a>
-                            <button onclick="document.getElementById('modalAkhiri').classList.add('show')" class="btn btn-danger btn-sm"><i class="fas fa-stop-circle"></i> Akhiri</button>
+                            <a href="{{ route('admin.tahun-ajaran.create') }}" class="btn btn-outline btn-sm" title="Buat Tahun Ajaran Baru"><i class="fas fa-plus"></i> Tahun Baru</a>
+                            <button onclick="document.getElementById('modalAkhiri').classList.add('show')" class="btn btn-danger btn-sm" title="Akhiri Tahun Ajaran Saat Ini"><i class="fas fa-stop-circle"></i> Akhiri</button>
                         </div>
                     </div>
                 @else

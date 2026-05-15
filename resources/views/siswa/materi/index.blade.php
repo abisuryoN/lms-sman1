@@ -87,7 +87,7 @@
                             <td style="padding: 16px 24px; text-align: right;">
                                 <div style="display: flex; gap: 8px; justify-content: flex-end;">
                                     @if($m->tipe === 'link')
-                                        <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;">
+                                        <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Buka Link">
                                             <i class="fas fa-external-link-alt"></i> Buka
                                         </a>
                                     @else

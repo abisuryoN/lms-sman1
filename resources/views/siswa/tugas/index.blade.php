@@ -17,7 +17,7 @@
                         @elseif($t->isExpired())<span class="badge badge-red">Terlambat</span>
                         @else<span class="badge badge-yellow">Belum Dikerjakan</span>@endif
                     </td>
-                    <td><a href="{{ route('siswa.tugas.show', $t) }}" class="btn btn-primary btn-sm"><i class="fas fa-arrow-right"></i></a></td>
+                    <td><a href="{{ route('siswa.tugas.show', $t) }}" class="btn btn-primary btn-sm" title="Buka Tugas"><i class="fas fa-arrow-right"></i></a></td>
                 </tr>
             @empty
                 <tr><td colspan="5" class="text-center" style="padding:32px;color:var(--text-muted)">Belum ada tugas.</td></tr>

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Log;
+use Imagick;
 
 class OcrService
 {
@@ -95,7 +96,7 @@ class OcrService
     }
 
     /**
-     * Ekstrak teks dari PDF scan: convert halaman ke gambar lalu OCR.
+     * Ekstrak teks dari PDF scan: convert halaman ke gambayr lalu OCR.
      */
     private function extractFromScannedPdf(string $path): string
     {
@@ -131,6 +132,7 @@ class OcrService
 
         $allText = '';
         try {
+            /** @var \Imagick $imagick */
             $imagick = new \Imagick();
             $imagick->setResolution(300, 300);
             $imagick->readImage($pdfPath);

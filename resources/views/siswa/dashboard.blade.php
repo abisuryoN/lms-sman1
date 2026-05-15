@@ -78,7 +78,7 @@
                         </span>
                     </div>
                 </div>
-                <a href="{{ route('siswa.tugas.show', $t) }}" style="color: #3B82F6;"><i class="fas fa-chevron-right"></i></a>
+                <a href="{{ route('siswa.tugas.show', $t) }}" style="color: #3B82F6;" title="Lihat Tugas"><i class="fas fa-chevron-right"></i></a>
             </div>
         @empty
             <div style="background: #FFFFFF; border-radius: 20px; padding: 30px; text-align: center; border: 1px dashed #CBD5E1;">
@@ -151,7 +151,7 @@
                         <td><strong>{{ $t->judul }}</strong></td><td>{{ $t->mapel->nama_mapel }}</td>
                         <td>{{ $t->deadline->format('d M Y H:i') }}</td>
                         <td>@if($t->isExpired())<span class="badge badge-red">Berakhir</span>@else<span class="badge badge-green">{{ $t->deadline->diffForHumans() }}</span>@endif</td>
-                        <td><a href="{{ route('siswa.tugas.show', $t) }}" class="btn btn-primary btn-sm"><i class="fas fa-arrow-right"></i> Kerjakan</a></td>
+                        <td><a href="{{ route('siswa.tugas.show', $t) }}" class="btn btn-primary btn-sm" title="Kerjakan Tugas"><i class="fas fa-arrow-right"></i> Kerjakan</a></td>
                     </tr>
                 @empty
                     <tr><td colspan="5" class="text-center" style="padding:24px;color:var(--text-muted)">Tidak ada tugas mendatang.</td></tr>

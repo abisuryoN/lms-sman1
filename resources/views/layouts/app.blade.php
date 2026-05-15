@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
+    <!-- Tippy.js for Tooltips -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away.css">
+
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
@@ -38,6 +43,24 @@
         }
         .flatpickr-months .flatpickr-month { height: 40px !important; }
         .flatpickr-current-month { padding-top: 10px !important; }
+
+        /* Custom Tippy Theme */
+        .tippy-box[data-theme~='premium'] {
+            background-color: #1e293b;
+            color: white;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tippy-box[data-theme~='premium'][data-placement^='top'] > .tippy-arrow::before {
+            border-top-color: #1e293b;
+        }
+        .tippy-box[data-theme~='premium'][data-placement^='bottom'] > .tippy-arrow::before {
+            border-bottom-color: #1e293b;
+        }
     </style>
 </head>
 
@@ -362,6 +385,26 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script>
+        // Initialize Tippy Tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            tippy('[title]', {
+                theme: 'premium',
+                animation: 'shift-away',
+                placement: 'top',
+                arrow: true,
+                onShow(instance) {
+                    const title = instance.reference.getAttribute('title');
+                    if (title) {
+                        instance.setContent(title);
+                        instance.reference.removeAttribute('title');
+                    }
+                },
+                onHidden(instance) {
+                    // Restore title attribute if needed or handle cleanup
+                }
+            });
+        });
+
         // Dynamic Time-Based Greeting Toast (Blade Dependent)
         @if(request()->routeIs('*.dashboard'))
             document.addEventListener('DOMContentLoaded', function() {
