@@ -110,6 +110,47 @@
                 </div>
             @endif
         </div>
+
+        <div class="mobile-cards">
+            @forelse($results as $r)
+                <div class="mobile-card">
+                    <div class="mobile-card-title">Perbandingan Siswa</div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Siswa A</span>
+                        <span class="mobile-card-value"><strong>{{ $r->jawaban1->siswa->nama ?? '-' }}</strong></span>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Siswa B</span>
+                        <span class="mobile-card-value"><strong>{{ $r->jawaban2->siswa->nama ?? '-' }}</strong></span>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Kemiripan</span>
+                        <span class="mobile-card-value">
+                            <span style="font-weight:700; color: {{ $r->similarity_percentage >= 70 ? '#DC2626' : ($r->similarity_percentage >= 40 ? '#D97706' : '#059669') }};">
+                                {{ $r->similarity_percentage }}%
+                            </span>
+                        </span>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Kategori</span>
+                        <span class="mobile-card-value"><span class="badge badge-{{ $r->badge_color }}">{{ $r->similarity_category }}</span></span>
+                    </div>
+
+                    <div class="mobile-card-actions">
+                        @if($r->jawaban1?->storage_path)
+                            <a href="{{ route('guru.similarity.view-file', $r->jawaban1) }}" target="_blank" class="btn btn-outline btn-sm">A: File</a>
+                        @endif
+                        @if($r->jawaban2?->storage_path)
+                            <a href="{{ route('guru.similarity.view-file', $r->jawaban2) }}" target="_blank" class="btn btn-outline btn-sm">B: File</a>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="text-center" style="padding:24px;color:var(--text-muted)">Belum ada hasil perbandingan.</div>
+            @endforelse
+        </div>
+
+        {{ $results->links() }}
     </div>
 </div>
 
@@ -157,7 +198,7 @@ function showOcrText(jawabanId) {
                 html: `
                     <div style="text-align:left; font-size:13px; line-height:1.6;">
                         <div style="margin-bottom:12px;">
-                            <span class="badge badge-primary">Status OCR: ${data.ocr_status_label}</span>
+                            <span class="badge badge-primary">Status Teks: ${data.ocr_status_label}</span>
                         </div>
                         <div style="font-weight:600; color:var(--primary); margin-bottom:4px; border-bottom:1px solid #E2E8F0; padding-bottom:4px;">Teks Mentah (Ekstraksi):</div>
                         <div style="background:#F8FAFC; padding:10px; border-radius:8px; max-height:150px; overflow-y:auto; margin-bottom:16px; white-space:pre-wrap; border:1px solid #E2E8F0; font-family:monospace;">${escapeHtml(data.extracted_text)}</div>

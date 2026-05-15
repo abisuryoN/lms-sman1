@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class GuruService
 {
-    public function getPaginated(Request $request)
+    public function getPaginated(Request $request, $perPage = 5)
     {
-        $perPage = $request->get('per_page', 5);
         $query = Guru::with('user');
 
         if ($request->filled('search')) {
@@ -20,6 +19,6 @@ class GuruService
             });
         }
 
-        return $query->latest()->paginate($perPage)->withQueryString();
+        return $query->latest()->paginate(5)->withQueryString();
     }
 }

@@ -11,28 +11,30 @@
         @endif
     </div>
     <div class="card-body">
-        <div class="table-wrapper">
+        <div class="desktop-table table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Nama Kelas</th>
-                        <th>Tahun Ajaran</th>
-                        <th>Jumlah Siswa</th>
-                        <th>Aksi</th>
+                        <th style="text-align: center; width: 5%;">No</th>
+                        <th style="text-align: center;">Nama Kelas</th>
+                        <th style="text-align: center;">Tahun Ajaran</th>
+                        <th style="text-align: center;">Jumlah Siswa</th>
+                        <th style="text-align: center; width: 15%;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($kelasList as $i => $k)
                         <tr>
-                            <td>{{ $i + 1 }}</td>
-                            <td><strong>{{ $k->nama_kelas }}</strong></td>
-                            <td>{{ $k->tahunAjaran->full_name ?? '-' }}</td>
-                            <td><span class="badge badge-blue">{{ $k->siswa_count }} Siswa</span></td>
+                            <td style="text-align: center;">{{ $kelasList->firstItem() + $i }}</td>
+                            <td style="text-align: center;"><strong>{{ $k->nama_kelas }}</strong></td>
+                            <td style="text-align: center;">{{ $k->tahunAjaran->full_name ?? '-' }}</td>
+                            <td style="text-align: center;"><span class="badge badge-blue">{{ $k->siswa_count }} Siswa</span></td>
                             <td>
-                                <a href="{{ route('guru.kelas.show', $k) }}" class="btn btn-primary btn-sm" title="Lihat Daftar Siswa">
-                                    <i class="fas fa-users"></i> Lihat Siswa
-                                </a>
+                                <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
+                                    <a href="{{ route('guru.kelas.show', $k) }}" class="btn btn-primary btn-sm" title="Lihat Daftar Siswa">
+                                        <i class="fas fa-users"></i> Lihat Siswa
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -45,6 +47,32 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="mobile-cards">
+            @forelse($kelasList as $k)
+                <div class="mobile-card">
+                    <div class="mobile-card-title">{{ $k->nama_kelas }}</div>
+                    
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Tahun Ajaran</span>
+                        <span class="mobile-card-value">{{ $k->tahunAjaran->full_name ?? '-' }}</span>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Jumlah Siswa</span>
+                        <span class="mobile-card-value"><span class="badge badge-blue">{{ $k->siswa_count }} Siswa</span></span>
+                    </div>
+
+                    <div class="mobile-card-actions">
+                        <a href="{{ route('guru.kelas.show', $k) }}" class="btn btn-primary btn-sm" title="Lihat Daftar Siswa">
+                            <i class="fas fa-users"></i> Lihat Siswa
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center" style="padding:32px;color:var(--text-muted)">Belum ada data kelas yang Anda ampu di tahun ajaran ini.</div>
+            @endforelse
+        </div>
+        {{ $kelasList->links() }}
     </div>
 </div>
 @endsection

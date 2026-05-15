@@ -33,6 +33,35 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mobile-cards">
+                @forelse($jawaban as $j)
+                    <div class="mobile-card">
+                        <div class="mobile-card-title">{{ $j->siswa->nama }}</div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Jawaban</span>
+                            <span class="mobile-card-value">
+                                <div style="font-size:12px; margin-bottom:4px;">{{ Str::limit($j->jawaban_text, 30) }}</div>
+                                @if($j->storage_path)
+                                    <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:10px;"><i class="fas fa-file-pdf"></i> Lihat File</a>
+                                @endif
+                            </span>
+                        </div>
+                        <div class="mobile-card-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                            <span class="mobile-card-label">Nilai (0-100)</span>
+                            <input type="number" name="nilai[{{ $j->siswa_id }}]" class="form-control" style="width:100%" min="0" max="100" step="0.01" value="{{ $nilai[$j->siswa_id] ?? '' }}">
+                        </div>
+                        <div class="mobile-card-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                            <span class="mobile-card-label">Komentar</span>
+                            <input type="text" name="komentar[{{ $j->siswa_id }}]" class="form-control" style="width:100%" placeholder="Komentar..." value="{{ $komentar[$j->siswa_id] ?? '' }}">
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center" style="padding:24px;color:var(--text-muted)">Belum ada jawaban.</div>
+                @endforelse
+            </div>
+
+            {{ $jawaban->links() }}
+
             @if($jawaban->count())<div style="margin-top:16px"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Nilai</button></div>@endif
         </form>
     </div>

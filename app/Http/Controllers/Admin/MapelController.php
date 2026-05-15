@@ -49,7 +49,9 @@ class MapelController extends Controller
                 $query->where('tahun_ajaran_id', $tahunAktif->id);
             }
 
-            $assignments = $query->orderBy('hari')->get();
+            $assignments = $query->orderBy('hari')->paginate(5)->withQueryString();
+        } else {
+            $assignments = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 5);
         }
 
         return view('admin.mapel.show', compact('mapel', 'selectedTingkat', 'assignments', 'tahunAktif'));

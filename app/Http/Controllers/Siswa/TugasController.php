@@ -24,7 +24,7 @@ class TugasController extends Controller
         if ($siswa && $siswa->kelas_id) {
             $tugas = Tugas::where('kelas_id', $siswa->kelas_id)
                 ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
-                ->with('mapel')->latest()->paginate(10);
+                ->with('mapel')->latest()->paginate(5);
         }
 
         $submitted = $siswa ? JawabanTugas::where('siswa_id', $siswa->id)->pluck('tugas_id')->toArray() : [];

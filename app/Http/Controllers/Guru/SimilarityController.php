@@ -23,7 +23,7 @@ class SimilarityController extends Controller
             ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
             ->withCount(['jawabanTugas', 'similarityResults'])
             ->with(['kelas', 'mapel'])
-            ->latest()->get();
+            ->latest()->paginate(5)->withQueryString();
 
         $plagiatCount = 0;
         if ($guru && $tahunAktif) {
@@ -45,7 +45,7 @@ class SimilarityController extends Controller
         $results = SimilarityResult::where('tugas_id', $tuga->id)
             ->with(['jawaban1.siswa', 'jawaban2.siswa'])
             ->orderByDesc('similarity_percentage')
-            ->get();
+            ->paginate(5)->withQueryString();
 
         return view('guru.similarity.detail', compact('tuga', 'results'));
     }

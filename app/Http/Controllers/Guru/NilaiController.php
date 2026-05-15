@@ -20,14 +20,14 @@ class NilaiController extends Controller
         $tugas = Tugas::where('guru_id', $guru->id)
             ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
             ->with(['kelas', 'mapel'])
-            ->latest()->get();
+            ->latest()->paginate(5)->withQueryString();
 
         return view('guru.nilai.index', compact('tugas'));
     }
 
     public function edit(Tugas $tuga)
     {
-        $jawaban = JawabanTugas::where('tugas_id', $tuga->id)->with('siswa')->get();
+        $jawaban = JawabanTugas::where('tugas_id', $tuga->id)->with('siswa')->paginate(5)->withQueryString();
         $nilai = Nilai::where('tugas_id', $tuga->id)->pluck('nilai', 'siswa_id');
 
         return view('guru.nilai.edit', compact('tuga', 'jawaban', 'nilai'));

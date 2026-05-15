@@ -56,65 +56,103 @@
         </div>
 
         <div class="card" style="border-radius: 24px; overflow: hidden; border: 1px solid #F1F5F9;">
-            <div class="card-body table-wrapper" style="padding: 0;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background: #F8FAFC;">
-                            <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">JUDUL MATERI</th>
-                            <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">MATA PELAJARAN</th>
-                            <th style="text-align: center; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">UKURAN</th>
-                            <th style="text-align: center; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">TIPE</th>
-                            <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">AKSI</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($materi as $m)
-                        <tr style="border-bottom: 1px solid #F8FAFC;">
-                            <td style="padding: 16px 24px;">
-                                <div style="font-weight: 700; color: #1E293B;">{{ $m->judul }}</div>
-                                @if($m->deskripsi)
-                                    <div style="font-size: 12px; color: #94A3B8; margin-top: 4px;">{{ Str::limit($m->deskripsi, 60) }}</div>
-                                @endif
-                                <div style="font-size: 11px; color: #CBD5E1; margin-top: 2px;">{{ $m->created_at->format('d M Y') }}</div>
-                            </td>
-                            <td style="padding: 16px 24px; color: #475569; font-weight: 500;">{{ $m->mapel->nama_mapel }}</td>
-                            <td style="padding: 16px 24px; text-align: center; color: #64748B; font-size: 12px;">{{ $m->tipe === 'file' ? $m->file_size_human : '-' }}</td>
-                            <td style="padding: 16px 24px; text-align: center;">
-                                <span style="display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; {{ $m->tipe === 'file' ? 'background: #EFF6FF; color: #3B82F6;' : 'background: #ECFDF5; color: #10B981;' }}">
-                                    {{ $m->tipe }}
-                                </span>
-                            </td>
-                            <td style="padding: 16px 24px; text-align: right;">
-                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                    @if($m->tipe === 'link')
-                                        <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Buka Link">
-                                            <i class="fas fa-external-link-alt"></i> Buka
-                                        </a>
-                                    @else
-                                        <a href="{{ $m->file_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Pratinjau">
-                                            <i class="fas fa-eye"></i> Lihat
-                                        </a>
-                                        <a href="{{ route('siswa.materi.download', $m) }}" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Unduh File">
-                                            <i class="fas fa-download"></i> Unduh
-                                        </a>
+            <div class="card-body">
+                <div class="desktop-table table-wrapper" style="padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #F8FAFC;">
+                                <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">JUDUL MATERI</th>
+                                <th style="text-align: left; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">MATA PELAJARAN</th>
+                                <th style="text-align: center; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">UKURAN</th>
+                                <th style="text-align: center; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">TIPE</th>
+                                <th style="text-align: right; padding: 16px 24px; color: #64748B; font-weight: 600; font-size: 13px; border-bottom: 1px solid #F1F5F9;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($materi as $m)
+                            <tr style="border-bottom: 1px solid #F8FAFC;">
+                                <td style="padding: 16px 24px;">
+                                    <div style="font-weight: 700; color: #1E293B;">{{ $m->judul }}</div>
+                                    @if($m->deskripsi)
+                                        <div style="font-size: 12px; color: #94A3B8; margin-top: 4px;">{{ Str::limit($m->deskripsi, 60) }}</div>
                                     @endif
-                                </div>
-                            </td>
-                        </tr>
+                                    <div style="font-size: 11px; color: #CBD5E1; margin-top: 2px;">{{ $m->created_at->format('d M Y') }}</div>
+                                </td>
+                                <td style="padding: 16px 24px; color: #475569; font-weight: 500;">{{ $m->mapel->nama_mapel }}</td>
+                                <td style="padding: 16px 24px; text-align: center; color: #64748B; font-size: 12px;">{{ $m->tipe === 'file' ? $m->file_size_human : '-' }}</td>
+                                <td style="padding: 16px 24px; text-align: center;">
+                                    <span style="display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; {{ $m->tipe === 'file' ? 'background: #EFF6FF; color: #3B82F6;' : 'background: #ECFDF5; color: #10B981;' }}">
+                                        {{ $m->tipe }}
+                                    </span>
+                                </td>
+                                <td style="padding: 16px 24px; text-align: right;">
+                                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                        @if($m->tipe === 'link')
+                                            <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Buka Link">
+                                                <i class="fas fa-external-link-alt"></i> Buka
+                                            </a>
+                                        @else
+                                            <a href="{{ $m->file_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Pratinjau">
+                                                <i class="fas fa-eye"></i> Lihat
+                                            </a>
+                                            <a href="{{ route('siswa.materi.download', $m) }}" class="btn btn-primary btn-sm" style="border-radius: 10px; padding: 6px 12px; font-size: 12px;" title="Unduh File">
+                                                <i class="fas fa-download"></i> Unduh
+                                            </a>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" style="padding: 40px; text-align: center; color: #94A3B8;">Belum ada materi dari guru ini.</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mobile-cards" style="padding: 12px;">
+                    @forelse($materi as $m)
+                        <div class="mobile-card">
+                            <div class="mobile-card-title">{{ $m->judul }}</div>
+                            @if($m->deskripsi)
+                                <div style="font-size: 12px; color: #64748B; margin-bottom: 12px; line-height: 1.5;">{{ $m->deskripsi }}</div>
+                            @endif
+                            <div class="mobile-card-row">
+                                <span class="mobile-card-label">Mapel</span>
+                                <span class="mobile-card-value">{{ $m->mapel->nama_mapel }}</span>
+                            </div>
+                            <div class="mobile-card-row">
+                                <span class="mobile-card-label">Tipe / Ukuran</span>
+                                <span class="mobile-card-value">
+                                    <span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; {{ $m->tipe === 'file' ? 'background: #EFF6FF; color: #3B82F6;' : 'background: #ECFDF5; color: #10B981;' }}">
+                                        {{ $m->tipe }}
+                                    </span>
+                                    @if($m->tipe === 'file') <span style="font-size: 11px; color: #94A3B8;">({{ $m->file_size_human }})</span> @endif
+                                </span>
+                            </div>
+                            <div class="mobile-card-row">
+                                <span class="mobile-card-label">Tanggal</span>
+                                <span class="mobile-card-value" style="font-size: 11px; color: #64748B;">{{ $m->created_at->format('d M Y') }}</span>
+                            </div>
+
+                            <div class="mobile-card-actions">
+                                @if($m->tipe === 'link')
+                                    <a href="{{ route('siswa.materi.download', $m) }}" target="_blank" class="btn btn-primary btn-sm" style="flex: 1;"><i class="fas fa-external-link-alt"></i> Buka Link</a>
+                                @else
+                                    <a href="{{ $m->file_full_url }}" target="_blank" class="btn btn-outline btn-sm" style="flex: 1;"><i class="fas fa-eye"></i> Lihat</a>
+                                    <a href="{{ route('siswa.materi.download', $m) }}" class="btn btn-primary btn-sm" style="flex: 1;"><i class="fas fa-download"></i> Unduh</a>
+                                @endif
+                            </div>
+                        </div>
                     @empty
-                        <tr>
-                            <td colspan="5" style="padding: 48px 24px; text-align: center; color: #94A3B8;">
-                                Belum ada materi dari guru ini.
-                            </td>
-                        </tr>
+                        <div style="text-align: center; color: #94A3B8; padding: 20px;">Belum ada materi dari guru ini.</div>
                     @endforelse
-                    </tbody>
-                </table>
-                @if($materi->hasPages())
-                    <div class="pagination" style="padding: 16px 24px; border-top: 1px solid #F1F5F9;">
-                        {{ $materi->appends(['guru_id' => $selectedGuru->id])->links('pagination.simple') }}
-                    </div>
-                @endif
+                </div>
+
+                <div class="pagination" style="padding: 16px 24px; border-top: 1px solid #F1F5F9;">
+                    {{ $materi->appends(['guru_id' => $selectedGuru->id])->links() }}
+                </div>
             </div>
         </div>
     @endif

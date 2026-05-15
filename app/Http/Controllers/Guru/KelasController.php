@@ -27,7 +27,7 @@ class KelasController extends Controller
         $kelasList = Kelas::whereIn('id', $kelasIds)
             ->withCount('siswa')
             ->with('tahunAjaran')
-            ->get();
+            ->paginate(5)->withQueryString();
 
         return view('guru.kelas.index', compact('kelasList', 'tahunAktif'));
     }
@@ -46,10 +46,9 @@ class KelasController extends Controller
             abort(403, 'Anda tidak mengajar di kelas ini.');
         }
 
-        $kela->load(['tahunAjaran', 'waliKelas', 'siswa' => function($q) {
-            $q->orderBy('nama');
-        }]);
+        $kela->load(['tahunAjaran', 'waliKelas']);
+        $siswa = $kela->siswa()->orderBy('nama')->paginate(5)->withQueryString();
 
-        return view('guru.kelas.show', compact('kela', 'tahunAktif'));
+        return view('guru.kelas.show', compact('kela', 'siswa', 'tahunAktif'));
     }
 }

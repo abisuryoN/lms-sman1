@@ -168,6 +168,33 @@ input[type="file"].form-control::file-selector-button:hover {
     }
 }
 
+/* Compact version for pagination/filters */
+.select-sm .custom-select-trigger {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 12.5px;
+    border-radius: 8px;
+}
+
+.select-sm .custom-select-options {
+    border-radius: 8px;
+}
+
+.select-sm .custom-select-option {
+    padding: 6px 10px;
+    font-size: 12.5px;
+}
+
+/* Open Upwards support */
+.custom-select-options.open-upwards {
+    bottom: 100%;
+    top: auto;
+    margin-top: 0;
+    margin-bottom: 5px;
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+}
+
+
 /* ── Validation Error States ────────────────── */
 .form-control.is-invalid,
 .custom-select-trigger.is-invalid {

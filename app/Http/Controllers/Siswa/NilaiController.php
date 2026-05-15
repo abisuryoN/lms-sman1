@@ -17,7 +17,7 @@ class NilaiController extends Controller
         if ($siswa) {
             $nilai = Nilai::where('siswa_id', $siswa->id)
                 ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
-                ->with(['tugas.mapel'])->latest()->paginate(15);
+                ->with(['tugas.mapel'])->latest()->paginate(5);
         }
 
         return view('siswa.nilai.index', compact('nilai'));

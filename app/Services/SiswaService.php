@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class SiswaService
 {
-    public function getPaginated(Request $request)
+    public function getPaginated(Request $request, $perPage = 5)
     {
-        $perPage = $request->get('per_page', 5);
         $query = Siswa::with(['user', 'kelas']);
 
         if ($request->filled('search')) {
@@ -30,6 +29,6 @@ class SiswaService
             $query->where('status', 'aktif');
         }
 
-        return $query->latest()->paginate($perPage)->withQueryString();
+        return $query->latest()->paginate(5)->withQueryString();
     }
 }

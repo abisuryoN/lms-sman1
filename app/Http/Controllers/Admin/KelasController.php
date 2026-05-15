@@ -54,11 +54,10 @@ class KelasController extends Controller
 
     public function show(Kelas $kela)
     {
-        $kela->load(['tahunAjaran', 'waliKelas', 'siswa' => function($q) {
-            $q->orderBy('nama');
-        }]);
+        $kela->load(['tahunAjaran', 'waliKelas']);
+        $siswa = $kela->siswa()->orderBy('nama')->paginate(5)->withQueryString();
         
-        return view('admin.kelas.show', compact('kela'));
+        return view('admin.kelas.show', compact('kela', 'siswa'));
     }
 
     public function edit(Kelas $kela)

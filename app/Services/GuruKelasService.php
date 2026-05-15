@@ -8,9 +8,8 @@ use Illuminate\Http\Request;
 
 class GuruKelasService
 {
-    public function getPaginated(Request $request)
+    public function getPaginated(Request $request, $perPage = 5)
     {
-        $perPage = $request->get('per_page', 5);
         $tahunAktif = TahunAjaran::aktif()->first();
         $query = GuruKelas::with(['guru', 'kelas', 'mapel', 'tahunAjaran']);
 
@@ -39,6 +38,6 @@ class GuruKelasService
             $query->where('hari', $request->hari);
         }
 
-        return $query->latest()->paginate($perPage)->withQueryString();
+        return $query->latest()->paginate(5)->withQueryString();
     }
 }

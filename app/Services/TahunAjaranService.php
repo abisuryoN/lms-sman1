@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class TahunAjaranService
 {
-    public function getPaginated(Request $request)
+    public function getPaginated(Request $request, $perPage = 5)
     {
-        $perPage = $request->get('per_page', 5);
-        return TahunAjaran::withCount('kelas')->orderByDesc('id')->paginate($perPage)->withQueryString();
+        return TahunAjaran::withCount('kelas')->orderByDesc('id')->paginate(5)->withQueryString();
     }
 }

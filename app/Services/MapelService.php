@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class MapelService
 {
-    public function getPaginated(Request $request)
+    public function getPaginated(Request $request, $perPage = 5)
     {
-        $perPage = $request->get('per_page', 5);
         $query = Mapel::query();
 
         if ($request->filled('search')) {
@@ -24,6 +23,6 @@ class MapelService
             $query->where('tingkat', $request->tingkat);
         }
 
-        return $query->latest()->paginate($perPage)->withQueryString();
+        return $query->latest()->paginate(5)->withQueryString();
     }
 }

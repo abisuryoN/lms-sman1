@@ -3,21 +3,21 @@
 @section('page-title', 'Mata Pelajaran')
 @section('content')
     <div class="card">
-        <div class="card-header" style="flex-direction: column; align-items: stretch; gap: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="card-header responsive-header" style="flex-direction: column; align-items: stretch; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <h3><i class="fas fa-book"></i> Daftar Mata Pelajaran</h3>
-                <a href="{{ route('admin.mapel.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>
-                    Tambah Mapel</a>
+                <div class="header-actions">
+                    <a href="{{ route('admin.mapel.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Tambah Mapel</a>
+                </div>
             </div>
 
-            <form action="{{ route('admin.mapel.index') }}" method="GET"
-                style="display: grid; grid-template-columns: 1fr auto auto; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 8px;">
-                <div class="form-group" style="margin-bottom: 0;">
+            <form action="{{ route('admin.mapel.index') }}" method="GET" class="flex gap-2" style="flex-wrap: wrap; background: #f8fafc; padding: 12px; border-radius: 8px;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
                     <input type="text" name="search" class="form-control" placeholder="Cari nama atau kode mapel..."
                         value="{{ request('search') }}">
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <select name="tingkat" class="form-control" data-no-custom="true" style="min-width: 130px;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 150px;">
+                    <select name="tingkat" class="form-control" data-no-custom="true">
                         <option value="">Semua Tingkat</option>
                         <option value="10" {{ request('tingkat') == '10' ? 'selected' : '' }}>Kelas X</option>
                         <option value="11" {{ request('tingkat') == '11' ? 'selected' : '' }}>Kelas XI</option>
@@ -32,7 +32,7 @@
             </form>
         </div>
         <div class="card-body">
-            <div class="table-wrapper">
+            <div class="desktop-table table-wrapper">
                 <table>
                     <thead>
                         <tr>
@@ -84,6 +84,46 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <div class="mobile-cards">
+                @forelse($mapel as $m)
+                    <div class="mobile-card">
+                        <div class="mobile-card-title">{{ $m->nama_mapel }}</div>
+                        
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Kode Mapel</span>
+                            <span class="mobile-card-value"><code>{{ $m->kode_mapel }}</code></span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Tingkat</span>
+                            <span class="mobile-card-value">
+                                @if($m->tingkat)
+                                    @php
+                                        $tingkatRomawi = $m->tingkat == 10 ? 'X' : ($m->tingkat == 11 ? 'XI' : 'XII');
+                                    @endphp
+                                    <span class="badge badge-blue">Kelas {{ $tingkatRomawi }}</span>
+                                @else
+                                    <span class="badge badge-gray">Semua</span>
+                                @endif
+                            </span>
+                        </div>
+
+                        <div class="mobile-card-actions">
+                            <a href="{{ route('admin.mapel.show', $m) }}" class="btn btn-primary btn-sm" title="Lihat Detail Pengajar"><i class="fas fa-eye"></i> Detail</a>
+                            <a href="{{ route('admin.mapel.edit', $m) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i> Edit</a>
+                            <form action="{{ route('admin.mapel.destroy', $m) }}" method="POST" onsubmit="return confirm('Hapus mata pelajaran ini?')">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center" style="padding:48px; color:var(--text-muted)">
+                        <i class="fas fa-book-open" style="font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.2;"></i>
+                        Data mata pelajaran tidak ditemukan.
+                    </div>
+                @endforelse
             </div>
             <div style="margin-top: 16px;">
                 {{ $mapel->links('pagination.custom') }}

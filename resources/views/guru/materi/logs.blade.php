@@ -16,35 +16,59 @@
         <div class="card-header">
             <h3>Riwayat Download: {{ $materi->judul }}</h3>
         </div>
-        <div class="card-body table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nama Siswa</th>
-                        <th>Kelas</th>
-                        <th class="text-right">Waktu Download</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="card-body">
+            <div class="desktop-table table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama Siswa</th>
+                            <th>Kelas</th>
+                            <th class="text-right">Waktu Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($logs as $log)
+                        <tr>
+                            <td>
+                                <strong>{{ $log->siswa->nama }}</strong>
+                            </td>
+                            <td>{{ $log->siswa->kelas->nama_kelas }}</td>
+                            <td class="text-right">
+                                {{ $log->created_at->format('d M Y, H:i') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center" style="padding:48px; color:var(--text-muted);">
+                                Belum ada siswa yang mengunduh materi ini.
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mobile-cards">
                 @forelse($logs as $log)
-                    <tr>
-                        <td>
-                            <strong>{{ $log->siswa->nama }}</strong>
-                        </td>
-                        <td>{{ $log->siswa->kelas->nama_kelas }}</td>
-                        <td class="text-right">
-                            {{ $log->created_at->format('d M Y, H:i') }}
-                        </td>
-                    </tr>
+                    <div class="mobile-card">
+                        <div class="mobile-card-title">{{ $log->siswa->nama }}</div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Kelas</span>
+                            <span class="mobile-card-value">{{ $log->siswa->kelas->nama_kelas }}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Waktu</span>
+                            <span class="mobile-card-value">{{ $log->created_at->format('d M Y, H:i') }}</span>
+                        </div>
+                    </div>
                 @empty
-                    <tr>
-                        <td colspan="3" class="text-center" style="padding:48px; color:var(--text-muted);">
-                            Belum ada siswa yang mengunduh materi ini.
-                        </td>
-                    </tr>
+                    <div class="text-center" style="padding:32px; color:var(--text-muted);">
+                        Belum ada siswa yang mengunduh materi ini.
+                    </div>
                 @endforelse
-                </tbody>
-            </table>
+            </div>
+
+            {{ $logs->links() }}
         </div>
     </div>
 </div>

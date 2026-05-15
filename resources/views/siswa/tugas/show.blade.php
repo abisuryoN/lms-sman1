@@ -61,7 +61,7 @@
                 @if($jawaban->storage_path)
                     <span class="badge badge-{{ $jawaban->ocr_badge_color }}">
                         <i class="fas {{ $jawaban->ocr_status == 'success' ? 'fa-check' : ($jawaban->ocr_status == 'processing' ? 'fa-spinner fa-spin' : ($jawaban->ocr_status == 'failed' ? 'fa-exclamation-triangle' : 'fa-clock')) }}"></i>
-                        OCR: {{ $jawaban->ocr_status_label }}
+                        Teks: {{ $jawaban->ocr_status_label }}
                     </span>
                 @endif
             </div>

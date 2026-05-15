@@ -12,7 +12,7 @@
             <h3 style="margin-bottom: 4px;">{{ $tuga->judul }}</h3>
             @if($tuga->similarity_status != 'unchecked')
                 <span class="badge badge-{{ $tuga->similarity_badge_color }}" style="font-size:11px;">
-                    <i class="fas {{ $tuga->similarity_status == 'completed' ? 'fa-check-circle' : ($tuga->similarity_status == 'processing' ? 'fa-spinner fa-spin' : 'fa-exclamation-circle') }}"></i>
+                    <i class="fas {{ $tuga->similarity_status == 'completed' ? 'fa-check-circle' : ($tuga->similarity_status == 'processing' ? 'fa-spinner fa-spin' : 'fa-exclamation-circle') }}" style="margin-right: 4px;"></i>
                     Similarity: {{ $tuga->similarity_status_label }}
                     @if($tuga->similarity_checked_at)
                         ({{ $tuga->similarity_checked_at->format('d M Y H:i') }})
@@ -78,76 +78,119 @@
 </div>
 
 <div class="card">
-    <div class="card-header"><h3>Jawaban Siswa ({{ $jawaban->count() }})</h3></div>
-    <div class="card-body table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>Siswa</th>
-                    <th>Waktu Submit</th>
-                    <th>Status OCR & Teks</th>
-                    <th>File Jawaban</th>
-                </tr>
-            </thead>
-            <tbody>
-            @forelse($jawaban as $j)
-                <tr>
-                    <td>
-                        <div style="font-weight:600; color:var(--text-strong);">{{ $j->siswa->nama }}</div>
-                        <div style="font-size:11px; color:var(--text-muted);">NIS: {{ $j->siswa->nis }}</div>
-                    </td>
-                    <td>{{ $j->submitted_at ? $j->submitted_at->format('d M Y H:i') : '-' }}</td>
-                    <td>
-                        <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+    <div class="card-header responsive-header">
+        <h3>Jawaban Siswa ({{ $jawaban->count() }})</h3>
+    </div>
+    <div class="card-body">
+        <div class="desktop-table table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Siswa</th>
+                        <th>Waktu Submit</th>
+                        <th>Status Teks</th>
+                        <th>File Jawaban</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @forelse($jawaban as $j)
+                    <tr>
+                        <td>
+                            <div style="font-weight:600; color:var(--text-strong);">{{ $j->siswa->nama }}</div>
+                            <div style="font-size:11px; color:var(--text-muted);">NIS: {{ $j->siswa->nis }}</div>
+                        </td>
+                        <td>{{ $j->submitted_at ? $j->submitted_at->format('d M Y H:i') : '-' }}</td>
+                        <td>
+                            <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+                                @if($j->storage_path)
+                                    <span class="badge badge-{{ $j->ocr_badge_color }}" style="font-size:10px;">
+                                        Teks: {{ $j->ocr_status_label }}
+                                    </span>
+                                @endif
+                                
+                                @if($j->extracted_text || $j->processed_text)
+                                    <button type="button" onclick="showOcrText({{ $j->id }})" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; background:#fff;" title="Lihat Teks Hasil OCR">
+                                        <i class="fas fa-align-left"></i> Lihat Teks OCR
+                                    </button>
+                                @elseif($j->jawaban_text)
+                                    <div style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;" title="{{ $j->jawaban_text }}">
+                                        {{ $j->jawaban_text }}
+                                    </div>
+                                @else
+                                    <span style="color:var(--text-muted);font-size:11px;">-</span>
+                                @endif
+                            </div>
+                        </td>
+                        <td>
                             @if($j->storage_path)
-                                <span class="badge badge-{{ $j->ocr_badge_color }}" style="font-size:10px;">
-                                    OCR: {{ $j->ocr_status_label }}
-                                </span>
-                            @endif
-                            
-                            @if($j->extracted_text || $j->processed_text)
-                                <button type="button" onclick="showOcrText({{ $j->id }})" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:11px; background:#fff;" title="Lihat Teks Hasil OCR">
-                                    <i class="fas fa-align-left"></i> Lihat Teks OCR
-                                </button>
-                            @elseif($j->jawaban_text)
-                                <div style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;" title="{{ $j->jawaban_text }}">
-                                    {{ $j->jawaban_text }}
+                                <div style="display:flex; flex-direction:column; gap:4px;">
+                                    <div style="font-size:12px; font-weight:500; color:#0F172A; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ $j->original_filename ?: basename($j->storage_path) }}">
+                                        <i class="fas fa-cloud text-primary" style="margin-right:4px;"></i> {{ $j->original_filename ?: basename($j->storage_path) }}
+                                    </div>
+                                    <div style="display:flex; gap:4px;">
+                                        <a href="{{ route('guru.similarity.view-file', $j) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:11px; background:#fff;" title="Lihat File">
+                                            <i class="fas fa-eye"></i> Lihat
+                                        </a>
+                                        <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-primary btn-sm" style="padding:2px 6px; font-size:11px;" title="Download File">
+                                            <i class="fas fa-download"></i> Unduh
+                                        </a>
+                                    </div>
+                                </div>
+                            @elseif($j->file_path)
+                                <div style="display:flex; flex-direction:column; gap:4px;">
+                                    <div style="font-size:12px; color:var(--text-muted);">File Lokal Lama</div>
+                                    <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm" style="width:fit-content;" title="Unduh File Lokal"><i class="fas fa-download"></i> Download</a>
                                 </div>
                             @else
-                                <span style="color:var(--text-muted);font-size:11px;">-</span>
+                                <span style="color:var(--text-muted);">—</span>
                             @endif
-                        </div>
-                    </td>
-                    <td>
-                        @if($j->storage_path)
-                            <div style="display:flex; flex-direction:column; gap:4px;">
-                                <div style="font-size:12px; font-weight:500; color:#0F172A; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ $j->original_filename ?: basename($j->storage_path) }}">
-                                    <i class="fas fa-cloud text-primary" style="margin-right:4px;"></i> {{ $j->original_filename ?: basename($j->storage_path) }}
-                                </div>
-                                <div style="display:flex; gap:4px;">
-                                    <a href="{{ route('guru.similarity.view-file', $j) }}" target="_blank" class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:11px; background:#fff;" title="Lihat File">
-                                        <i class="fas fa-eye"></i> Lihat
-                                    </a>
-                                    <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-primary btn-sm" style="padding:2px 6px; font-size:11px;" title="Download File">
-                                        <i class="fas fa-download"></i> Unduh
-                                    </a>
-                                </div>
-                            </div>
-                        @elseif($j->file_path)
-                            <div style="display:flex; flex-direction:column; gap:4px;">
-                                <div style="font-size:12px; color:var(--text-muted);">File Lokal Lama</div>
-                                <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm" style="width:fit-content;" title="Unduh File Lokal"><i class="fas fa-download"></i> Download</a>
-                            </div>
-                        @else
-                            <span style="color:var(--text-muted);">—</span>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="4" class="text-center" style="padding:24px;color:var(--text-muted)">Belum ada jawaban.</td></tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mobile-cards">
+            @forelse($jawaban as $j)
+                <div class="mobile-card">
+                    <div class="mobile-card-title">{{ $j->siswa->nama }} <br><small style="color:var(--text-muted);font-weight:normal;">NIS: {{ $j->siswa->nis }}</small></div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Waktu Submit</span>
+                        <span class="mobile-card-value">{{ $j->submitted_at ? $j->submitted_at->format('d M Y H:i') : '-' }}</span>
+                    </div>
+                    <div class="mobile-card-row">
+                        <span class="mobile-card-label">Status Teks</span>
+                        <span class="mobile-card-value">
+                            @if($j->storage_path)
+                                <span class="badge badge-{{ $j->ocr_badge_color }}" style="font-size:10px;">{{ $j->ocr_status_label }}</span>
+                            @else
+                                -
+                            @endif
+                        </span>
+                    </div>
+
+                    <div class="mobile-card-actions">
+                        @if($j->extracted_text || $j->processed_text)
+                            <button type="button" onclick="showOcrText({{ $j->id }})" class="btn btn-outline btn-sm">
+                                <i class="fas fa-align-left"></i> Lihat Teks OCR
+                            </button>
                         @endif
-                    </td>
-                </tr>
+                        @if($j->storage_path)
+                            <a href="{{ route('guru.similarity.view-file', $j) }}" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> Lihat</a>
+                            <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Unduh</a>
+                        @elseif($j->file_path)
+                            <a href="{{ route('guru.jawaban.download', $j) }}" class="btn btn-outline btn-sm"><i class="fas fa-download"></i> Unduh Lokal</a>
+                        @endif
+                    </div>
+                </div>
             @empty
-                <tr><td colspan="4" class="text-center" style="padding:24px;color:var(--text-muted)">Belum ada jawaban.</td></tr>
+                <div class="text-center" style="padding:24px;color:var(--text-muted)">Belum ada jawaban.</div>
             @endforelse
-            </tbody>
-        </table>
+        </div>
+        {{ $jawaban->links() }}
     </div>
 </div>
 
@@ -174,7 +217,7 @@ function showOcrText(jawabanId) {
                 html: `
                     <div style="text-align:left; font-size:13px; line-height:1.6;">
                         <div style="margin-bottom:12px;">
-                            <span class="badge badge-primary">Status OCR: ${data.ocr_status_label}</span>
+                            <span class="badge badge-primary">Status Teks: ${data.ocr_status_label}</span>
                         </div>
                         <div style="font-weight:600; color:var(--primary); margin-bottom:4px; border-bottom:1px solid #E2E8F0; padding-bottom:4px;">Teks Mentah (Ekstraksi):</div>
                         <div style="background:#F8FAFC; padding:10px; border-radius:8px; max-height:150px; overflow-y:auto; margin-bottom:16px; white-space:pre-wrap; border:1px solid #E2E8F0; font-family:monospace;">${escapeHtml(data.extracted_text)}</div>

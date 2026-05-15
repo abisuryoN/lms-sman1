@@ -1,0 +1,190 @@
+/* Global Responsive Table Utilities */
+
+@media (max-width: 768px) {
+
+    /* Hide desktop table elements */
+    .desktop-table {
+        display: none !important;
+    }
+
+    /* Show mobile cards container */
+    .mobile-cards {
+        display: flex !important;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Mobile Card Base Styling */
+    .mobile-card {
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Mobile Card Title */
+    .mobile-card-title {
+        font-weight: 600;
+        color: #1E293B;
+        font-size: 15px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #F1F5F9;
+        padding-bottom: 8px;
+    }
+
+    /* Mobile Card Row / Detail Item */
+    .mobile-card-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        font-size: 13px;
+    }
+
+    /* Mobile Card Label */
+    .mobile-card-label {
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    /* Mobile Card Value */
+    .mobile-card-value {
+        color: #334155;
+        font-weight: 600;
+        text-align: right;
+        max-width: 60%;
+        word-break: break-word;
+    }
+
+    /* Mobile Card Actions Container */
+    .mobile-card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #F1F5F9;
+    }
+
+    /* Override card headers for mobile to avoid overflow and stack vertically if needed */
+    .card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+
+    .card-header>div:last-child {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 769px) {
+
+    /* Hide mobile cards on desktop */
+    .mobile-cards {
+        display: none !important;
+    }
+}
+
+/* Pagination Styling */
+.pagination-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.pagination-info {
+    font-size: 13.5px;
+    color: #64748B;
+}
+
+.pagination-info span {
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    height: 38px;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    color: #64748B;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 38px;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    background: #F8FAFC;
+    transform: translateY(-1px);
+}
+
+.pagination-btn.active {
+    background: #3B82F6;
+    border-color: #3B82F6;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+}
+
+.pagination-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #F8FAFC;
+}
+
+@media (max-width: 768px) {
+    .pagination-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        gap: 12px;
+        margin-bottom: 80px; /* Space for mobile bottom navigation */
+    }
+
+    .pagination-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination-buttons {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .pagination-info {
+        text-align: center;
+        order: 3;
+        font-size: 12.5px;
+    }
+}

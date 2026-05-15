@@ -37,7 +37,7 @@ class MateriController extends Controller
         $materi = Materi::where('kelas_id', $siswa->kelas_id)
             ->where('guru_id', $guruId)
             ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
-            ->with(['mapel', 'guru'])->latest()->paginate(10);
+            ->with(['mapel', 'guru'])->latest()->paginate(5);
 
         return view('siswa.materi.index', compact('materi', 'selectedGuru'));
     }

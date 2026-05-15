@@ -21,7 +21,7 @@ class TugasController extends Controller
             ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
             ->withCount('jawabanTugas')
             ->with(['kelas', 'mapel'])
-            ->latest()->paginate(10);
+            ->latest()->paginate(5);
 
         return view('guru.tugas.index', compact('tugas'));
     }
@@ -97,7 +97,7 @@ class TugasController extends Controller
     public function show(Tugas $tuga)
     {
         $tuga->load(['kelas', 'mapel', 'jawabanTugas.siswa', 'similarityResults']);
-        $jawaban = JawabanTugas::where('tugas_id', $tuga->id)->with('siswa')->get();
+        $jawaban = JawabanTugas::where('tugas_id', $tuga->id)->with('siswa')->paginate(5)->withQueryString();
         return view('guru.tugas.show', compact('tuga', 'jawaban'));
     }
 

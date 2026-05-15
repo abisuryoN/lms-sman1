@@ -54,19 +54,18 @@
     </div>
 
     <div class="card">
-        <div class="card-header" style="flex-direction: column; align-items: stretch; gap: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="card-header responsive-header" style="flex-direction: column; align-items: stretch; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <h3><i class="fas fa-list"></i> Daftar Penugasan & Jadwal</h3>
             </div>
 
-            <form action="{{ route('admin.guru-kelas.index') }}" method="GET"
-                style="display: grid; grid-template-columns: 1fr auto auto; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 8px;">
-                <div class="form-group" style="margin-bottom: 0;">
+            <form action="{{ route('admin.guru-kelas.index') }}" method="GET" class="flex gap-2" style="flex-wrap: wrap; background: #f8fafc; padding: 12px; border-radius: 8px;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
                     <input type="text" name="search" class="form-control" placeholder="Cari nama guru, kelas, atau mapel..."
                         value="{{ request('search') }}">
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <select name="hari" class="form-control" data-no-custom="true" style="min-width: 130px;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 130px;">
+                    <select name="hari" class="form-control" data-no-custom="true">
                         <option value="">Semua Hari</option>
                         <option value="Senin" {{ request('hari') == 'Senin' ? 'selected' : '' }}>Senin</option>
                         <option value="Selasa" {{ request('hari') == 'Selasa' ? 'selected' : '' }}>Selasa</option>
@@ -84,7 +83,7 @@
             </form>
         </div>
         <div class="card-body">
-            <div class="table-wrapper">
+            <div class="desktop-table table-wrapper">
                 <table>
                     <thead>
                         <tr>
@@ -129,7 +128,49 @@
                     </tbody>
                 </table>
             </div>
-            {{ $guruKelas->links('pagination.custom') }}
+
+            <div class="mobile-cards">
+                @forelse($guruKelas as $gk)
+                    <div class="mobile-card">
+                        <div class="mobile-card-title">{{ $gk->guru->nama }} <br><small style="color:var(--text-muted);font-weight:normal;">NIP: {{ $gk->guru->nip }}</small></div>
+                        
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Kelas</span>
+                            <span class="mobile-card-value">{{ $gk->kelas->nama_kelas }}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Mapel</span>
+                            <span class="mobile-card-value">{{ $gk->mapel->nama_mapel }}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Waktu</span>
+                            <span class="mobile-card-value">
+                                <span class="badge badge-purple">{{ $gk->hari ?? '-' }}</span><br>
+                                <code>{{ $gk->jam_mulai ? \Carbon\Carbon::parse($gk->jam_mulai)->format('H.i') : '-' }} - {{ $gk->jam_selesai ? \Carbon\Carbon::parse($gk->jam_selesai)->format('H.i') : '-' }}</code>
+                            </span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Tahun Ajaran</span>
+                            <span class="mobile-card-value">{{ $gk->tahunAjaran->full_name }}</span>
+                        </div>
+
+                        <div class="mobile-card-actions">
+                            <a href="{{ route('admin.guru-kelas.edit', $gk) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i> Edit</a>
+                            <form action="{{ route('admin.guru-kelas.destroy', $gk) }}" method="POST" onsubmit="return confirm('Hapus penugasan?')">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center" style="padding:48px;color:var(--text-muted)">
+                        <i class="fas fa-calendar-times" style="font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.2;"></i>
+                        Data penugasan tidak ditemukan.
+                    </div>
+                @endforelse
+            </div>
+
+            {{ $guruKelas->links() }}
         </div>
     </div>
 @endsection

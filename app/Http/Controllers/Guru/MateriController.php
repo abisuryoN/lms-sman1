@@ -22,7 +22,7 @@ class MateriController extends Controller
             ->when($tahunAktif, fn($q) => $q->where('tahun_ajaran_id', $tahunAktif->id))
             ->with(['kelas', 'mapel'])
             ->withCount('logs')
-            ->latest()->paginate(10);
+            ->latest()->paginate(5);
 
         return view('guru.materi.index', compact('materi'));
     }
@@ -37,7 +37,7 @@ class MateriController extends Controller
         $logs = \App\Models\MateriLog::where('materi_id', $materi->id)
             ->with('siswa.kelas')
             ->latest()
-            ->get();
+            ->paginate(5)->withQueryString();
 
         return view('guru.materi.logs', compact('materi', 'logs'));
     }
