@@ -5,7 +5,7 @@
         </div>
         
         <div class="pagination-per-page">
-            <select onchange="window.location.href = this.value" class="form-control form-control-sm">
+            <select onchange="window.location.href = this.value" class="form-control form-control-sm" data-no-custom="true" style="min-width: 140px;">
                 @foreach([5, 10, 25, 50] as $size)
                     <option value="{{ request()->fullUrlWithQuery(['per_page' => $size, 'page' => 1]) }}" {{ request('per_page', 5) == $size ? 'selected' : '' }}>
                         {{ $size }} data per hal
