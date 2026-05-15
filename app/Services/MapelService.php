@@ -24,6 +24,6 @@ class MapelService
             $query->where('tingkat', $request->tingkat);
         }
 
-        return $query->orderBy('tingkat')->orderBy('nama_mapel')->paginate($perPage)->withQueryString();
+        return $query->latest()->paginate($perPage)->withQueryString();
     }
 }

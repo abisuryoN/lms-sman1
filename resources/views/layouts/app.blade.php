@@ -405,6 +405,28 @@
             });
         });
 
+        // Global Auto-Search for all search inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInputs = document.querySelectorAll('input[name="search"]');
+            
+            searchInputs.forEach(input => {
+                let timeout = null;
+                input.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    const form = this.closest('form');
+                    
+                    if (form) {
+                        timeout = setTimeout(() => {
+                            // Submit if length is 0 (cleared) or >= 3
+                            if (this.value.length === 0 || this.value.length >= 3) {
+                                form.submit();
+                            }
+                        }, 1000);
+                    }
+                });
+            });
+        });
+
         // Dynamic Time-Based Greeting Toast (Blade Dependent)
         @if(request()->routeIs('*.dashboard'))
             document.addEventListener('DOMContentLoaded', function() {

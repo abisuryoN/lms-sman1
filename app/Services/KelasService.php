@@ -20,6 +20,6 @@ class KelasService
             $query->where('tahun_ajaran_id', $request->tahun_ajaran_id);
         }
 
-        return $query->withCount('siswa')->orderBy('nama_kelas')->paginate($perPage)->withQueryString();
+        return $query->withCount('siswa')->latest()->paginate($perPage)->withQueryString();
     }
 }
