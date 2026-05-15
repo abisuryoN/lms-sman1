@@ -153,6 +153,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // 2. Custom Selects
     initCustomSelects();
 
+    // 2.5 Sidebar Auto-Scroll to Active Link
+    const activeSidebarLink = document.querySelector('.sidebar-menu .sidebar-link.active');
+    const sidebarMenu = document.querySelector('.sidebar-menu');
+    if (activeSidebarLink && sidebarMenu) {
+        const linkRect = activeSidebarLink.getBoundingClientRect();
+        const menuRect = sidebarMenu.getBoundingClientRect();
+        if (linkRect.bottom > menuRect.bottom || linkRect.top < menuRect.top) {
+            sidebarMenu.scrollTop = activeSidebarLink.offsetTop - (menuRect.height / 2) + (linkRect.height / 2);
+        }
+    }
+
     // 3. Global Click Handlers (Close Dropdowns)
     document.addEventListener('click', function (e) {
         // Bottom User Dropdown

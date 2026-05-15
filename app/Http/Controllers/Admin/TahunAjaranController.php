@@ -46,6 +46,36 @@ class TahunAjaranController extends Controller
         return redirect()->route('admin.tahun-ajaran.index')->with('success', 'Tahun ajaran berhasil ditambahkan.');
     }
 
+    public function edit(TahunAjaran $tahunAjaran)
+    {
+        return view('admin.tahun-ajaran.edit', compact('tahunAjaran'));
+    }
+
+    public function update(Request $request, TahunAjaran $tahunAjaran)
+    {
+        $request->validate([
+            'nama_tahun' => 'required|string|max:20',
+            'semester' => 'required|in:Ganjil,Genap',
+        ]);
+
+        $tahunAjaran->update([
+            'nama_tahun' => $request->nama_tahun,
+            'semester' => $request->semester,
+        ]);
+
+        return redirect()->route('admin.tahun-ajaran.index')->with('success', 'Tahun ajaran berhasil diperbarui.');
+    }
+
+    public function destroy(TahunAjaran $tahunAjaran)
+    {
+        if ($tahunAjaran->status === 'aktif') {
+            return redirect()->route('admin.tahun-ajaran.index')->with('error', 'Tahun ajaran aktif tidak dapat dihapus.');
+        }
+
+        $tahunAjaran->delete();
+        return redirect()->route('admin.tahun-ajaran.index')->with('success', 'Tahun ajaran berhasil dihapus.');
+    }
+
     public function activate(TahunAjaran $tahunAjaran)
     {
         DB::transaction(function () use ($tahunAjaran) {

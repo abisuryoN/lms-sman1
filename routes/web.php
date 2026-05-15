@@ -32,6 +32,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('tahun-ajaran', [Admin\TahunAjaranController::class, 'index'])->name('tahun-ajaran.index');
     Route::get('tahun-ajaran/create', [Admin\TahunAjaranController::class, 'create'])->name('tahun-ajaran.create');
     Route::post('tahun-ajaran', [Admin\TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
+    Route::get('tahun-ajaran/{tahunAjaran}/edit', [Admin\TahunAjaranController::class, 'edit'])->name('tahun-ajaran.edit');
+    Route::put('tahun-ajaran/{tahunAjaran}', [Admin\TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
+    Route::delete('tahun-ajaran/{tahunAjaran}', [Admin\TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
     Route::post('tahun-ajaran/{tahunAjaran}/activate', [Admin\TahunAjaranController::class, 'activate'])->name('tahun-ajaran.activate');
     Route::post('tahun-ajaran/akhiri', [Admin\TahunAjaranController::class, 'akhiriTahunAjaran'])->name('tahun-ajaran.akhiri');
 
