@@ -13,10 +13,17 @@ class MapelService
         $query = Mapel::query();
 
         if ($request->filled('search')) {
-            $query->where('nama_mapel', 'like', "%{$request->search}%")
-                  ->orWhere('kode_mapel', 'like', "%{$request->search}%");
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('nama_mapel', 'like', "%{$searchTerm}%")
+                  ->orWhere('kode_mapel', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $query->orderBy('nama_mapel')->paginate($perPage)->withQueryString();
+        if ($request->filled('tingkat')) {
+            $query->where('tingkat', $request->tingkat);
+        }
+
+        return $query->orderBy('tingkat')->orderBy('nama_mapel')->paginate($perPage)->withQueryString();
     }
 }

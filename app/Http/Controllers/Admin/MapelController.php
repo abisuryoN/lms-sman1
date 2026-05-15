@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\GuruKelas;
 use App\Models\Mapel;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Services\MapelService;
 
@@ -22,6 +24,37 @@ class MapelController extends Controller
         return view('admin.mapel.index', compact('mapel'));
     }
 
+    public function show(Request $request, Mapel $mapel)
+    {
+        $tahunAktif = TahunAjaran::aktif()->first();
+        $selectedTingkat = $request->query('tingkat', $mapel->tingkat);
+
+        // Map tingkat angka ke prefix romawi nama kelas
+        $tingkatMap = [
+            '10' => 'X ',
+            '11' => 'XI ',
+            '12' => 'XII ',
+        ];
+
+        $assignments = collect();
+        if ($selectedTingkat && isset($tingkatMap[$selectedTingkat])) {
+            $prefix = $tingkatMap[$selectedTingkat];
+            $query = GuruKelas::where('mapel_id', $mapel->id)
+                ->with(['guru.user', 'kelas', 'tahunAjaran'])
+                ->whereHas('kelas', function($q) use ($prefix) {
+                    $q->where('nama_kelas', 'like', "{$prefix}%");
+                });
+
+            if ($tahunAktif) {
+                $query->where('tahun_ajaran_id', $tahunAktif->id);
+            }
+
+            $assignments = $query->orderBy('hari')->get();
+        }
+
+        return view('admin.mapel.show', compact('mapel', 'selectedTingkat', 'assignments', 'tahunAktif'));
+    }
+
     public function create()
     {
         return view('admin.mapel.create');
@@ -32,9 +65,10 @@ class MapelController extends Controller
         $request->validate([
             'nama_mapel' => 'required|string|max:255',
             'kode_mapel' => 'required|string|max:20|unique:mapel,kode_mapel',
+            'tingkat' => 'nullable|string|max:10',
         ]);
 
-        Mapel::create($request->only('nama_mapel', 'kode_mapel'));
+        Mapel::create($request->only('nama_mapel', 'kode_mapel', 'tingkat'));
 
         return redirect()->route('admin.mapel.index')
             ->with('success', 'Mata pelajaran berhasil ditambahkan.');
@@ -50,9 +84,10 @@ class MapelController extends Controller
         $request->validate([
             'nama_mapel' => 'required|string|max:255',
             'kode_mapel' => 'required|string|max:20|unique:mapel,kode_mapel,' . $mapel->id,
+            'tingkat' => 'nullable|string|max:10',
         ]);
 
-        $mapel->update($request->only('nama_mapel', 'kode_mapel'));
+        $mapel->update($request->only('nama_mapel', 'kode_mapel', 'tingkat'));
 
         return redirect()->route('admin.mapel.index')
             ->with('success', 'Mata pelajaran berhasil diperbarui.');

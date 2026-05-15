@@ -14,6 +14,7 @@ class Mapel extends Model
     protected $fillable = [
         'nama_mapel',
         'kode_mapel',
+        'tingkat',
     ];
 
     // ── Relationships ────────────────────────────────────

@@ -13,6 +13,16 @@
             @csrf @method('PUT')
             <div class="form-group"><label class="form-label">Kode Mapel</label><input type="text" name="kode_mapel" class="form-control" value="{{ old('kode_mapel', $mapel->kode_mapel) }}" required></div>
             <div class="form-group"><label class="form-label">Nama Mapel</label><input type="text" name="nama_mapel" class="form-control" value="{{ old('nama_mapel', $mapel->nama_mapel) }}" required></div>
+            <div class="form-group">
+                <label class="form-label">Tingkat / Untuk Kelas</label>
+                <select name="tingkat" class="form-control">
+                    <option value="">Semua Tingkat (Umum)</option>
+                    <option value="10" {{ old('tingkat', $mapel->tingkat) == '10' ? 'selected' : '' }}>Kelas 10</option>
+                    <option value="11" {{ old('tingkat', $mapel->tingkat) == '11' ? 'selected' : '' }}>Kelas 11</option>
+                    <option value="12" {{ old('tingkat', $mapel->tingkat) == '12' ? 'selected' : '' }}>Kelas 12</option>
+                </select>
+                <small style="color:var(--text-muted)">Gunakan "Semua Tingkat" jika mata pelajaran berlaku untuk semua jenjang.</small>
+            </div>
             <div class="flex gap-2"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button><a href="{{ route('admin.mapel.index') }}" class="btn btn-outline">Batal</a></div>
         </form>
     </div>
