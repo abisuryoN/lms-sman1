@@ -101,7 +101,9 @@ textarea.form-control {
     animation: selectFadeIn 0.2s ease;
 }
 
-.custom-select-options.show { display: block; }
+.custom-select-options.show {
+    display: block;
+}
 
 .custom-select-option {
     padding: 9px 12px;
@@ -115,20 +117,29 @@ textarea.form-control {
     justify-content: space-between;
 }
 
-.custom-select-option:hover, .custom-select-option.selected {
+.custom-select-option:hover,
+.custom-select-option.selected {
     background: #EFF6FF;
     color: var(--primary);
 }
 
 @media (max-width: 768px) {
-    .custom-select-trigger { height: 38px; padding: 0 12px; font-size: 13px; }
-    .custom-select-options { max-height: 180px; }
+    .custom-select-trigger {
+        height: 38px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
+
+    .custom-select-options {
+        max-height: 180px;
+    }
 }
 
 /* ── Validation Error States ────────────────── */
 .form-control.is-invalid,
 .custom-select-trigger.is-invalid {
-    border-color: #EF4444 !important; /* var(--danger) fallback */
+    border-color: #EF4444 !important;
+    /* var(--danger) fallback */
     background-image: none !important;
 }
 
@@ -143,17 +154,37 @@ textarea.form-control {
     margin-top: 4px;
     font-size: 11px;
     font-weight: 500;
-    color: #EF4444; /* var(--danger) fallback */
+    color: #EF4444;
+    /* var(--danger) fallback */
     animation: fadeInError 0.2s ease;
 }
 
 @keyframes fadeInError {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 768px) {
-    .invalid-feedback { font-size: 10.5px; }
+    .invalid-feedback {
+        font-size: 10.5px;
+    }
 }
 
-@keyframes selectFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes selectFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
