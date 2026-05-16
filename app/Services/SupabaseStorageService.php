@@ -34,6 +34,7 @@ class SupabaseStorageService
             $url = "{$this->baseUrl}/storage/v1/object/{$bucket}/{$storagePath}";
 
             $response = Http::withHeaders([
+                'apikey' => $this->serviceRoleKey,
                 'Authorization' => "Bearer {$this->serviceRoleKey}",
                 'Content-Type' => $mimeType,
                 'x-upsert' => 'true',
@@ -67,6 +68,7 @@ class SupabaseStorageService
             $url = "{$this->baseUrl}/storage/v1/object/sign/{$bucket}/{$storagePath}";
 
             $response = Http::withHeaders([
+                'apikey' => $this->serviceRoleKey,
                 'Authorization' => "Bearer {$this->serviceRoleKey}",
                 'Content-Type' => 'application/json',
             ])->post($url, [
@@ -108,6 +110,7 @@ class SupabaseStorageService
             $url = "{$this->baseUrl}/storage/v1/object/{$bucket}";
 
             $response = Http::withHeaders([
+                'apikey' => $this->serviceRoleKey,
                 'Authorization' => "Bearer {$this->serviceRoleKey}",
                 'Content-Type' => 'application/json',
             ])->delete($url, [
@@ -151,6 +154,7 @@ class SupabaseStorageService
             $url = "{$this->baseUrl}/storage/v1/object/{$bucket}";
 
             $response = Http::withHeaders([
+                'apikey' => $this->serviceRoleKey,
                 'Authorization' => "Bearer {$this->serviceRoleKey}",
                 'Content-Type' => 'application/json',
             ])->delete($url, [
@@ -188,6 +192,7 @@ class SupabaseStorageService
             $url = "{$this->baseUrl}/storage/v1/object/{$bucket}/{$storagePath}";
 
             $response = Http::withHeaders([
+                'apikey' => $this->serviceRoleKey,
                 'Authorization' => "Bearer {$this->serviceRoleKey}",
             ])->get($url);
 
