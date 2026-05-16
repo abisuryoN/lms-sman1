@@ -46,7 +46,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SERVER_PORT }}" "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" "
             cd '${{ secrets.SERVER_PATH }}' &&
-            if [ -f artisan ]; then php artisan down || true; fi
+            if [ -f artisan ]; then /opt/alt/php83/usr/bin/php artisan down || true; fi
           "
 
       - name: Upload project files to server
@@ -74,11 +74,11 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SERVER_PORT }}" "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" "
             cd '${{ secrets.SERVER_PATH }}' &&
-            php artisan optimize:clear &&
-            php artisan storage:link || true &&
-            php artisan config:cache &&
-            php artisan route:cache || true &&
-            php artisan view:cache &&
-            php artisan queue:restart || true &&
-            php artisan up
+            /opt/alt/php83/usr/bin/php artisan optimize:clear &&
+            /opt/alt/php83/usr/bin/php artisan storage:link || true &&
+            /opt/alt/php83/usr/bin/php artisan config:cache &&
+            /opt/alt/php83/usr/bin/php artisan route:cache || true &&
+            /opt/alt/php83/usr/bin/php artisan view:cache &&
+            /opt/alt/php83/usr/bin/php artisan queue:restart || true &&
+            /opt/alt/php83/usr/bin/php artisan up
           "
