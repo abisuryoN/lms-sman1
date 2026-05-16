@@ -119,6 +119,7 @@ class MateriController extends Controller
             $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.materi_bucket'));
             $supabase->delete($materi->storage_path);
         }
+        
         $materi->delete();
         return back()->with('success', 'Materi berhasil dihapus.');
     }

@@ -37,6 +37,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::delete('tahun-ajaran/{tahunAjaran}', [Admin\TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
     Route::post('tahun-ajaran/{tahunAjaran}/activate', [Admin\TahunAjaranController::class, 'activate'])->name('tahun-ajaran.activate');
     Route::post('tahun-ajaran/akhiri', [Admin\TahunAjaranController::class, 'akhiriTahunAjaran'])->name('tahun-ajaran.akhiri');
+    Route::post('tahun-ajaran/{tahunAjaran}/archive', [Admin\TahunAjaranController::class, 'archive'])->name('tahun-ajaran.archive');
+    Route::post('tahun-ajaran/{tahunAjaran}/cleanup', [Admin\TahunAjaranController::class, 'cleanupFiles'])->name('tahun-ajaran.cleanup');
 
     Route::get('import/siswa', [Admin\ImportController::class, 'siswaForm'])->name('import.siswa');
     Route::post('import/siswa', [Admin\ImportController::class, 'importSiswa'])->name('import.siswa.process');

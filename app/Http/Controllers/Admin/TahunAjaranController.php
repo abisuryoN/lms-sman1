@@ -122,6 +122,118 @@ class TahunAjaranController extends Controller
         return redirect()->route('admin.tahun-ajaran.index')->with('success', 'Tahun ajaran diakhiri. Kelas dinaikkan otomatis.');
     }
 
+    public function archive(TahunAjaran $tahunAjaran)
+    {
+        $tahunAjaran->update(['is_archived' => !$tahunAjaran->is_archived]);
+        $msg = $tahunAjaran->is_archived ? 'diarsipkan' : 'dipulihkan dari arsip';
+        return back()->with('success', "Tahun ajaran {$tahunAjaran->full_name} berhasil {$msg}.");
+    }
+
+    public function cleanupFiles(Request $request, TahunAjaran $tahunAjaran)
+    {
+        if ($tahunAjaran->status === 'aktif') {
+            return back()->with('error', 'Tidak dapat menghapus file dari tahun ajaran yang masih aktif.');
+        }
+
+        $request->validate([
+            'confirmation' => 'required|in:HAPUS FILE',
+        ]);
+
+        $includeSubmissions = $request->has('include_submissions');
+        
+        $results = [
+            'materi' => ['count' => 0, 'deleted' => 0, 'missing' => 0],
+            'tugas' => ['count' => 0, 'deleted' => 0, 'missing' => 0],
+            'jawaban' => ['count' => 0, 'deleted' => 0, 'missing' => 0],
+        ];
+
+        $supabase = new \App\Services\SupabaseStorageService();
+
+        // 1. Cleanup Materi
+        $materiItems = \App\Models\Materi::where('tahun_ajaran_id', $tahunAjaran->id)
+            ->where('tipe', 'file')
+            ->whereNotNull('storage_path')
+            ->get();
+        
+        $results['materi']['count'] = $materiItems->count();
+        $materiPaths = $materiItems->pluck('storage_path')->toArray();
+        if (!empty($materiPaths)) {
+            $deleteRes = $supabase->deleteMultiple($materiPaths, config('services.supabase.materi_bucket'));
+            $results['materi']['deleted'] = $deleteRes['count'];
+            $results['materi']['missing'] = $results['materi']['count'] - $deleteRes['count'];
+            
+            \App\Models\Materi::whereIn('id', $materiItems->pluck('id'))
+                ->update([
+                    'storage_path' => null,
+                    'original_filename' => null,
+                    'mime_type' => null,
+                    'file_size' => null
+                ]);
+        }
+
+        // 2. Cleanup Tugas (Soal)
+        $tugasItems = \App\Models\Tugas::where('tahun_ajaran_id', $tahunAjaran->id)
+            ->where('tipe', 'file')
+            ->whereNotNull('soal_storage_path')
+            ->get();
+        
+        $results['tugas']['count'] = $tugasItems->count();
+        $tugasPaths = $tugasItems->pluck('soal_storage_path')->toArray();
+        if (!empty($tugasPaths)) {
+            $deleteRes = $supabase->deleteMultiple($tugasPaths, config('services.supabase.soal_bucket'));
+            $results['tugas']['deleted'] = $deleteRes['count'];
+            $results['tugas']['missing'] = $results['tugas']['count'] - $deleteRes['count'];
+            
+            \App\Models\Tugas::whereIn('id', $tugasItems->pluck('id'))
+                ->update([
+                    'soal_storage_path' => null,
+                    'soal_original_filename' => null,
+                    'soal_mime_type' => null,
+                    'soal_file_size' => null
+                ]);
+        }
+
+        // 3. Cleanup Jawaban Siswa (Optional)
+        if ($includeSubmissions) {
+            $jawabanItems = \App\Models\JawabanTugas::whereHas('tugas', function($q) use ($tahunAjaran) {
+                $q->where('tahun_ajaran_id', $tahunAjaran->id);
+            })->whereNotNull('storage_path')->get();
+
+            $results['jawaban']['count'] = $jawabanItems->count();
+            $jawabanPaths = $jawabanItems->pluck('storage_path')->toArray();
+            
+            if (!empty($jawabanPaths)) {
+                // Chunk deletion for large volume of submissions
+                $chunkSize = 100;
+                foreach (array_chunk($jawabanPaths, $chunkSize) as $chunk) {
+                    $deleteRes = $supabase->deleteMultiple($chunk, config('services.supabase.bucket'));
+                    $results['jawaban']['deleted'] += $deleteRes['count'];
+                }
+                $results['jawaban']['missing'] = $results['jawaban']['count'] - $results['jawaban']['deleted'];
+
+                \App\Models\JawabanTugas::whereIn('id', $jawabanItems->pluck('id'))
+                    ->update([
+                        'storage_path' => null,
+                        'original_filename' => null,
+                        'mime_type' => null,
+                        'file_size' => null,
+                        'ocr_status' => null,
+                        'extracted_text' => null,
+                        'processed_text' => null
+                    ]);
+            }
+        }
+
+        $summary = "Cleanup selesai untuk {$tahunAjaran->full_name}.\\n";
+        $summary .= "- Materi: {$results['materi']['deleted']} dihapus, {$results['materi']['missing']} dilewati.\\n";
+        $summary .= "- Soal Tugas: {$results['tugas']['deleted']} dihapus, {$results['tugas']['missing']} dilewati.";
+        if ($includeSubmissions) {
+            $summary .= "\\n- Jawaban Siswa: {$results['jawaban']['deleted']} dihapus, {$results['jawaban']['missing']} dilewati.";
+        }
+
+        return back()->with('success', $summary);
+    }
+
     private function promoteClassName(string $n): ?string
     {
         if (preg_match('/^XII\b/i', $n)) return null;

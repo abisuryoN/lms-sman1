@@ -142,13 +142,12 @@ class TugasController extends Controller
             'tipe' => $request->tipe,
         ];
 
-        if ($request->tipe === 'file' && $request->hasFile('file')) {
-            // Hapus file lama jika ada
-            if ($tuga->soal_storage_path && $tuga->tipe === 'file') {
-                $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.soal_bucket'));
-                $supabase->delete($tuga->soal_storage_path);
-            }
+        $oldPath = null;
+        if ($tuga->soal_storage_path && $tuga->tipe === 'file') {
+            $oldPath = $tuga->soal_storage_path;
+        }
 
+        if ($request->tipe === 'file' && $request->hasFile('file')) {
             $file = $request->file('file');
             $data['soal_original_filename'] = $file->getClientOriginalName();
             $data['soal_mime_type'] = $file->getMimeType();
@@ -162,11 +161,16 @@ class TugasController extends Controller
             if (!$supabase->upload($file->getPathname(), $data['soal_storage_path'], $data['soal_mime_type'])) {
                 return back()->with('error', 'Gagal mengunggah file soal baru.');
             }
+
+            // Hapus file lama jika upload baru sukses
+            if ($oldPath) {
+                $supabase->delete($oldPath);
+            }
         } elseif ($request->tipe === 'link') {
             // Hapus file lama jika sebelumnya tipe file
-            if ($tuga->soal_storage_path && $tuga->tipe === 'file') {
+            if ($oldPath) {
                 $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.soal_bucket'));
-                $supabase->delete($tuga->soal_storage_path);
+                $supabase->delete($oldPath);
             }
             $data['soal_storage_path'] = $request->link_url;
             $data['soal_original_filename'] = null;
@@ -174,9 +178,9 @@ class TugasController extends Controller
             $data['soal_file_size'] = null;
         } elseif (!$request->tipe) {
             // Hapus lampiran jika diubah jadi tanpa lampiran
-            if ($tuga->soal_storage_path && $tuga->tipe === 'file') {
+            if ($oldPath) {
                 $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.soal_bucket'));
-                $supabase->delete($tuga->soal_storage_path);
+                $supabase->delete($oldPath);
             }
             $data['soal_storage_path'] = null;
             $data['soal_original_filename'] = null;

@@ -31,20 +31,22 @@ class ProfilController extends Controller
             $path = "users/{$user->id}/profile-{$timestamp}.{$extension}";
 
             $supabase = new \App\Services\SupabaseStorageService(config('services.supabase.profile_bucket'));
-
-            if ($user->photo_profile) {
-                if (str_starts_with($user->photo_profile, 'users/')) {
-                    $supabase->delete($user->photo_profile);
-                } else {
-                    Storage::disk('public')->delete($user->photo_profile);
-                }
-            }
+            $oldPhoto = $user->photo_profile;
 
             $tempPath = $file->getPathname();
             $mimeType = $file->getMimeType() ?: 'image/jpeg';
 
             if ($supabase->upload($tempPath, $path, $mimeType)) {
                 $user->update(['photo_profile' => $path]);
+                
+                // Hapus foto lama jika upload baru sukses
+                if ($oldPhoto) {
+                    if (str_starts_with($oldPhoto, 'users/')) {
+                        $supabase->delete($oldPhoto);
+                    } else {
+                        \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPhoto);
+                    }
+                }
             } else {
                 return back()->with('error', 'Gagal mengunggah foto profil ke Supabase.');
             }

@@ -73,7 +73,9 @@ class TugasController extends Controller
             'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:1024',
         ]);
 
-        $filePath = null;
+        $jawabanLama = JawabanTugas::where('tugas_id', $tuga->id)->where('siswa_id', $siswa->id)->first();
+        $oldStoragePath = $jawabanLama ? $jawabanLama->storage_path : null;
+
         $storagePath = null;
         $originalFilename = null;
         $mimeType = null;
@@ -87,7 +89,6 @@ class TugasController extends Controller
             $fileSize = $file->getSize();
 
             // Buat path terstruktur di Supabase Storage
-            $kelas = $tuga->kelas;
             $extension = $file->getClientOriginalExtension();
             $safeName = Str::slug(pathinfo($originalFilename, PATHINFO_FILENAME));
             $storagePath = sprintf(
@@ -102,7 +103,7 @@ class TugasController extends Controller
             );
 
             // Upload ke Supabase Storage
-            $supabase = new SupabaseStorageService();
+            $supabase = new SupabaseStorageService(config('services.supabase.bucket'));
             $tempPath = $file->getRealPath();
             $uploaded = $supabase->upload($tempPath, $storagePath, $mimeType);
 
@@ -110,25 +111,40 @@ class TugasController extends Controller
                 return back()->withErrors(['file' => 'Gagal mengupload file ke penyimpanan. Silakan coba lagi.'])->withInput();
             }
 
+            // Jika upload baru berhasil, hapus file lama dari storage
+            if ($oldStoragePath) {
+                $supabase->delete($oldStoragePath);
+            }
+
             $ocrStatus = 'pending';
+        }
+
+        $updateData = [
+            'jawaban_text' => $request->jawaban_text,
+            'storage_path' => $storagePath ?: ($jawabanLama->storage_path ?? null),
+            'original_filename' => $originalFilename ?: ($jawabanLama->original_filename ?? null),
+            'mime_type' => $mimeType ?: ($jawabanLama->mime_type ?? null),
+            'file_size' => $fileSize ?: ($jawabanLama->file_size ?? null),
+            'ocr_status' => $ocrStatus ?: ($jawabanLama->ocr_status ?? null),
+            'submitted_at' => now(),
+        ];
+
+        // Jika upload file baru, kita harus update metadata
+        if ($request->hasFile('file')) {
+            $updateData['storage_path'] = $storagePath;
+            $updateData['original_filename'] = $originalFilename;
+            $updateData['mime_type'] = $mimeType;
+            $updateData['file_size'] = $fileSize;
+            $updateData['ocr_status'] = $ocrStatus;
         }
 
         $jawaban = JawabanTugas::updateOrCreate(
             ['tugas_id' => $tuga->id, 'siswa_id' => $siswa->id],
-            array_filter([
-                'jawaban_text' => $request->jawaban_text,
-                'file_path' => $filePath, // null karena tidak disimpan lokal
-                'storage_path' => $storagePath,
-                'original_filename' => $originalFilename,
-                'mime_type' => $mimeType,
-                'file_size' => $fileSize,
-                'ocr_status' => $ocrStatus,
-                'submitted_at' => now(),
-            ], fn($v) => $v !== null)
+            $updateData
         );
 
-        // Dispatch job OCR jika ada file yang diupload
-        if ($storagePath) {
+        // Dispatch job OCR jika ada file baru yang diupload
+        if ($request->hasFile('file') && $storagePath) {
             ProcessSubmissionTextJob::dispatch($jawaban->id);
         }
 

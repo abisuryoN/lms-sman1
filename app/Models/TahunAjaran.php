@@ -15,6 +15,7 @@ class TahunAjaran extends Model
         'nama_tahun',
         'semester',
         'status',
+        'is_archived',
     ];
 
     // ── Scope ────────────────────────────────────────────
