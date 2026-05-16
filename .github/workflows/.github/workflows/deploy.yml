@@ -30,7 +30,7 @@ jobs:
         run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
 
       - name: Install NPM dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build frontend assets
         run: npm run build
