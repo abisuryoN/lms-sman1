@@ -49,7 +49,7 @@ class TugasController extends Controller
             'mapel_id' => 'required|exists:mapel,id',
             'deadline' => 'required|date|after:now',
             'tipe' => 'nullable|in:file,link',
-            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:1024',
+            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:20480',
             'link_url' => 'required_if:tipe,link|nullable|url',
         ]);
 
@@ -129,7 +129,7 @@ class TugasController extends Controller
             'mapel_id' => 'required|exists:mapel,id',
             'deadline' => 'required|date',
             'tipe' => 'nullable|in:file,link',
-            'file' => 'nullable|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:1024',
+            'file' => 'nullable|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:20480',
             'link_url' => 'required_if:tipe,link|nullable|url',
         ]);
 

@@ -70,7 +70,7 @@ class TugasController extends Controller
 
         $request->validate([
             'jawaban_text' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:1024',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
         $jawabanLama = JawabanTugas::where('tugas_id', $tuga->id)->where('siswa_id', $siswa->id)->first();

@@ -64,7 +64,7 @@ class MateriController extends Controller
             'kelas_id' => 'required|exists:kelas,id',
             'mapel_id' => 'required|exists:mapel,id',
             'tipe' => 'required|in:file,link',
-            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:1024',
+            'file' => 'required_if:tipe,file|file|mimes:pdf,docx,pptx,ppt,doc,jpg,jpeg,png|max:20480',
             'link_url' => 'required_if:tipe,link|nullable|url',
         ]);
 

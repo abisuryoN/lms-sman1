@@ -20,7 +20,7 @@ class ProfilController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'current_password' => 'nullable|required_with:new_password|current_password',
             'new_password' => 'nullable|min:8|confirmed',
         ]);

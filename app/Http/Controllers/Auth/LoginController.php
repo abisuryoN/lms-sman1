@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -34,8 +36,18 @@ class LoginController extends Controller
             'captcha.numeric' => 'Hasil perhitungan harus berupa angka.',
         ]);
 
+        $throttleKey = Str::lower($request->input('email')) . '|' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            return back()->withErrors([
+                'email' => "Terlalu banyak percobaan login. Silakan coba lagi dalam $seconds detik.",
+            ])->onlyInput('email');
+        }
+
         // Validate Captcha
         if ($request->captcha != session('captcha_answer')) {
+            RateLimiter::hit($throttleKey, 60);
             return back()->withErrors([
                 'captcha' => 'Hasil perhitungan salah. Silakan coba lagi.',
             ])->withInput($request->only('email', 'remember'));
@@ -47,6 +59,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
 
             $user = Auth::user();
@@ -62,8 +75,10 @@ class LoginController extends Controller
             return $this->redirectByRole($user);
         }
 
+        RateLimiter::hit($throttleKey, 60);
+
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            'email' => 'Email atau password tidak sesuai.',
         ])->onlyInput('email');
     }
 
