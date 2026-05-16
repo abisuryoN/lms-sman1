@@ -63,6 +63,21 @@
         .tippy-box[data-theme~='premium'][data-placement^='bottom'] > .tippy-arrow::before {
             border-bottom-color: #1e293b;
         }
+
+        /* Responsive Utilities */
+        @media (max-width: 768px) {
+            .desktop-only { display: none !important; }
+            .responsive-flex-card { flex-direction: column; text-align: center; }
+            .responsive-header { padding: 12px 16px !important; }
+            .compact-mobile-body { padding: 16px !important; }
+            .mobile-gap-sm { gap: 8px !important; }
+            .mobile-mt-sm { margin-top: 12px !important; }
+            .mobile-pt-sm { padding-top: 12px !important; }
+            .card { margin-bottom: 16px !important; }
+        }
+        @media (min-width: 769px) {
+            .mobile-only { display: none !important; }
+        }
     </style>
 </head>
 
@@ -454,8 +469,36 @@
                         icon: 'greeting-icon-no-border'
                     }
                 });
-            });
         @endif
+
+        // Global Confirmation Dialog
+        document.addEventListener('click', function(e) {
+            const button = e.target.closest('.btn-delete');
+            if (button) {
+                e.preventDefault();
+                const form = button.closest('form');
+                const message = button.getAttribute('data-confirm') || 'Data ini akan dihapus permanen!';
+                const icon = button.getAttribute('data-icon') || 'warning';
+                const confirmColor = button.getAttribute('data-confirm-color') || (icon === 'success' ? '#10B981' : '#EF4444');
+                const confirmText = button.getAttribute('data-confirm-text') || 'Ya, Lanjutkan!';
+                
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: message,
+                    icon: icon,
+                    showCancelButton: true,
+                    confirmButtonColor: confirmColor,
+                    cancelButtonColor: '#64748B',
+                    confirmButtonText: confirmText,
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
     </script>
     @stack('scripts')
 </body>

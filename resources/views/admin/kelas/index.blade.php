@@ -24,7 +24,10 @@
                         <td class="flex gap-2">
                             <a href="{{ route('admin.kelas.show', $k) }}" class="btn btn-primary btn-sm" title="Lihat Siswa"><i class="fas fa-eye"></i></a>
                             <a href="{{ route('admin.kelas.edit', $k) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('admin.kelas.destroy', $k) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button></form>
+                            <form action="{{ route('admin.kelas.destroy', $k) }}" method="POST" class="form-delete">
+                                @csrf @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" title="Hapus"><i class="fas fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -55,7 +58,10 @@
                     <div class="mobile-card-actions">
                         <a href="{{ route('admin.kelas.show', $k) }}" class="btn btn-primary btn-sm" title="Lihat Siswa"><i class="fas fa-eye"></i> Detail</a>
                         <a href="{{ route('admin.kelas.edit', $k) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i> Edit</a>
-                        <form action="{{ route('admin.kelas.destroy', $k) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i> Hapus</button></form>
+                        <form action="{{ route('admin.kelas.destroy', $k) }}" method="POST" class="form-delete">
+                            @csrf @method('DELETE')
+                            <button type="button" class="btn btn-danger btn-sm btn-delete" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
+                        </form>
                     </div>
                 </div>
             @empty

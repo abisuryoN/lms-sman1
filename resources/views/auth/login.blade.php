@@ -30,10 +30,10 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 24px; 
-            padding: 48px 40px;
+            padding: 40px 32px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.8);
             width: 100%; 
-            max-width: 420px;
+            max-width: 400px;
             position: relative; 
             z-index: 1;
             animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -46,47 +46,47 @@
 
         .login-logo {
             text-align: center; 
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .login-logo img {
-            width: 80px; 
-            height: 80px; 
-            margin-bottom: 16px;
-            border-radius: 20px; 
+            width: 70px; 
+            height: 70px; 
+            margin-bottom: 12px;
+            border-radius: 18px; 
             box-shadow: 0 8px 16px rgba(59, 130, 246, 0.1);
         }
 
         .login-logo h1 {
-            font-size: 22px; 
+            font-size: 20px; 
             font-weight: 800; 
             color: #0F172A;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             letter-spacing: -0.5px;
         }
 
         .login-logo p {
-            font-size: 14px; 
+            font-size: 13px; 
             color: #64748B;
         }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
 
         .form-label {
             display: block; 
-            font-size: 13px; 
+            font-size: 12px; 
             font-weight: 600;
             color: #475569; 
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             padding-left: 4px;
         }
 
         .form-control {
             width: 100%; 
-            padding: 14px 16px;
+            padding: 12px 14px;
             border: 1.5px solid #E2E8F0; 
-            border-radius: 12px;
-            font-size: 15px; 
+            border-radius: 10px;
+            font-size: 14px; 
             font-family: inherit;
             transition: all 0.2s ease; 
             background: #FFFFFF; 
@@ -102,17 +102,17 @@
 
         .btn-login {
             width: 100%; 
-            padding: 14px; 
+            padding: 12px; 
             border: none;
             background: #2563EB;
             color: #FFFFFF; 
-            font-size: 16px; 
+            font-size: 15px; 
             font-weight: 700;
-            border-radius: 12px; 
+            border-radius: 10px; 
             cursor: pointer;
             transition: all 0.25s; 
             font-family: inherit;
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
@@ -129,16 +129,16 @@
         .alert-error {
             background: #FFF1F2; 
             color: #E11D48; 
-            padding: 12px 16px;
-            border-radius: 12px; 
-            font-size: 13px; 
-            margin-bottom: 20px;
+            padding: 10px 14px;
+            border-radius: 10px; 
+            font-size: 12px; 
+            margin-bottom: 16px;
             border: 1px solid #FFE4E6;
             font-weight: 500;
         }
 
         @media (max-width: 480px) {
-            .login-card { padding: 36px 24px; border-radius: 28px; }
+            .login-card { padding: 32px 20px; border-radius: 24px; }
         }
     </style>
 </head>
@@ -169,9 +169,19 @@
                 <label class="form-label" for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password" required>
             </div>
-            <div class="remember-row">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Ingat saya</label>
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label class="form-label">Verifikasi Keamanan</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="background: #F1F5F9; padding: 10px 14px; border-radius: 10px; font-weight: 700; color: #334155; font-size: 14px; border: 1.5px solid #E2E8F0; min-width: 90px; text-align: center;">
+                        {{ $captcha_question }} = 
+                    </div>
+                    <input type="number" name="captcha" class="form-control" placeholder="?" required style="text-align: center;">
+                </div>
+            </div>
+
+            <div class="remember-row" style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="remember" name="remember" style="width: 15px; height: 15px; cursor: pointer;">
+                <label for="remember" style="font-size: 13px; color: #64748B; cursor: pointer;">Ingat saya</label>
             </div>
             <button type="submit" class="btn-login">Masuk</button>
         </form>

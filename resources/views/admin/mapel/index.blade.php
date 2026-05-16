@@ -64,11 +64,10 @@
                                         title="Lihat Detail Pengajar"><i class="fas fa-eye"></i></a>
                                     <a href="{{ route('admin.mapel.edit', $m) }}" class="btn btn-warning btn-sm" title="Edit"><i
                                             class="fas fa-edit"></i></a>
-                                    <form action="{{ route('admin.mapel.destroy', $m) }}" method="POST"
-                                        onsubmit="return confirm('Hapus mata pelajaran ini?')">
+                                    <form action="{{ route('admin.mapel.destroy', $m) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" title="Hapus"><i
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-confirm="Hapus mata pelajaran ini?" title="Hapus"><i
                                                 class="fas fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -112,9 +111,9 @@
                         <div class="mobile-card-actions">
                             <a href="{{ route('admin.mapel.show', $m) }}" class="btn btn-primary btn-sm" title="Lihat Detail Pengajar"><i class="fas fa-eye"></i> Detail</a>
                             <a href="{{ route('admin.mapel.edit', $m) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i> Edit</a>
-                            <form action="{{ route('admin.mapel.destroy', $m) }}" method="POST" onsubmit="return confirm('Hapus mata pelajaran ini?')">
+                            <form action="{{ route('admin.mapel.destroy', $m) }}" method="POST">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-confirm="Hapus mata pelajaran ini?" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
                             </form>
                         </div>
                     </div>

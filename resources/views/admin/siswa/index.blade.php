@@ -39,8 +39,14 @@
                         <td><span class="badge {{ $s->status === 'aktif' ? 'badge-green' : 'badge-gray' }}">{{ ucfirst($s->status) }}</span></td>
                         <td class="flex gap-2">
                             <a href="{{ route('admin.siswa.edit', $s) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('admin.siswa.reset-password', $s) }}" method="POST" onsubmit="return confirm('Reset password ke NIS?')">@csrf<button class="btn btn-outline btn-sm" title="Reset Password"><i class="fas fa-key"></i></button></form>
-                            <form action="{{ route('admin.siswa.destroy', $s) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button></form>
+                            <form action="{{ route('admin.siswa.reset-password', $s) }}" method="POST">
+                                @csrf
+                                <button type="button" class="btn btn-outline btn-sm btn-delete" data-confirm="Password siswa akan dikembalikan ke NIS mereka. Lanjutkan?" title="Reset Password"><i class="fas fa-key"></i></button>
+                            </form>
+                            <form action="{{ route('admin.siswa.destroy', $s) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-confirm="Hapus data siswa ini secara permanen?" title="Hapus"><i class="fas fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -76,8 +82,14 @@
 
                     <div class="mobile-card-actions">
                         <a href="{{ route('admin.siswa.edit', $s) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i> Edit</a>
-                        <form action="{{ route('admin.siswa.reset-password', $s) }}" method="POST" onsubmit="return confirm('Reset password ke NIS?')">@csrf<button class="btn btn-outline btn-sm" title="Reset Password"><i class="fas fa-key"></i> Reset PW</button></form>
-                        <form action="{{ route('admin.siswa.destroy', $s) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i> Hapus</button></form>
+                        <form action="{{ route('admin.siswa.reset-password', $s) }}" method="POST">
+                            @csrf
+                            <button type="button" class="btn btn-outline btn-sm btn-delete" data-confirm="Password siswa akan dikembalikan ke NIS mereka. Lanjutkan?" title="Reset Password"><i class="fas fa-key"></i> Reset PW</button>
+                        </form>
+                        <form action="{{ route('admin.siswa.destroy', $s) }}" method="POST">
+                            @csrf @method('DELETE')
+                            <button type="button" class="btn btn-danger btn-sm btn-delete" data-confirm="Hapus data siswa ini secara permanen?" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
+                        </form>
                     </div>
                 </div>
             @empty

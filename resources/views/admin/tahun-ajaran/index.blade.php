@@ -34,7 +34,10 @@
                         <td>
                             <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
                                 @if($t->status !== 'aktif')
-                                    <form action="{{ route('admin.tahun-ajaran.activate', $t) }}" method="POST" style="display:inline" onsubmit="return confirm('Aktifkan tahun ajaran ini?')">@csrf<button class="btn btn-success btn-sm" title="Jadikan Tahun Ajaran Aktif"><i class="fas fa-check"></i> Aktifkan</button></form>
+                                    <form action="{{ route('admin.tahun-ajaran.activate', $t) }}" method="POST" style="display:inline">
+                                        @csrf
+                                        <button type="button" class="btn btn-success btn-sm btn-delete" data-icon="success" data-confirm-text="Ya, Aktifkan" data-confirm="Jadikan {{ $t->full_name }} sebagai tahun ajaran aktif?" title="Aktifkan"><i class="fas fa-check"></i> Aktifkan</button>
+                                    </form>
                                 @endif
                                 
                                 <a href="{{ route('admin.tahun-ajaran.edit', $t) }}" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
@@ -51,10 +54,10 @@
                                         <i class="fas fa-broom"></i>
                                     </button>
 
-                                    <form action="{{ route('admin.tahun-ajaran.destroy', $t) }}" method="POST" style="display:inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tahun ajaran ini?')">
+                                    <form action="{{ route('admin.tahun-ajaran.destroy', $t) }}" method="POST" style="display:inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-confirm="Hapus tahun ajaran ini beserta seluruh data di dalamnya?" title="Hapus"><i class="fas fa-trash"></i></button>
                                     </form>
                                 @endif
                             </div>
@@ -92,14 +95,20 @@
 
                     <div class="mobile-card-actions">
                         @if($t->status !== 'aktif')
-                            <form action="{{ route('admin.tahun-ajaran.activate', $t) }}" method="POST" onsubmit="return confirm('Aktifkan tahun ajaran ini?')">@csrf<button class="btn btn-success btn-sm" title="Aktifkan"><i class="fas fa-check"></i></button></form>
+                            <form action="{{ route('admin.tahun-ajaran.activate', $t) }}" method="POST">
+                                @csrf
+                                <button type="button" class="btn btn-success btn-sm btn-delete" data-icon="success" data-confirm-text="Ya, Aktifkan" data-confirm="Aktifkan tahun ajaran ini?" title="Aktifkan"><i class="fas fa-check"></i></button>
+                            </form>
                         @endif
                         <a href="{{ route('admin.tahun-ajaran.edit', $t) }}" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                         <form action="{{ route('admin.tahun-ajaran.archive', $t) }}" method="POST" style="display:inline">@csrf<button class="btn btn-warning btn-sm" title="Arsip"><i class="fas {{ $t->is_archived ? 'fa-box-open' : 'fa-archive' }}"></i></button></form>
                         
                         @if($t->status !== 'aktif')
                             <button type="button" class="btn btn-danger btn-sm" title="Cleanup" onclick="showCleanupModal({{ $t->id }}, '{{ $t->full_name }}')"><i class="fas fa-broom"></i></button>
-                            <form action="{{ route('admin.tahun-ajaran.destroy', $t) }}" method="POST" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" title="Hapus"><i class="fas fa-trash"></i></button></form>
+                            <form action="{{ route('admin.tahun-ajaran.destroy', $t) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-confirm="Hapus?" title="Hapus"><i class="fas fa-trash"></i></button>
+                            </form>
                         @endif
                     </div>
                 </div>

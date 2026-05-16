@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" style="margin: 0 20px 20px 20px; font-size: 12px; border-left: 4px solid var(--warning); background: #FFFBEB;">
+    <div class="alert alert-warning" style="margin: 0 16px 16px 16px; font-size: 11px; border-left: 4px solid var(--warning); background: #FFFBEB;">
         <i class="fas fa-shield-alt"></i>
         <div>
             Password default Anda adalah **NIP** Anda. Silakan <a href="{{ route('guru.profil.edit') }}#password-section" style="color:var(--warning);font-weight:700">ganti password</a>.
